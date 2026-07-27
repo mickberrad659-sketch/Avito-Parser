@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+firewall-debug.log
+firewall-debug-responses/
+
+*.har
