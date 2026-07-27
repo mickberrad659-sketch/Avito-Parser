@@ -1,4 +1,32 @@
-# JavaScript для цепочки firewallPow
+# Avito Parser
+
+E2E-клиент для последовательной обработки Avito firewallPow, QRATOR и
+GeeTest. Все нужные Python-зависимости и локальная библиотека `GeekedTest`
+входят в репозиторий.
+
+## Быстрый запуск
+
+Нужен установленный [uv](https://docs.astral.sh/uv/).
+
+```bash
+git clone https://github.com/mickberrad659-sketch/Avito-Parser.git
+cd Avito-Parser
+uv sync
+uv run python main.py
+```
+
+`main.py` не использует `HTTP_PROXY`, `HTTPS_PROXY` и `ALL_PROXY` из
+окружения: запросы выполняются через прямое соединение. Диагностический лог
+пишется в `firewall-debug.log`, а полный HTML защитных страниц — в
+`firewall-debug-responses/`; оба пути исключены из Git.
+
+Проверка:
+
+```bash
+uv run --with pytest pytest -q
+```
+
+## JavaScript для цепочки firewallPow
 
 Источник: `/home/al/Загрузки/MY SITE Archive [26-07-27 16-30-23].har` (HAR-запись № 19).
 

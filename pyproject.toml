@@ -4,6 +4,7 @@ version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = [
     "curl-cffi>=0.15.0",
+    "ddddocr @ git+https://github.com/sml2h3/ddddocr.git@main",
     "numpy>=2.2.1",
     "opencv-python-headless>=4.10.0.84",
     "pycryptodome>=3.21.0",
