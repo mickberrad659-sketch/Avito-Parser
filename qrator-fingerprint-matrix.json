@@ -1,0 +1,6559 @@
+{
+  "profileCount": 8,
+  "pagesPerProfile": 2,
+  "measurements": [
+    {
+      "profile": 0,
+      "page": 0,
+      "capturedAt": 1785172506,
+      "browser": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
+        "platform": "Win32",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "hardwareConcurrency": 8,
+        "deviceMemory": null,
+        "maxTouchPoints": 0,
+        "webdriver": false,
+        "cookieEnabled": true,
+        "doNotTrack": "1",
+        "devicePixelRatio": 1,
+        "timezoneOffset": -180,
+        "screen": {
+          "width": 1680,
+          "height": 1050,
+          "availWidth": 1680,
+          "availHeight": 1002,
+          "colorDepth": 24,
+          "pixelDepth": 24
+        },
+        "webgl": {
+          "vendor": "Google Inc. (Microsoft)",
+          "renderer": "ANGLE (Microsoft, Microsoft Basic Render Driver Direct3D11 vs_5_0 ps_5_0), or similar",
+          "version": "WebGL 2.0",
+          "shadingLanguageVersion": "WebGL GLSL ES 3.00"
+        }
+      },
+      "f": "5.8696cbce96d2947c36b4dd61b04726f147e1eada7172e06c47e1eada7172e06c47e1eada7172e06c47e1eada7172e06cb59320d6eb6303c1b59320d6eb6303c1b59320d6eb6303c147e1eada7172e06c8a38e2c5b3e08b898a38e2c5b3e08b890df103df0c26013a7b0d53c7afc06d0b2ebf3cb6fd35a0ac7b0d53c7afc06d0b0df103df0c26013ae2bfa4611aac769e177ffca5d5bd045d0f7bd04ea141548c956cdff3d4067aa55050a556a35c540a2da10fb74cac1eabf722fe85c94f7d0c2da10fb74cac1eab268a7bf63aa148d203c77801b122405c268a7bf63aa148d22da10fb74cac1eab71e7cb57bbcb8e0f2da10fb74cac1eab2da10fb74cac1eabba0ac8037e2b74f9037e1fbb3ea05095de87ad3b397f946b4c41e97fe93686ad407e90ca253680a7142f946225a20e8502c730c0109b9fbbf40608c77d6dd550cd464f33d0888ba3d21ab7cd585086e03557f6600ddba72910869dfad8afd519e2415097439d404746b8ae4e81acb9fa786047a80c779d5146b8ae4e81acb9fa131eb897502a396e1cf5fc67cf4c79a92da10fb74cac1eaba5f76aa56199c549efde06a8e6b1dd6febf4cb018970da7dcc0a4ccfc9f7f371",
+      "s": "b0b332a8882daa947b6739437e12b3af112e3e382234da34fa6dbf8d423193fde1b74bd568bcc8bf6e9ed9c6dffce8df30ce365ce6b3700ee683c54d9c6ea740c68449b18c9680424261fc4d4b0f6fe386b9ae08e4a5fad9",
+      "rawF": "1680;1050;24;24;240;180;240;180;240;180;240;180;240;240;240;240;240;240;240;180;180;180;180;180;1;1;1;1;1;1;0;1;0;1;1;1;1;1;0;1;1;1;1;1;0;8;1005301203;41002199;1;2;2;2;0;2;0;0;0;0;0;0;0;0;1;0;0;0;0;0;1;0;0;1;0;1;0;0;1;0;0;1;0;0;0;0;1;0;0;0;0;0;0;0;0;0;0;0;1;0;1;1;0;1;0;5;3641819743;3577560136;2930309092;3469306551;1582120644;1320192270;2485359653;0;0;0;1;1;1;1;1;1;1;1;1;1;2;1;1;1;1785172505;0;0;0;0;0;0;0;0;0;0;3517267889;3369925510",
+      "rawS": "{\"monospace\":true,\"readOnly\":false,\"noLengthPlugins\":false,\"installedExtensions\":[]}",
+      "values": [
+        1680,
+        1050,
+        24,
+        24,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        180,
+        180,
+        180,
+        180,
+        180,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        8,
+        1005301203,
+        41002199,
+        1,
+        2,
+        2,
+        2,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        5,
+        3641819743,
+        3577560136,
+        2930309092,
+        3469306551,
+        1582120644,
+        1320192270,
+        2485359653,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1785172505,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3517267889,
+        3369925510
+      ]
+    },
+    {
+      "profile": 0,
+      "page": 1,
+      "capturedAt": 1785172507,
+      "browser": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
+        "platform": "Win32",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "hardwareConcurrency": 8,
+        "deviceMemory": null,
+        "maxTouchPoints": 0,
+        "webdriver": false,
+        "cookieEnabled": true,
+        "doNotTrack": "1",
+        "devicePixelRatio": 1,
+        "timezoneOffset": -180,
+        "screen": {
+          "width": 1680,
+          "height": 1050,
+          "availWidth": 1680,
+          "availHeight": 1002,
+          "colorDepth": 24,
+          "pixelDepth": 24
+        },
+        "webgl": {
+          "vendor": "Google Inc. (Microsoft)",
+          "renderer": "ANGLE (Microsoft, Microsoft Basic Render Driver Direct3D11 vs_5_0 ps_5_0), or similar",
+          "version": "WebGL 2.0",
+          "shadingLanguageVersion": "WebGL GLSL ES 3.00"
+        }
+      },
+      "f": "5.8696cbce96d2947c36b4dd61b04726f147e1eada7172e06c47e1eada7172e06c47e1eada7172e06c47e1eada7172e06cb59320d6eb6303c1b59320d6eb6303c1b59320d6eb6303c147e1eada7172e06c8a38e2c5b3e08b898a38e2c5b3e08b890df103df0c26013a7b0d53c7afc06d0b2ebf3cb6fd35a0ac7b0d53c7afc06d0b0df103df0c26013ae2bfa4611aac769e177ffca5d5bd045d0f7bd04ea141548c956cdff3d4067aa55050a556a35c540a2da10fb74cac1eabf722fe85c94f7d0c2da10fb74cac1eab268a7bf63aa148d203c77801b122405c268a7bf63aa148d22da10fb74cac1eab71e7cb57bbcb8e0f2da10fb74cac1eab2da10fb74cac1eabba0ac8037e2b74f9037e1fbb3ea05095de87ad3b397f946b4c41e97fe93686ad407e90ca253680a7142f946225a20e8502c730c0109b9fbbf40608c77d6dd550cd464f33d0888ba3d21ab7cd585086e03557f6600ddba72910869dfad8afd519e2415097439d404746b8ae4e81acb9fa786047a80c779d5146b8ae4e81acb9fa131eb897502a396e2d38179306cb93212da10fb74cac1eaba5f76aa56199c549efde06a8e6b1dd6febf4cb018970da7dcc0a4ccfc9f7f371",
+      "s": "b0b332a8882daa947b6739437e12b3af112e3e382234da34fa6dbf8d423193fde1b74bd568bcc8bf6e9ed9c6dffce8df30ce365ce6b3700ee683c54d9c6ea740c68449b18c9680424261fc4d4b0f6fe386b9ae08e4a5fad9",
+      "rawF": "1680;1050;24;24;240;180;240;180;240;180;240;180;240;240;240;240;240;240;240;180;180;180;180;180;1;1;1;1;1;1;0;1;0;1;1;1;1;1;0;1;1;1;1;1;0;8;1005301203;41002199;1;2;2;2;0;2;0;0;0;0;0;0;0;0;1;0;0;0;0;0;1;0;0;1;0;1;0;0;1;0;0;1;0;0;0;0;1;0;0;0;0;0;0;0;0;0;0;0;1;0;1;1;0;1;0;5;3641819743;3577560136;2930309092;3469306551;1582120644;1320192270;2485359653;0;0;0;1;1;1;1;1;1;1;1;1;1;2;1;1;1;1785172507;0;0;0;0;0;0;0;0;0;0;3517267889;3369925510",
+      "rawS": "{\"monospace\":true,\"readOnly\":false,\"noLengthPlugins\":false,\"installedExtensions\":[]}",
+      "values": [
+        1680,
+        1050,
+        24,
+        24,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        180,
+        180,
+        180,
+        180,
+        180,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        8,
+        1005301203,
+        41002199,
+        1,
+        2,
+        2,
+        2,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        5,
+        3641819743,
+        3577560136,
+        2930309092,
+        3469306551,
+        1582120644,
+        1320192270,
+        2485359653,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1785172507,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3517267889,
+        3369925510
+      ]
+    },
+    {
+      "profile": 1,
+      "page": 0,
+      "capturedAt": 1785172510,
+      "browser": {
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:135.0) Gecko/20100101 Firefox/135.0",
+        "platform": "MacIntel",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "hardwareConcurrency": 10,
+        "deviceMemory": null,
+        "maxTouchPoints": 0,
+        "webdriver": false,
+        "cookieEnabled": true,
+        "doNotTrack": "1",
+        "devicePixelRatio": 1,
+        "timezoneOffset": -180,
+        "screen": {
+          "width": 960,
+          "height": 540,
+          "availWidth": 960,
+          "availHeight": 525,
+          "colorDepth": 30,
+          "pixelDepth": 30
+        },
+        "webgl": {
+          "vendor": "Apple",
+          "renderer": "Apple M1, or similar",
+          "version": "WebGL 2.0",
+          "shadingLanguageVersion": "WebGL GLSL ES 3.00"
+        }
+      },
+      "f": "5.ba574e2650ef0c80e8330b497b1ba79c16d443061c57ac4216d443061c57ac4216d443061c57ac4216d443061c57ac42cec4d980e289734fcec4d980e289734fcec4d980e289734f96a296658223dafb96a296658223dafb381ebd593ffbb4c30df103df0c26013a20f3d16ad0b1c5460df103df0c26013aba0ac8037e2b74f98b1472fe2f9ba6b9d2b98b10eab7caeaa09db4af14a5e9ad2de6947c9626acff1b79bc6b7defe3bbdc0d86d9e44006d8143114829cf33ca746b8ae4e81acb9fa3de19da9ed218fe2fb0fb526bb39450a87829363e2d856a2b5b87f59517a23f23de19da9ed218fe23de19da9ed218fe2c772035eab81f5e187829363e2d856a2143114829cf33ca7172c80659da4d447f1cc8f457244b1a81ac794a8d120d7dc96af0a2ebf0b56a9af3ee160789918a15d3d12014bda85a4be3f6954984086d1f4c719e519b142559154f4aaf0a7b4f4c339e7d311e2da76d6cec0681230aaff2ebf3cb6fd35a0ac0df103df0c26013a28a353c4323c7a3aefcfb0a8b1110195100ed674ddc2ab7b3de19da9ed218fe23de19da9ed218fe23895edd4297761f71e7c07316081b5f34e56f7ad0c729f962e1fe48b3df0d7c3",
+      "s": "b0b332a8882daa947b6739437e12b3af112e3e382234da34fa6dbf8d423193fde1b74bd568bcc8bf6e9ed9c6dffce8df30ce365ce6b3700ee683c54d9c6ea740c68449b18c9680424261fc4d4b0f6fe386b9ae08e4a5fad9",
+      "rawF": "960;540;30;30;240;180;240;180;240;180;240;180;240;240;240;240;240;240;240;180;180;180;180;180;1;1;1;1;1;1;0;1;0;1;1;1;1;1;0;1;1;1;1;1;0;10;3955448693;41002199;1;2;2;2;0;2;1;1;1;1;1;1;0;1;1;1;1;0;0;0;0;0;0;1;1;1;0;0;1;0;1;1;0;0;0;0;0;0;0;0;0;0;0;0;1;1;0;0;1;1;1;1;0;1;0;5;3641819743;3577560136;3433461283;3469306551;1582120644;1320192270;4189790824;0;0;0;1;1;1;1;1;1;1;1;1;1;2;1;1;1;1785172509;0;0;0;0;0;0;0;0;0;0;3517267889;3369925510",
+      "rawS": "{\"monospace\":true,\"readOnly\":false,\"noLengthPlugins\":false,\"installedExtensions\":[]}",
+      "values": [
+        960,
+        540,
+        30,
+        30,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        180,
+        180,
+        180,
+        180,
+        180,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        10,
+        3955448693,
+        41002199,
+        1,
+        2,
+        2,
+        2,
+        0,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        5,
+        3641819743,
+        3577560136,
+        3433461283,
+        3469306551,
+        1582120644,
+        1320192270,
+        4189790824,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1785172509,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3517267889,
+        3369925510
+      ]
+    },
+    {
+      "profile": 1,
+      "page": 1,
+      "capturedAt": 1785172511,
+      "browser": {
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:135.0) Gecko/20100101 Firefox/135.0",
+        "platform": "MacIntel",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "hardwareConcurrency": 10,
+        "deviceMemory": null,
+        "maxTouchPoints": 0,
+        "webdriver": false,
+        "cookieEnabled": true,
+        "doNotTrack": "1",
+        "devicePixelRatio": 1,
+        "timezoneOffset": -180,
+        "screen": {
+          "width": 960,
+          "height": 540,
+          "availWidth": 960,
+          "availHeight": 525,
+          "colorDepth": 30,
+          "pixelDepth": 30
+        },
+        "webgl": {
+          "vendor": "Apple",
+          "renderer": "Apple M1, or similar",
+          "version": "WebGL 2.0",
+          "shadingLanguageVersion": "WebGL GLSL ES 3.00"
+        }
+      },
+      "f": "5.ba574e2650ef0c80e8330b497b1ba79c16d443061c57ac4216d443061c57ac4216d443061c57ac4216d443061c57ac42cec4d980e289734fcec4d980e289734fcec4d980e289734f96a296658223dafb96a296658223dafb381ebd593ffbb4c30df103df0c26013a20f3d16ad0b1c5460df103df0c26013aba0ac8037e2b74f98b1472fe2f9ba6b9d2b98b10eab7caeaa09db4af14a5e9ad2de6947c9626acff1b79bc6b7defe3bbdc0d86d9e44006d8143114829cf33ca746b8ae4e81acb9fa3de19da9ed218fe2fb0fb526bb39450a87829363e2d856a2b5b87f59517a23f23de19da9ed218fe23de19da9ed218fe2c772035eab81f5e187829363e2d856a2143114829cf33ca7172c80659da4d447f1cc8f457244b1a81ac794a8d120d7dc96af0a2ebf0b56a9af3ee160789918a15d3d12014bda85a4be3f6954984086d1f4c719e519b142559154f4aaf0a7b4f4c339e7d311e2da76d6cec0681230aaff2ebf3cb6fd35a0ac0df103df0c26013a28a353c4323c7a3aefcfb0a8b111019525b7bf92368e78fb3de19da9ed218fe23de19da9ed218fe23895edd4297761f71e7c07316081b5f34e56f7ad0c729f962e1fe48b3df0d7c3",
+      "s": "b0b332a8882daa947b6739437e12b3af112e3e382234da34fa6dbf8d423193fde1b74bd568bcc8bf6e9ed9c6dffce8df30ce365ce6b3700ee683c54d9c6ea740c68449b18c9680424261fc4d4b0f6fe386b9ae08e4a5fad9",
+      "rawF": "960;540;30;30;240;180;240;180;240;180;240;180;240;240;240;240;240;240;240;180;180;180;180;180;1;1;1;1;1;1;0;1;0;1;1;1;1;1;0;1;1;1;1;1;0;10;3955448693;41002199;1;2;2;2;0;2;1;1;1;1;1;1;0;1;1;1;1;0;0;0;0;0;0;1;1;1;0;0;1;0;1;1;0;0;0;0;0;0;0;0;0;0;0;0;1;1;0;0;1;1;1;1;0;1;0;5;3641819743;3577560136;3433461283;3469306551;1582120644;1320192270;4189790824;0;0;0;1;1;1;1;1;1;1;1;1;1;2;1;1;1;1785172511;0;0;0;0;0;0;0;0;0;0;3517267889;3369925510",
+      "rawS": "{\"monospace\":true,\"readOnly\":false,\"noLengthPlugins\":false,\"installedExtensions\":[]}",
+      "values": [
+        960,
+        540,
+        30,
+        30,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        180,
+        180,
+        180,
+        180,
+        180,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        10,
+        3955448693,
+        41002199,
+        1,
+        2,
+        2,
+        2,
+        0,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        5,
+        3641819743,
+        3577560136,
+        3433461283,
+        3469306551,
+        1582120644,
+        1320192270,
+        4189790824,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1785172511,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3517267889,
+        3369925510
+      ]
+    },
+    {
+      "profile": 2,
+      "page": 0,
+      "capturedAt": 1785172513,
+      "browser": {
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:135.0) Gecko/20100101 Firefox/135.0",
+        "platform": "MacIntel",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "hardwareConcurrency": 12,
+        "deviceMemory": null,
+        "maxTouchPoints": 0,
+        "webdriver": false,
+        "cookieEnabled": true,
+        "doNotTrack": "1",
+        "devicePixelRatio": 1,
+        "timezoneOffset": -180,
+        "screen": {
+          "width": 1512,
+          "height": 982,
+          "availWidth": 1512,
+          "availHeight": 949,
+          "colorDepth": 30,
+          "pixelDepth": 30
+        },
+        "webgl": {
+          "vendor": "Intel Inc.",
+          "renderer": "Intel(R) HD Graphics, or similar",
+          "version": "WebGL 2.0",
+          "shadingLanguageVersion": "WebGL GLSL ES 3.00"
+        }
+      },
+      "f": "5.d908952b446ec0dbdc134d8a1938bf88a68643d4d8df96e9a68643d4d8df96e9a68643d4d8df96e9a68643d4d8df96e94f9572e6986d0c624f9572e6986d0c624f9572e6986d0c62ba029cd346349f36c1e8912fd5a48d02c1e8912fd5a48d0246b8ae4e81acb9fa1a2a574992f83a9246b8ae4e81acb9fad99271d186dc1cd0143114829cf33ca7e287080834766c46f03bdfa0d1f878520f7bd04ea141548c956cdff3d4067aa5ff38e8d292af81e50df103df0c26013a2ebf3cb6fd35a0ac71e7cb57bbcb8e0ff0c77052689da50ddc5322845a0cba1aba0ac8037e2b74f92da10fb74cac1eab2da10fb74cac1eab2da10fb74cac1eabdc5322845a0cba1a0df103df0c26013a037e1fbb3ea05095de87ad3b397f946b4c41e97fe93686ad30c2028448f320f817e1a428c3651acb5d3d12014bda85a4be3f6954984086d1f4c719e519b142559154f4aaf0a7b4f4c81d37ccb2b47cc571674c3ae91bba422ebf3cb6fd35a0ac0df103df0c26013a28a353c4323c7a3aefcfb0a8b1110195d3280aee8870cbfe3de19da9ed218fe23de19da9ed218fe23895edd4297761f71e7c07316081b5f34e56f7ad0c729f962e1fe48b3df0d7c3",
+      "s": "b0b332a8882daa947b6739437e12b3af112e3e382234da34fa6dbf8d423193fde1b74bd568bcc8bf6e9ed9c6dffce8df30ce365ce6b3700ee683c54d9c6ea740c68449b18c9680424261fc4d4b0f6fe386b9ae08e4a5fad9",
+      "rawF": "1512;982;30;30;240;180;240;180;240;180;240;180;240;240;240;240;240;240;240;180;180;180;180;180;1;1;1;1;1;1;0;1;0;1;1;1;1;1;0;1;1;1;1;1;0;12;3955448693;41002199;1;2;2;2;0;2;1;1;1;1;1;1;0;1;1;1;1;0;0;0;0;0;0;1;1;1;0;0;1;0;1;1;0;0;0;0;0;0;0;0;0;0;0;0;1;1;0;0;1;1;1;1;0;1;0;5;3641819743;3577560136;109715837;3469306551;1582120644;1320192270;4111105773;0;0;0;1;1;1;1;1;1;1;1;1;1;2;1;1;1;1785172512;0;0;0;0;0;0;0;0;0;0;3517267889;3369925510",
+      "rawS": "{\"monospace\":true,\"readOnly\":false,\"noLengthPlugins\":false,\"installedExtensions\":[]}",
+      "values": [
+        1512,
+        982,
+        30,
+        30,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        180,
+        180,
+        180,
+        180,
+        180,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        12,
+        3955448693,
+        41002199,
+        1,
+        2,
+        2,
+        2,
+        0,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        5,
+        3641819743,
+        3577560136,
+        109715837,
+        3469306551,
+        1582120644,
+        1320192270,
+        4111105773,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1785172512,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3517267889,
+        3369925510
+      ]
+    },
+    {
+      "profile": 2,
+      "page": 1,
+      "capturedAt": 1785172515,
+      "browser": {
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:135.0) Gecko/20100101 Firefox/135.0",
+        "platform": "MacIntel",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "hardwareConcurrency": 12,
+        "deviceMemory": null,
+        "maxTouchPoints": 0,
+        "webdriver": false,
+        "cookieEnabled": true,
+        "doNotTrack": "1",
+        "devicePixelRatio": 1,
+        "timezoneOffset": -180,
+        "screen": {
+          "width": 1512,
+          "height": 982,
+          "availWidth": 1512,
+          "availHeight": 949,
+          "colorDepth": 30,
+          "pixelDepth": 30
+        },
+        "webgl": {
+          "vendor": "Intel Inc.",
+          "renderer": "Intel(R) HD Graphics, or similar",
+          "version": "WebGL 2.0",
+          "shadingLanguageVersion": "WebGL GLSL ES 3.00"
+        }
+      },
+      "f": "5.d908952b446ec0dbdc134d8a1938bf88a68643d4d8df96e9a68643d4d8df96e9a68643d4d8df96e9a68643d4d8df96e94f9572e6986d0c624f9572e6986d0c624f9572e6986d0c62ba029cd346349f36c1e8912fd5a48d02c1e8912fd5a48d0246b8ae4e81acb9fa1a2a574992f83a9246b8ae4e81acb9fad99271d186dc1cd0143114829cf33ca7e287080834766c46f03bdfa0d1f878520f7bd04ea141548c956cdff3d4067aa5ff38e8d292af81e50df103df0c26013a2ebf3cb6fd35a0ac71e7cb57bbcb8e0ff0c77052689da50ddc5322845a0cba1aba0ac8037e2b74f92da10fb74cac1eab2da10fb74cac1eab2da10fb74cac1eabdc5322845a0cba1a0df103df0c26013a037e1fbb3ea05095de87ad3b397f946b4c41e97fe93686ad30c2028448f320f817e1a428c3651acb5d3d12014bda85a4be3f6954984086d1f4c719e519b142559154f4aaf0a7b4f4c81d37ccb2b47cc571674c3ae91bba422ebf3cb6fd35a0ac0df103df0c26013a28a353c4323c7a3aefcfb0a8b11101950b1053ea32ab4f003de19da9ed218fe23de19da9ed218fe23895edd4297761f71e7c07316081b5f34e56f7ad0c729f962e1fe48b3df0d7c3",
+      "s": "b0b332a8882daa947b6739437e12b3af112e3e382234da34fa6dbf8d423193fde1b74bd568bcc8bf6e9ed9c6dffce8df30ce365ce6b3700ee683c54d9c6ea740c68449b18c9680424261fc4d4b0f6fe386b9ae08e4a5fad9",
+      "rawF": "1512;982;30;30;240;180;240;180;240;180;240;180;240;240;240;240;240;240;240;180;180;180;180;180;1;1;1;1;1;1;0;1;0;1;1;1;1;1;0;1;1;1;1;1;0;12;3955448693;41002199;1;2;2;2;0;2;1;1;1;1;1;1;0;1;1;1;1;0;0;0;0;0;0;1;1;1;0;0;1;0;1;1;0;0;0;0;0;0;0;0;0;0;0;0;1;1;0;0;1;1;1;1;0;1;0;5;3641819743;3577560136;109715837;3469306551;1582120644;1320192270;4111105773;0;0;0;1;1;1;1;1;1;1;1;1;1;2;1;1;1;1785172515;0;0;0;0;0;0;0;0;0;0;3517267889;3369925510",
+      "rawS": "{\"monospace\":true,\"readOnly\":false,\"noLengthPlugins\":false,\"installedExtensions\":[]}",
+      "values": [
+        1512,
+        982,
+        30,
+        30,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        180,
+        180,
+        180,
+        180,
+        180,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        12,
+        3955448693,
+        41002199,
+        1,
+        2,
+        2,
+        2,
+        0,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        5,
+        3641819743,
+        3577560136,
+        109715837,
+        3469306551,
+        1582120644,
+        1320192270,
+        4111105773,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1785172515,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3517267889,
+        3369925510
+      ]
+    },
+    {
+      "profile": 3,
+      "page": 0,
+      "capturedAt": 1785172517,
+      "browser": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
+        "platform": "Win32",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "hardwareConcurrency": 16,
+        "deviceMemory": null,
+        "maxTouchPoints": 0,
+        "webdriver": false,
+        "cookieEnabled": true,
+        "doNotTrack": "1",
+        "devicePixelRatio": 1,
+        "timezoneOffset": -180,
+        "screen": {
+          "width": 1680,
+          "height": 1050,
+          "availWidth": 1680,
+          "availHeight": 1002,
+          "colorDepth": 24,
+          "pixelDepth": 24
+        },
+        "webgl": {
+          "vendor": "Google Inc. (Intel)",
+          "renderer": "ANGLE (Intel, Intel(R) HD Graphics Direct3D11 vs_5_0 ps_5_0), or similar",
+          "version": "WebGL 2.0",
+          "shadingLanguageVersion": "WebGL GLSL ES 3.00"
+        }
+      },
+      "f": "5.8696cbce96d2947c36b4dd61b04726f147e1eada7172e06c47e1eada7172e06c47e1eada7172e06c47e1eada7172e06cb59320d6eb6303c1b59320d6eb6303c1b59320d6eb6303c147e1eada7172e06c8a38e2c5b3e08b898a38e2c5b3e08b890df103df0c26013a7b0d53c7afc06d0b2ebf3cb6fd35a0ac7b0d53c7afc06d0b0df103df0c26013ac99dece94c5a563168e2978c700f15b635c155810a32f63d164b09365f5308e7e43c5a2b8451992c3de19da9ed218fe27fde300814b1e8553de19da9ed218fe287829363e2d856a2f88859c11ff0089587829363e2d856a23de19da9ed218fe2d50b96489ab264ed3de19da9ed218fe23de19da9ed218fe2d99271d186dc1cd038e6a683f47425a8352c31daf983fa077a7b6c33f74d335c76ff288cd99dba4658270ceced9ea7b0574b90246617ff276121621e497c8a0543b1d0a4c0de0595e6b4ddffebbeebad7e049894bc2ea0087bd53b9b0305bea791e52da22a560f550df103df0c26013a0df103df0c26013aaaa2b79c1ae92595687fc8b0fc52db845cb420629a7bed1f3de19da9ed218fe207b7a18108a6dcd61c75b0584548fc4551bd9474d459eb42853642c562d5101b",
+      "s": "b0b332a8882daa947b6739437e12b3af112e3e382234da34fa6dbf8d423193fde1b74bd568bcc8bf6e9ed9c6dffce8df30ce365ce6b3700ee683c54d9c6ea740c68449b18c9680424261fc4d4b0f6fe386b9ae08e4a5fad9",
+      "rawF": "1680;1050;24;24;240;180;240;180;240;180;240;180;240;240;240;240;240;240;240;180;180;180;180;180;1;1;1;1;1;1;0;1;0;1;1;1;1;1;0;1;1;1;1;1;0;16;1005301203;41002199;1;2;2;2;0;2;0;0;0;0;0;0;0;0;1;0;0;0;0;0;1;0;0;1;0;1;0;0;1;0;0;1;0;0;0;0;1;0;0;0;0;0;0;0;0;0;0;0;1;0;1;1;0;1;0;5;3641819743;3577560136;3111173713;3469306551;1582120644;1320192270;4058090831;0;0;0;1;1;1;1;1;1;1;1;1;1;2;1;1;1;1785172516;0;0;0;0;0;0;0;0;0;0;3517267889;3369925510",
+      "rawS": "{\"monospace\":true,\"readOnly\":false,\"noLengthPlugins\":false,\"installedExtensions\":[]}",
+      "values": [
+        1680,
+        1050,
+        24,
+        24,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        180,
+        180,
+        180,
+        180,
+        180,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        16,
+        1005301203,
+        41002199,
+        1,
+        2,
+        2,
+        2,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        5,
+        3641819743,
+        3577560136,
+        3111173713,
+        3469306551,
+        1582120644,
+        1320192270,
+        4058090831,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1785172516,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3517267889,
+        3369925510
+      ]
+    },
+    {
+      "profile": 3,
+      "page": 1,
+      "capturedAt": 1785172519,
+      "browser": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
+        "platform": "Win32",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "hardwareConcurrency": 16,
+        "deviceMemory": null,
+        "maxTouchPoints": 0,
+        "webdriver": false,
+        "cookieEnabled": true,
+        "doNotTrack": "1",
+        "devicePixelRatio": 1,
+        "timezoneOffset": -180,
+        "screen": {
+          "width": 1680,
+          "height": 1050,
+          "availWidth": 1680,
+          "availHeight": 1002,
+          "colorDepth": 24,
+          "pixelDepth": 24
+        },
+        "webgl": {
+          "vendor": "Google Inc. (Intel)",
+          "renderer": "ANGLE (Intel, Intel(R) HD Graphics Direct3D11 vs_5_0 ps_5_0), or similar",
+          "version": "WebGL 2.0",
+          "shadingLanguageVersion": "WebGL GLSL ES 3.00"
+        }
+      },
+      "f": "5.8696cbce96d2947c36b4dd61b04726f147e1eada7172e06c47e1eada7172e06c47e1eada7172e06c47e1eada7172e06cb59320d6eb6303c1b59320d6eb6303c1b59320d6eb6303c147e1eada7172e06c8a38e2c5b3e08b898a38e2c5b3e08b890df103df0c26013a7b0d53c7afc06d0b2ebf3cb6fd35a0ac7b0d53c7afc06d0b0df103df0c26013ac99dece94c5a563168e2978c700f15b635c155810a32f63d164b09365f5308e7e43c5a2b8451992c3de19da9ed218fe27fde300814b1e8553de19da9ed218fe287829363e2d856a2f88859c11ff0089587829363e2d856a23de19da9ed218fe2d50b96489ab264ed3de19da9ed218fe23de19da9ed218fe2d99271d186dc1cd038e6a683f47425a8352c31daf983fa077a7b6c33f74d335c76ff288cd99dba4658270ceced9ea7b0574b90246617ff276121621e497c8a0543b1d0a4c0de0595e6b4ddffebbeebad7e049894bc2ea0087bd53b9b0305bea791e52da22a560f550df103df0c26013a0df103df0c26013aaaa2b79c1ae92595687fc8b0fc52db847db5a8f3c3ed301f3de19da9ed218fe207b7a18108a6dcd61c75b0584548fc4551bd9474d459eb42853642c562d5101b",
+      "s": "b0b332a8882daa947b6739437e12b3af112e3e382234da34fa6dbf8d423193fde1b74bd568bcc8bf6e9ed9c6dffce8df30ce365ce6b3700ee683c54d9c6ea740c68449b18c9680424261fc4d4b0f6fe386b9ae08e4a5fad9",
+      "rawF": "1680;1050;24;24;240;180;240;180;240;180;240;180;240;240;240;240;240;240;240;180;180;180;180;180;1;1;1;1;1;1;0;1;0;1;1;1;1;1;0;1;1;1;1;1;0;16;1005301203;41002199;1;2;2;2;0;2;0;0;0;0;0;0;0;0;1;0;0;0;0;0;1;0;0;1;0;1;0;0;1;0;0;1;0;0;0;0;1;0;0;0;0;0;0;0;0;0;0;0;1;0;1;1;0;1;0;5;3641819743;3577560136;3111173713;3469306551;1582120644;1320192270;4058090831;0;0;0;1;1;1;1;1;1;1;1;1;1;2;1;1;1;1785172518;0;0;0;0;0;0;0;0;0;0;3517267889;3369925510",
+      "rawS": "{\"monospace\":true,\"readOnly\":false,\"noLengthPlugins\":false,\"installedExtensions\":[]}",
+      "values": [
+        1680,
+        1050,
+        24,
+        24,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        180,
+        180,
+        180,
+        180,
+        180,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        16,
+        1005301203,
+        41002199,
+        1,
+        2,
+        2,
+        2,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        5,
+        3641819743,
+        3577560136,
+        3111173713,
+        3469306551,
+        1582120644,
+        1320192270,
+        4058090831,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1785172518,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3517267889,
+        3369925510
+      ]
+    },
+    {
+      "profile": 4,
+      "page": 0,
+      "capturedAt": 1785172521,
+      "browser": {
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:135.0) Gecko/20100101 Firefox/135.0",
+        "platform": "MacIntel",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "hardwareConcurrency": 8,
+        "deviceMemory": null,
+        "maxTouchPoints": 0,
+        "webdriver": false,
+        "cookieEnabled": true,
+        "doNotTrack": "1",
+        "devicePixelRatio": 1,
+        "timezoneOffset": -180,
+        "screen": {
+          "width": 1920,
+          "height": 1080,
+          "availWidth": 1920,
+          "availHeight": 1004,
+          "colorDepth": 30,
+          "pixelDepth": 30
+        },
+        "webgl": {
+          "vendor": "Apple",
+          "renderer": "Apple M1, or similar",
+          "version": "WebGL 2.0",
+          "shadingLanguageVersion": "WebGL GLSL ES 3.00"
+        }
+      },
+      "f": "5.0c4f4b6d233fb906b32428cf8e3c6b5047e1eada7172e06c47e1eada7172e06c47e1eada7172e06c47e1eada7172e06cb59320d6eb6303c1b59320d6eb6303c1b59320d6eb6303c147e1eada7172e06c8a38e2c5b3e08b898a38e2c5b3e08b890df103df0c26013a7b0d53c7afc06d0b2ebf3cb6fd35a0ac7b0d53c7afc06d0b0df103df0c26013a3f5003b9de26797bf03bdfa0d1f878520f7bd04ea141548c956cdff3d4067aa5ff38e8d292af81e50df103df0c26013a2ebf3cb6fd35a0ac71e7cb57bbcb8e0ff0c77052689da50ddc5322845a0cba1aba0ac8037e2b74f92da10fb74cac1eab2da10fb74cac1eab2da10fb74cac1eabdc5322845a0cba1a0df103df0c26013a037e1fbb3ea05095de87ad3b397f946b4c41e97fe93686ad30c2028448f320f840fdfedc5aff8f9602c730c0109b9fbbf40608c77d6dd550cd464f33d0888ba3d21ab7cd585086e0c464855cad307dcda1d5ababbb93b92ae2415097439d404746b8ae4e81acb9fa786047a80c779d5146b8ae4e81acb9fa90532cbfe42f7b072da10fb74cac1eab2da10fb74cac1eaba5f76aa56199c549efde06a8e6b1dd6febf4cb018970da7dcc0a4ccfc9f7f371",
+      "s": "b0b332a8882daa947b6739437e12b3af112e3e382234da34fa6dbf8d423193fde1b74bd568bcc8bf6e9ed9c6dffce8df30ce365ce6b3700ee683c54d9c6ea740c68449b18c9680424261fc4d4b0f6fe386b9ae08e4a5fad9",
+      "rawF": "1920;1080;30;30;240;180;240;180;240;180;240;180;240;240;240;240;240;240;240;180;180;180;180;180;1;1;1;1;1;1;0;1;0;1;1;1;1;1;0;1;1;1;1;1;0;8;3955448693;41002199;1;2;2;2;0;2;1;1;1;1;1;1;0;1;1;1;1;0;0;0;0;0;0;1;1;1;0;0;1;0;1;1;0;0;0;0;0;0;0;0;0;0;0;0;1;1;0;0;1;1;1;1;0;1;0;5;3641819743;3577560136;1065046482;3469306551;1582120644;1320192270;4189790824;0;0;0;1;1;1;1;1;1;1;1;1;1;2;1;1;1;1785172520;0;0;0;0;0;0;0;0;0;0;3517267889;3369925510",
+      "rawS": "{\"monospace\":true,\"readOnly\":false,\"noLengthPlugins\":false,\"installedExtensions\":[]}",
+      "values": [
+        1920,
+        1080,
+        30,
+        30,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        180,
+        180,
+        180,
+        180,
+        180,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        8,
+        3955448693,
+        41002199,
+        1,
+        2,
+        2,
+        2,
+        0,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        5,
+        3641819743,
+        3577560136,
+        1065046482,
+        3469306551,
+        1582120644,
+        1320192270,
+        4189790824,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1785172520,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3517267889,
+        3369925510
+      ]
+    },
+    {
+      "profile": 4,
+      "page": 1,
+      "capturedAt": 1785172523,
+      "browser": {
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:135.0) Gecko/20100101 Firefox/135.0",
+        "platform": "MacIntel",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "hardwareConcurrency": 8,
+        "deviceMemory": null,
+        "maxTouchPoints": 0,
+        "webdriver": false,
+        "cookieEnabled": true,
+        "doNotTrack": "1",
+        "devicePixelRatio": 1,
+        "timezoneOffset": -180,
+        "screen": {
+          "width": 1920,
+          "height": 1080,
+          "availWidth": 1920,
+          "availHeight": 1004,
+          "colorDepth": 30,
+          "pixelDepth": 30
+        },
+        "webgl": {
+          "vendor": "Apple",
+          "renderer": "Apple M1, or similar",
+          "version": "WebGL 2.0",
+          "shadingLanguageVersion": "WebGL GLSL ES 3.00"
+        }
+      },
+      "f": "5.0c4f4b6d233fb906b32428cf8e3c6b5047e1eada7172e06c47e1eada7172e06c47e1eada7172e06c47e1eada7172e06cb59320d6eb6303c1b59320d6eb6303c1b59320d6eb6303c147e1eada7172e06c8a38e2c5b3e08b898a38e2c5b3e08b890df103df0c26013a7b0d53c7afc06d0b2ebf3cb6fd35a0ac7b0d53c7afc06d0b0df103df0c26013a3f5003b9de26797bf03bdfa0d1f878520f7bd04ea141548c956cdff3d4067aa5ff38e8d292af81e50df103df0c26013a2ebf3cb6fd35a0ac71e7cb57bbcb8e0ff0c77052689da50ddc5322845a0cba1aba0ac8037e2b74f92da10fb74cac1eab2da10fb74cac1eab2da10fb74cac1eabdc5322845a0cba1a0df103df0c26013a037e1fbb3ea05095de87ad3b397f946b4c41e97fe93686ad30c2028448f320f840fdfedc5aff8f9602c730c0109b9fbbf40608c77d6dd550cd464f33d0888ba3d21ab7cd585086e0c464855cad307dcda1d5ababbb93b92ae2415097439d404746b8ae4e81acb9fa786047a80c779d5146b8ae4e81acb9fa90532cbfe42f7b07fed88e598638463b2da10fb74cac1eaba5f76aa56199c549efde06a8e6b1dd6febf4cb018970da7dcc0a4ccfc9f7f371",
+      "s": "b0b332a8882daa947b6739437e12b3af112e3e382234da34fa6dbf8d423193fde1b74bd568bcc8bf6e9ed9c6dffce8df30ce365ce6b3700ee683c54d9c6ea740c68449b18c9680424261fc4d4b0f6fe386b9ae08e4a5fad9",
+      "rawF": "1920;1080;30;30;240;180;240;180;240;180;240;180;240;240;240;240;240;240;240;180;180;180;180;180;1;1;1;1;1;1;0;1;0;1;1;1;1;1;0;1;1;1;1;1;0;8;3955448693;41002199;1;2;2;2;0;2;1;1;1;1;1;1;0;1;1;1;1;0;0;0;0;0;0;1;1;1;0;0;1;0;1;1;0;0;0;0;0;0;0;0;0;0;0;0;1;1;0;0;1;1;1;1;0;1;0;5;3641819743;3577560136;1065046482;3469306551;1582120644;1320192270;4189790824;0;0;0;1;1;1;1;1;1;1;1;1;1;2;1;1;1;1785172522;0;0;0;0;0;0;0;0;0;0;3517267889;3369925510",
+      "rawS": "{\"monospace\":true,\"readOnly\":false,\"noLengthPlugins\":false,\"installedExtensions\":[]}",
+      "values": [
+        1920,
+        1080,
+        30,
+        30,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        180,
+        180,
+        180,
+        180,
+        180,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        8,
+        3955448693,
+        41002199,
+        1,
+        2,
+        2,
+        2,
+        0,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        5,
+        3641819743,
+        3577560136,
+        1065046482,
+        3469306551,
+        1582120644,
+        1320192270,
+        4189790824,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1785172522,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3517267889,
+        3369925510
+      ]
+    },
+    {
+      "profile": 5,
+      "page": 0,
+      "capturedAt": 1785172525,
+      "browser": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
+        "platform": "Win32",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "hardwareConcurrency": 32,
+        "deviceMemory": null,
+        "maxTouchPoints": 0,
+        "webdriver": false,
+        "cookieEnabled": true,
+        "doNotTrack": "1",
+        "devicePixelRatio": 1,
+        "timezoneOffset": -180,
+        "screen": {
+          "width": 1600,
+          "height": 900,
+          "availWidth": 1600,
+          "availHeight": 900,
+          "colorDepth": 24,
+          "pixelDepth": 24
+        },
+        "webgl": {
+          "vendor": "Google Inc. (NVIDIA)",
+          "renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 980 Direct3D11 vs_5_0 ps_5_0), or similar",
+          "version": "WebGL 2.0",
+          "shadingLanguageVersion": "WebGL GLSL ES 3.00"
+        }
+      },
+      "f": "5.673c10cb09ba31f34b5abdd419952845a68643d4d8df96e9a68643d4d8df96e9a68643d4d8df96e9a68643d4d8df96e94f9572e6986d0c624f9572e6986d0c624f9572e6986d0c62ba029cd346349f36c1e8912fd5a48d02c1e8912fd5a48d0246b8ae4e81acb9fa1a2a574992f83a9246b8ae4e81acb9fad99271d186dc1cd0143114829cf33ca7e69787ecd35c0a8a177ffca5d5bd045d0f7bd04ea141548c956cdff3d4067aa55050a556a35c540a2da10fb74cac1eabf722fe85c94f7d0c2da10fb74cac1eab268a7bf63aa148d203c77801b122405c268a7bf63aa148d22da10fb74cac1eab71e7cb57bbcb8e0f2da10fb74cac1eab2da10fb74cac1eabba0ac8037e2b74f9037e1fbb3ea05095de87ad3b397f946b4c41e97fe93686ad407e90ca253680a7cad2e6753abba3e15d3d12014bda85a4be3f6954984086d1f4c719e519b142559154f4aaf0a7b4f4618a6f23f34cc9bbb2a56999dbd1895c2ebf3cb6fd35a0ac0df103df0c26013a28a353c4323c7a3aefcfb0a8b11101957c1a8c988052fa923de19da9ed218fe23de19da9ed218fe23895edd4297761f71e7c07316081b5f34e56f7ad0c729f962e1fe48b3df0d7c3",
+      "s": "b0b332a8882daa947b6739437e12b3af112e3e382234da34fa6dbf8d423193fde1b74bd568bcc8bf6e9ed9c6dffce8df30ce365ce6b3700ee683c54d9c6ea740c68449b18c9680424261fc4d4b0f6fe386b9ae08e4a5fad9",
+      "rawF": "1600;900;24;24;240;180;240;180;240;180;240;180;240;240;240;240;240;240;240;180;180;180;180;180;1;1;1;1;1;1;0;1;0;1;1;1;1;1;0;1;1;1;1;1;0;32;1005301203;41002199;1;2;2;2;0;2;0;0;0;0;0;0;0;0;1;0;0;0;0;0;1;0;0;1;0;1;0;0;1;0;0;1;0;0;0;0;1;0;0;0;0;0;0;0;0;0;0;0;1;0;1;1;0;1;0;5;3641819743;3577560136;295597827;3469306551;1582120644;1320192270;1990741309;0;0;0;1;1;1;1;1;1;1;1;1;1;2;1;1;1;1785172524;0;0;0;0;0;0;0;0;0;0;3517267889;3369925510",
+      "rawS": "{\"monospace\":true,\"readOnly\":false,\"noLengthPlugins\":false,\"installedExtensions\":[]}",
+      "values": [
+        1600,
+        900,
+        24,
+        24,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        180,
+        180,
+        180,
+        180,
+        180,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        32,
+        1005301203,
+        41002199,
+        1,
+        2,
+        2,
+        2,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        5,
+        3641819743,
+        3577560136,
+        295597827,
+        3469306551,
+        1582120644,
+        1320192270,
+        1990741309,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1785172524,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3517267889,
+        3369925510
+      ]
+    },
+    {
+      "profile": 5,
+      "page": 1,
+      "capturedAt": 1785172527,
+      "browser": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
+        "platform": "Win32",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "hardwareConcurrency": 32,
+        "deviceMemory": null,
+        "maxTouchPoints": 0,
+        "webdriver": false,
+        "cookieEnabled": true,
+        "doNotTrack": "1",
+        "devicePixelRatio": 1,
+        "timezoneOffset": -180,
+        "screen": {
+          "width": 1600,
+          "height": 900,
+          "availWidth": 1600,
+          "availHeight": 900,
+          "colorDepth": 24,
+          "pixelDepth": 24
+        },
+        "webgl": {
+          "vendor": "Google Inc. (NVIDIA)",
+          "renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 980 Direct3D11 vs_5_0 ps_5_0), or similar",
+          "version": "WebGL 2.0",
+          "shadingLanguageVersion": "WebGL GLSL ES 3.00"
+        }
+      },
+      "f": "5.673c10cb09ba31f34b5abdd419952845a68643d4d8df96e9a68643d4d8df96e9a68643d4d8df96e9a68643d4d8df96e94f9572e6986d0c624f9572e6986d0c624f9572e6986d0c62ba029cd346349f36c1e8912fd5a48d02c1e8912fd5a48d0246b8ae4e81acb9fa1a2a574992f83a9246b8ae4e81acb9fad99271d186dc1cd0143114829cf33ca7e69787ecd35c0a8a177ffca5d5bd045d0f7bd04ea141548c956cdff3d4067aa55050a556a35c540a2da10fb74cac1eabf722fe85c94f7d0c2da10fb74cac1eab268a7bf63aa148d203c77801b122405c268a7bf63aa148d22da10fb74cac1eab71e7cb57bbcb8e0f2da10fb74cac1eab2da10fb74cac1eabba0ac8037e2b74f9037e1fbb3ea05095de87ad3b397f946b4c41e97fe93686ad407e90ca253680a7cad2e6753abba3e15d3d12014bda85a4be3f6954984086d1f4c719e519b142559154f4aaf0a7b4f4618a6f23f34cc9bbb2a56999dbd1895c2ebf3cb6fd35a0ac0df103df0c26013a28a353c4323c7a3aefcfb0a8b1110195ae4077c5194046013de19da9ed218fe23de19da9ed218fe23895edd4297761f71e7c07316081b5f34e56f7ad0c729f962e1fe48b3df0d7c3",
+      "s": "b0b332a8882daa947b6739437e12b3af112e3e382234da34fa6dbf8d423193fde1b74bd568bcc8bf6e9ed9c6dffce8df30ce365ce6b3700ee683c54d9c6ea740c68449b18c9680424261fc4d4b0f6fe386b9ae08e4a5fad9",
+      "rawF": "1600;900;24;24;240;180;240;180;240;180;240;180;240;240;240;240;240;240;240;180;180;180;180;180;1;1;1;1;1;1;0;1;0;1;1;1;1;1;0;1;1;1;1;1;0;32;1005301203;41002199;1;2;2;2;0;2;0;0;0;0;0;0;0;0;1;0;0;0;0;0;1;0;0;1;0;1;0;0;1;0;0;1;0;0;0;0;1;0;0;0;0;0;0;0;0;0;0;0;1;0;1;1;0;1;0;5;3641819743;3577560136;295597827;3469306551;1582120644;1320192270;1990741309;0;0;0;1;1;1;1;1;1;1;1;1;1;2;1;1;1;1785172526;0;0;0;0;0;0;0;0;0;0;3517267889;3369925510",
+      "rawS": "{\"monospace\":true,\"readOnly\":false,\"noLengthPlugins\":false,\"installedExtensions\":[]}",
+      "values": [
+        1600,
+        900,
+        24,
+        24,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        180,
+        180,
+        180,
+        180,
+        180,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        32,
+        1005301203,
+        41002199,
+        1,
+        2,
+        2,
+        2,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        5,
+        3641819743,
+        3577560136,
+        295597827,
+        3469306551,
+        1582120644,
+        1320192270,
+        1990741309,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1785172526,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3517267889,
+        3369925510
+      ]
+    },
+    {
+      "profile": 6,
+      "page": 0,
+      "capturedAt": 1785172529,
+      "browser": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
+        "platform": "Win32",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "hardwareConcurrency": 8,
+        "deviceMemory": null,
+        "maxTouchPoints": 0,
+        "webdriver": false,
+        "cookieEnabled": true,
+        "doNotTrack": "1",
+        "devicePixelRatio": 1,
+        "timezoneOffset": -180,
+        "screen": {
+          "width": 1680,
+          "height": 1050,
+          "availWidth": 1680,
+          "availHeight": 1002,
+          "colorDepth": 24,
+          "pixelDepth": 24
+        },
+        "webgl": {
+          "vendor": "Google Inc. (Intel)",
+          "renderer": "ANGLE (Intel, Intel(R) HD Graphics Direct3D11 vs_5_0 ps_5_0), or similar",
+          "version": "WebGL 2.0",
+          "shadingLanguageVersion": "WebGL GLSL ES 3.00"
+        }
+      },
+      "f": "5.8696cbce96d2947c36b4dd61b04726f147e1eada7172e06c47e1eada7172e06c47e1eada7172e06c47e1eada7172e06cb59320d6eb6303c1b59320d6eb6303c1b59320d6eb6303c147e1eada7172e06c8a38e2c5b3e08b898a38e2c5b3e08b890df103df0c26013a7b0d53c7afc06d0b2ebf3cb6fd35a0ac7b0d53c7afc06d0b0df103df0c26013ae2bfa4611aac769e177ffca5d5bd045d0f7bd04ea141548c956cdff3d4067aa55050a556a35c540a2da10fb74cac1eabf722fe85c94f7d0c2da10fb74cac1eab268a7bf63aa148d203c77801b122405c268a7bf63aa148d22da10fb74cac1eab71e7cb57bbcb8e0f2da10fb74cac1eab2da10fb74cac1eabba0ac8037e2b74f9037e1fbb3ea05095de87ad3b397f946b4c41e97fe93686ad4e49678aee2635c62b49dee2ad724d8d5d3d12014bda85a4be3f6954984086d1f4c719e519b142559154f4aaf0a7b4f4b8d5e4ab69a7746b92ec8da45c60281c2ebf3cb6fd35a0ac0df103df0c26013a28a353c4323c7a3aefcfb0a8b1110195fcd55b93a8e410b13de19da9ed218fe23de19da9ed218fe23895edd4297761f71e7c07316081b5f34e56f7ad0c729f962e1fe48b3df0d7c3",
+      "s": "b0b332a8882daa947b6739437e12b3af112e3e382234da34fa6dbf8d423193fde1b74bd568bcc8bf6e9ed9c6dffce8df30ce365ce6b3700ee683c54d9c6ea740c68449b18c9680424261fc4d4b0f6fe386b9ae08e4a5fad9",
+      "rawF": "1680;1050;24;24;240;180;240;180;240;180;240;180;240;240;240;240;240;240;240;180;180;180;180;180;1;1;1;1;1;1;0;1;0;1;1;1;1;1;0;1;1;1;1;1;0;8;1005301203;41002199;1;2;2;2;0;2;0;0;0;0;0;0;0;0;1;0;0;0;0;0;1;0;0;1;0;1;0;0;1;0;0;1;0;0;0;0;1;0;0;0;0;0;0;0;0;0;0;0;1;0;1;1;0;1;0;5;3641819743;3577560136;520769875;3469306551;1582120644;1320192270;4058090831;0;0;0;1;1;1;1;1;1;1;1;1;1;2;1;1;1;1785172528;0;0;0;0;0;0;0;0;0;0;3517267889;3369925510",
+      "rawS": "{\"monospace\":true,\"readOnly\":false,\"noLengthPlugins\":false,\"installedExtensions\":[]}",
+      "values": [
+        1680,
+        1050,
+        24,
+        24,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        180,
+        180,
+        180,
+        180,
+        180,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        8,
+        1005301203,
+        41002199,
+        1,
+        2,
+        2,
+        2,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        5,
+        3641819743,
+        3577560136,
+        520769875,
+        3469306551,
+        1582120644,
+        1320192270,
+        4058090831,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1785172528,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3517267889,
+        3369925510
+      ]
+    },
+    {
+      "profile": 6,
+      "page": 1,
+      "capturedAt": 1785172531,
+      "browser": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
+        "platform": "Win32",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "hardwareConcurrency": 8,
+        "deviceMemory": null,
+        "maxTouchPoints": 0,
+        "webdriver": false,
+        "cookieEnabled": true,
+        "doNotTrack": "1",
+        "devicePixelRatio": 1,
+        "timezoneOffset": -180,
+        "screen": {
+          "width": 1680,
+          "height": 1050,
+          "availWidth": 1680,
+          "availHeight": 1002,
+          "colorDepth": 24,
+          "pixelDepth": 24
+        },
+        "webgl": {
+          "vendor": "Google Inc. (Intel)",
+          "renderer": "ANGLE (Intel, Intel(R) HD Graphics Direct3D11 vs_5_0 ps_5_0), or similar",
+          "version": "WebGL 2.0",
+          "shadingLanguageVersion": "WebGL GLSL ES 3.00"
+        }
+      },
+      "f": "5.8696cbce96d2947c36b4dd61b04726f147e1eada7172e06c47e1eada7172e06c47e1eada7172e06c47e1eada7172e06cb59320d6eb6303c1b59320d6eb6303c1b59320d6eb6303c147e1eada7172e06c8a38e2c5b3e08b898a38e2c5b3e08b890df103df0c26013a7b0d53c7afc06d0b2ebf3cb6fd35a0ac7b0d53c7afc06d0b0df103df0c26013ae2bfa4611aac769e177ffca5d5bd045d0f7bd04ea141548c956cdff3d4067aa55050a556a35c540a2da10fb74cac1eabf722fe85c94f7d0c2da10fb74cac1eab268a7bf63aa148d203c77801b122405c268a7bf63aa148d22da10fb74cac1eab71e7cb57bbcb8e0f2da10fb74cac1eab2da10fb74cac1eabba0ac8037e2b74f9037e1fbb3ea05095de87ad3b397f946b4c41e97fe93686ad4e49678aee2635c62b49dee2ad724d8d5d3d12014bda85a4be3f6954984086d1f4c719e519b142559154f4aaf0a7b4f4b8d5e4ab69a7746b92ec8da45c60281c2ebf3cb6fd35a0ac0df103df0c26013a28a353c4323c7a3aefcfb0a8b1110195038b9c0d4cd3a8243de19da9ed218fe23de19da9ed218fe23895edd4297761f71e7c07316081b5f34e56f7ad0c729f962e1fe48b3df0d7c3",
+      "s": "b0b332a8882daa947b6739437e12b3af112e3e382234da34fa6dbf8d423193fde1b74bd568bcc8bf6e9ed9c6dffce8df30ce365ce6b3700ee683c54d9c6ea740c68449b18c9680424261fc4d4b0f6fe386b9ae08e4a5fad9",
+      "rawF": "1680;1050;24;24;240;180;240;180;240;180;240;180;240;240;240;240;240;240;240;180;180;180;180;180;1;1;1;1;1;1;0;1;0;1;1;1;1;1;0;1;1;1;1;1;0;8;1005301203;41002199;1;2;2;2;0;2;0;0;0;0;0;0;0;0;1;0;0;0;0;0;1;0;0;1;0;1;0;0;1;0;0;1;0;0;0;0;1;0;0;0;0;0;0;0;0;0;0;0;1;0;1;1;0;1;0;5;3641819743;3577560136;520769875;3469306551;1582120644;1320192270;4058090831;0;0;0;1;1;1;1;1;1;1;1;1;1;2;1;1;1;1785172530;0;0;0;0;0;0;0;0;0;0;3517267889;3369925510",
+      "rawS": "{\"monospace\":true,\"readOnly\":false,\"noLengthPlugins\":false,\"installedExtensions\":[]}",
+      "values": [
+        1680,
+        1050,
+        24,
+        24,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        180,
+        180,
+        180,
+        180,
+        180,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        8,
+        1005301203,
+        41002199,
+        1,
+        2,
+        2,
+        2,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        5,
+        3641819743,
+        3577560136,
+        520769875,
+        3469306551,
+        1582120644,
+        1320192270,
+        4058090831,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1785172530,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3517267889,
+        3369925510
+      ]
+    },
+    {
+      "profile": 7,
+      "page": 0,
+      "capturedAt": 1785172533,
+      "browser": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
+        "platform": "Win32",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "hardwareConcurrency": 32,
+        "deviceMemory": null,
+        "maxTouchPoints": 0,
+        "webdriver": false,
+        "cookieEnabled": true,
+        "doNotTrack": "1",
+        "devicePixelRatio": 1,
+        "timezoneOffset": -180,
+        "screen": {
+          "width": 1680,
+          "height": 1050,
+          "availWidth": 1680,
+          "availHeight": 1002,
+          "colorDepth": 24,
+          "pixelDepth": 24
+        },
+        "webgl": {
+          "vendor": "Google Inc. (Intel)",
+          "renderer": "ANGLE (Intel, Intel(R) HD Graphics Direct3D11 vs_5_0 ps_5_0), or similar",
+          "version": "WebGL 2.0",
+          "shadingLanguageVersion": "WebGL GLSL ES 3.00"
+        }
+      },
+      "f": "5.8696cbce96d2947c36b4dd61b04726f147e1eada7172e06c47e1eada7172e06c47e1eada7172e06c47e1eada7172e06cb59320d6eb6303c1b59320d6eb6303c1b59320d6eb6303c147e1eada7172e06c8a38e2c5b3e08b898a38e2c5b3e08b890df103df0c26013a7b0d53c7afc06d0b2ebf3cb6fd35a0ac7b0d53c7afc06d0b0df103df0c26013a694de5a942062c6b68e2978c700f15b635c155810a32f63d164b09365f5308e7e43c5a2b8451992c3de19da9ed218fe27fde300814b1e8553de19da9ed218fe287829363e2d856a2f88859c11ff0089587829363e2d856a23de19da9ed218fe2d50b96489ab264ed3de19da9ed218fe23de19da9ed218fe2d99271d186dc1cd038e6a683f47425a8352c31daf983fa077a7b6c33f74d335cfa601f10c363b543d50b86b413bad4e502c730c0109b9fbbf40608c77d6dd550cd464f33d0888ba3d21ab7cd585086e0d288f6e77fcb4ee44ae7ca608ae6a580e2415097439d404746b8ae4e81acb9fa786047a80c779d5146b8ae4e81acb9fa390ea64f8025fa61fed88e598638463b2da10fb74cac1eaba5f76aa56199c549efde06a8e6b1dd6febf4cb018970da7dcc0a4ccfc9f7f371",
+      "s": "b0b332a8882daa947b6739437e12b3af112e3e382234da34fa6dbf8d423193fde1b74bd568bcc8bf6e9ed9c6dffce8df30ce365ce6b3700ee683c54d9c6ea740c68449b18c9680424261fc4d4b0f6fe386b9ae08e4a5fad9",
+      "rawF": "1680;1050;24;24;240;180;240;180;240;180;240;180;240;240;240;240;240;240;240;180;180;180;180;180;1;1;1;1;1;1;0;1;0;1;1;1;1;1;0;1;1;1;1;1;0;32;1005301203;41002199;1;2;2;2;0;2;0;0;0;0;0;0;0;0;1;0;0;0;0;0;1;0;0;1;0;1;0;0;1;0;0;1;0;0;0;0;1;0;0;0;0;0;0;0;0;0;0;0;1;0;1;1;0;1;0;5;3641819743;3577560136;772757374;3469306551;1582120644;1320192270;4058090831;0;0;0;1;1;1;1;1;1;1;1;1;1;2;1;1;1;1785172532;0;0;0;0;0;0;0;0;0;0;3517267889;3369925510",
+      "rawS": "{\"monospace\":true,\"readOnly\":false,\"noLengthPlugins\":false,\"installedExtensions\":[]}",
+      "values": [
+        1680,
+        1050,
+        24,
+        24,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        180,
+        180,
+        180,
+        180,
+        180,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        32,
+        1005301203,
+        41002199,
+        1,
+        2,
+        2,
+        2,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        5,
+        3641819743,
+        3577560136,
+        772757374,
+        3469306551,
+        1582120644,
+        1320192270,
+        4058090831,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1785172532,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3517267889,
+        3369925510
+      ]
+    },
+    {
+      "profile": 7,
+      "page": 1,
+      "capturedAt": 1785172534,
+      "browser": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
+        "platform": "Win32",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "hardwareConcurrency": 32,
+        "deviceMemory": null,
+        "maxTouchPoints": 0,
+        "webdriver": false,
+        "cookieEnabled": true,
+        "doNotTrack": "1",
+        "devicePixelRatio": 1,
+        "timezoneOffset": -180,
+        "screen": {
+          "width": 1680,
+          "height": 1050,
+          "availWidth": 1680,
+          "availHeight": 1002,
+          "colorDepth": 24,
+          "pixelDepth": 24
+        },
+        "webgl": {
+          "vendor": "Google Inc. (Intel)",
+          "renderer": "ANGLE (Intel, Intel(R) HD Graphics Direct3D11 vs_5_0 ps_5_0), or similar",
+          "version": "WebGL 2.0",
+          "shadingLanguageVersion": "WebGL GLSL ES 3.00"
+        }
+      },
+      "f": "5.8696cbce96d2947c36b4dd61b04726f147e1eada7172e06c47e1eada7172e06c47e1eada7172e06c47e1eada7172e06cb59320d6eb6303c1b59320d6eb6303c1b59320d6eb6303c147e1eada7172e06c8a38e2c5b3e08b898a38e2c5b3e08b890df103df0c26013a7b0d53c7afc06d0b2ebf3cb6fd35a0ac7b0d53c7afc06d0b0df103df0c26013a694de5a942062c6b68e2978c700f15b635c155810a32f63d164b09365f5308e7e43c5a2b8451992c3de19da9ed218fe27fde300814b1e8553de19da9ed218fe287829363e2d856a2f88859c11ff0089587829363e2d856a23de19da9ed218fe2d50b96489ab264ed3de19da9ed218fe23de19da9ed218fe2d99271d186dc1cd038e6a683f47425a8352c31daf983fa077a7b6c33f74d335cfa601f10c363b543d50b86b413bad4e502c730c0109b9fbbf40608c77d6dd550cd464f33d0888ba3d21ab7cd585086e0d288f6e77fcb4ee44ae7ca608ae6a580e2415097439d404746b8ae4e81acb9fa786047a80c779d5146b8ae4e81acb9fa390ea64f8025fa61b6c9122eda0b0e572da10fb74cac1eaba5f76aa56199c549efde06a8e6b1dd6febf4cb018970da7dcc0a4ccfc9f7f371",
+      "s": "b0b332a8882daa947b6739437e12b3af112e3e382234da34fa6dbf8d423193fde1b74bd568bcc8bf6e9ed9c6dffce8df30ce365ce6b3700ee683c54d9c6ea740c68449b18c9680424261fc4d4b0f6fe386b9ae08e4a5fad9",
+      "rawF": "1680;1050;24;24;240;180;240;180;240;180;240;180;240;240;240;240;240;240;240;180;180;180;180;180;1;1;1;1;1;1;0;1;0;1;1;1;1;1;0;1;1;1;1;1;0;32;1005301203;41002199;1;2;2;2;0;2;0;0;0;0;0;0;0;0;1;0;0;0;0;0;1;0;0;1;0;1;0;0;1;0;0;1;0;0;0;0;1;0;0;0;0;0;0;0;0;0;0;0;1;0;1;1;0;1;0;5;3641819743;3577560136;772757374;3469306551;1582120644;1320192270;4058090831;0;0;0;1;1;1;1;1;1;1;1;1;1;2;1;1;1;1785172534;0;0;0;0;0;0;0;0;0;0;3517267889;3369925510",
+      "rawS": "{\"monospace\":true,\"readOnly\":false,\"noLengthPlugins\":false,\"installedExtensions\":[]}",
+      "values": [
+        1680,
+        1050,
+        24,
+        24,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        180,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        240,
+        180,
+        180,
+        180,
+        180,
+        180,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        32,
+        1005301203,
+        41002199,
+        1,
+        2,
+        2,
+        2,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        5,
+        3641819743,
+        3577560136,
+        772757374,
+        3469306551,
+        1582120644,
+        1320192270,
+        4058090831,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1785172534,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3517267889,
+        3369925510
+      ]
+    }
+  ],
+  "matrix": [
+    {
+      "index": 0,
+      "knownMeaning": "screen.width",
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 5,
+      "minimum": 960,
+      "maximum": 1920,
+      "median": 1680.0,
+      "values": [
+        960,
+        1512,
+        1600,
+        1680,
+        1920
+      ],
+      "counts": {
+        "1680": 8,
+        "960": 2,
+        "1512": 2,
+        "1920": 2,
+        "1600": 2
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 1,
+      "knownMeaning": "screen.height",
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 5,
+      "minimum": 540,
+      "maximum": 1080,
+      "median": 1050.0,
+      "values": [
+        540,
+        900,
+        982,
+        1050,
+        1080
+      ],
+      "counts": {
+        "1050": 8,
+        "540": 2,
+        "982": 2,
+        "1080": 2,
+        "900": 2
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 2,
+      "knownMeaning": "screen.colorDepth",
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 2,
+      "minimum": 24,
+      "maximum": 30,
+      "median": 24.0,
+      "values": [
+        24,
+        30
+      ],
+      "counts": {
+        "24": 10,
+        "30": 6
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 3,
+      "knownMeaning": "screen.pixelDepth",
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 2,
+      "minimum": 24,
+      "maximum": 30,
+      "median": 24.0,
+      "values": [
+        24,
+        30
+      ],
+      "counts": {
+        "24": 10,
+        "30": 6
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 4,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 240,
+      "maximum": 240,
+      "median": 240.0,
+      "values": [
+        240
+      ],
+      "counts": {
+        "240": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 5,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 180,
+      "maximum": 180,
+      "median": 180.0,
+      "values": [
+        180
+      ],
+      "counts": {
+        "180": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 6,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 240,
+      "maximum": 240,
+      "median": 240.0,
+      "values": [
+        240
+      ],
+      "counts": {
+        "240": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 7,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 180,
+      "maximum": 180,
+      "median": 180.0,
+      "values": [
+        180
+      ],
+      "counts": {
+        "180": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 8,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 240,
+      "maximum": 240,
+      "median": 240.0,
+      "values": [
+        240
+      ],
+      "counts": {
+        "240": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 9,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 180,
+      "maximum": 180,
+      "median": 180.0,
+      "values": [
+        180
+      ],
+      "counts": {
+        "180": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 10,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 240,
+      "maximum": 240,
+      "median": 240.0,
+      "values": [
+        240
+      ],
+      "counts": {
+        "240": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 11,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 180,
+      "maximum": 180,
+      "median": 180.0,
+      "values": [
+        180
+      ],
+      "counts": {
+        "180": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 12,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 240,
+      "maximum": 240,
+      "median": 240.0,
+      "values": [
+        240
+      ],
+      "counts": {
+        "240": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 13,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 240,
+      "maximum": 240,
+      "median": 240.0,
+      "values": [
+        240
+      ],
+      "counts": {
+        "240": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 14,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 240,
+      "maximum": 240,
+      "median": 240.0,
+      "values": [
+        240
+      ],
+      "counts": {
+        "240": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 15,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 240,
+      "maximum": 240,
+      "median": 240.0,
+      "values": [
+        240
+      ],
+      "counts": {
+        "240": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 16,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 240,
+      "maximum": 240,
+      "median": 240.0,
+      "values": [
+        240
+      ],
+      "counts": {
+        "240": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 17,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 240,
+      "maximum": 240,
+      "median": 240.0,
+      "values": [
+        240
+      ],
+      "counts": {
+        "240": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 18,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 240,
+      "maximum": 240,
+      "median": 240.0,
+      "values": [
+        240
+      ],
+      "counts": {
+        "240": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 19,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 180,
+      "maximum": 180,
+      "median": 180.0,
+      "values": [
+        180
+      ],
+      "counts": {
+        "180": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 20,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 180,
+      "maximum": 180,
+      "median": 180.0,
+      "values": [
+        180
+      ],
+      "counts": {
+        "180": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 21,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 180,
+      "maximum": 180,
+      "median": 180.0,
+      "values": [
+        180
+      ],
+      "counts": {
+        "180": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 22,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 180,
+      "maximum": 180,
+      "median": 180.0,
+      "values": [
+        180
+      ],
+      "counts": {
+        "180": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 23,
+      "knownMeaning": "timezone offset probe",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 180,
+      "maximum": 180,
+      "median": 180.0,
+      "values": [
+        180
+      ],
+      "counts": {
+        "180": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 24,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 25,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 26,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 27,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 28,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 29,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 30,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 31,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 32,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 33,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 34,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 35,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 36,
+      "knownMeaning": "WebSocket support flag",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 37,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 38,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 39,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 40,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 41,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 42,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 43,
+      "knownMeaning": "normalized navigator.doNotTrack",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 44,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 45,
+      "knownMeaning": "navigator.hardwareConcurrency",
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 5,
+      "minimum": 8,
+      "maximum": 32,
+      "median": 11.0,
+      "values": [
+        8,
+        10,
+        12,
+        16,
+        32
+      ],
+      "counts": {
+        "8": 6,
+        "10": 2,
+        "12": 2,
+        "16": 2,
+        "32": 4
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 46,
+      "knownMeaning": "hash(navigator.platform)",
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 2,
+      "minimum": 1005301203,
+      "maximum": 3955448693,
+      "median": 1005301203.0,
+      "values": [
+        1005301203,
+        3955448693
+      ],
+      "counts": {
+        "1005301203": 10,
+        "3955448693": 6
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 47,
+      "knownMeaning": "hash(navigator.languages)",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 41002199,
+      "maximum": 41002199,
+      "median": 41002199.0,
+      "values": [
+        41002199
+      ],
+      "counts": {
+        "41002199": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 48,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 49,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 2,
+      "maximum": 2,
+      "median": 2.0,
+      "values": [
+        2
+      ],
+      "counts": {
+        "2": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 50,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 2,
+      "maximum": 2,
+      "median": 2.0,
+      "values": [
+        2
+      ],
+      "counts": {
+        "2": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 51,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 2,
+      "maximum": 2,
+      "median": 2.0,
+      "values": [
+        2
+      ],
+      "counts": {
+        "2": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 52,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 53,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 2,
+      "maximum": 2,
+      "median": 2.0,
+      "values": [
+        2
+      ],
+      "counts": {
+        "2": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 54,
+      "knownMeaning": null,
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 2,
+      "minimum": 0,
+      "maximum": 1,
+      "median": 0.0,
+      "values": [
+        0,
+        1
+      ],
+      "counts": {
+        "0": 10,
+        "1": 6
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 55,
+      "knownMeaning": null,
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 2,
+      "minimum": 0,
+      "maximum": 1,
+      "median": 0.0,
+      "values": [
+        0,
+        1
+      ],
+      "counts": {
+        "0": 10,
+        "1": 6
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 56,
+      "knownMeaning": null,
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 2,
+      "minimum": 0,
+      "maximum": 1,
+      "median": 0.0,
+      "values": [
+        0,
+        1
+      ],
+      "counts": {
+        "0": 10,
+        "1": 6
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 57,
+      "knownMeaning": null,
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 2,
+      "minimum": 0,
+      "maximum": 1,
+      "median": 0.0,
+      "values": [
+        0,
+        1
+      ],
+      "counts": {
+        "0": 10,
+        "1": 6
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 58,
+      "knownMeaning": null,
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 2,
+      "minimum": 0,
+      "maximum": 1,
+      "median": 0.0,
+      "values": [
+        0,
+        1
+      ],
+      "counts": {
+        "0": 10,
+        "1": 6
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 59,
+      "knownMeaning": null,
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 2,
+      "minimum": 0,
+      "maximum": 1,
+      "median": 0.0,
+      "values": [
+        0,
+        1
+      ],
+      "counts": {
+        "0": 10,
+        "1": 6
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 60,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 61,
+      "knownMeaning": null,
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 2,
+      "minimum": 0,
+      "maximum": 1,
+      "median": 0.0,
+      "values": [
+        0,
+        1
+      ],
+      "counts": {
+        "0": 10,
+        "1": 6
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 62,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 63,
+      "knownMeaning": null,
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 2,
+      "minimum": 0,
+      "maximum": 1,
+      "median": 0.0,
+      "values": [
+        0,
+        1
+      ],
+      "counts": {
+        "0": 10,
+        "1": 6
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 64,
+      "knownMeaning": null,
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 2,
+      "minimum": 0,
+      "maximum": 1,
+      "median": 0.0,
+      "values": [
+        0,
+        1
+      ],
+      "counts": {
+        "0": 10,
+        "1": 6
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 65,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 66,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 67,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 68,
+      "knownMeaning": null,
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 2,
+      "minimum": 0,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        0,
+        1
+      ],
+      "counts": {
+        "1": 10,
+        "0": 6
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 69,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 70,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 71,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 72,
+      "knownMeaning": null,
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 2,
+      "minimum": 0,
+      "maximum": 1,
+      "median": 0.0,
+      "values": [
+        0,
+        1
+      ],
+      "counts": {
+        "0": 10,
+        "1": 6
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 73,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 74,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 75,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 76,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 77,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 78,
+      "knownMeaning": null,
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 2,
+      "minimum": 0,
+      "maximum": 1,
+      "median": 0.0,
+      "values": [
+        0,
+        1
+      ],
+      "counts": {
+        "0": 10,
+        "1": 6
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 79,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 80,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 81,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 82,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 83,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 84,
+      "knownMeaning": null,
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 2,
+      "minimum": 0,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        0,
+        1
+      ],
+      "counts": {
+        "1": 10,
+        "0": 6
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 85,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 86,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 87,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 88,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 89,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 90,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 91,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 92,
+      "knownMeaning": null,
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 2,
+      "minimum": 0,
+      "maximum": 1,
+      "median": 0.0,
+      "values": [
+        0,
+        1
+      ],
+      "counts": {
+        "0": 10,
+        "1": 6
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 93,
+      "knownMeaning": null,
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 2,
+      "minimum": 0,
+      "maximum": 1,
+      "median": 0.0,
+      "values": [
+        0,
+        1
+      ],
+      "counts": {
+        "0": 10,
+        "1": 6
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 94,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 95,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 96,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 97,
+      "knownMeaning": null,
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 2,
+      "minimum": 0,
+      "maximum": 1,
+      "median": 0.0,
+      "values": [
+        0,
+        1
+      ],
+      "counts": {
+        "0": 10,
+        "1": 6
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 98,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 99,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 100,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 101,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 102,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 103,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 5,
+      "maximum": 5,
+      "median": 5.0,
+      "values": [
+        5
+      ],
+      "counts": {
+        "5": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 104,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 3641819743,
+      "maximum": 3641819743,
+      "median": 3641819743.0,
+      "values": [
+        3641819743
+      ],
+      "counts": {
+        "3641819743": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 105,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 3577560136,
+      "maximum": 3577560136,
+      "median": 3577560136.0,
+      "values": [
+        3577560136
+      ],
+      "counts": {
+        "3577560136": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 106,
+      "knownMeaning": "canvas fingerprint/hash (profile-stable)",
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 8,
+      "minimum": 109715837,
+      "maximum": 3433461283,
+      "median": 918901928.0,
+      "values": [
+        109715837,
+        295597827,
+        520769875,
+        772757374,
+        1065046482,
+        2930309092,
+        3111173713,
+        3433461283
+      ],
+      "counts": {
+        "2930309092": 2,
+        "3433461283": 2,
+        "109715837": 2,
+        "3111173713": 2,
+        "1065046482": 2,
+        "295597827": 2,
+        "520769875": 2,
+        "772757374": 2
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 107,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 3469306551,
+      "maximum": 3469306551,
+      "median": 3469306551.0,
+      "values": [
+        3469306551
+      ],
+      "counts": {
+        "3469306551": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 108,
+      "knownMeaning": "composite navigator hash",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1582120644,
+      "maximum": 1582120644,
+      "median": 1582120644.0,
+      "values": [
+        1582120644
+      ],
+      "counts": {
+        "1582120644": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 109,
+      "knownMeaning": "composite screen hash",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1320192270,
+      "maximum": 1320192270,
+      "median": 1320192270.0,
+      "values": [
+        1320192270
+      ],
+      "counts": {
+        "1320192270": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 110,
+      "knownMeaning": "WebGL/GPU renderer fingerprint/hash",
+      "stability": "fingerprint_dependent",
+      "uniqueCount": 5,
+      "minimum": 1990741309,
+      "maximum": 4189790824,
+      "median": 4058090831.0,
+      "values": [
+        1990741309,
+        2485359653,
+        4058090831,
+        4111105773,
+        4189790824
+      ],
+      "counts": {
+        "2485359653": 2,
+        "4189790824": 4,
+        "4111105773": 2,
+        "4058090831": 6,
+        "1990741309": 2
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 111,
+      "knownMeaning": "navigator.maxTouchPoints",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 112,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 113,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 114,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 115,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 116,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 117,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 118,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 119,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 120,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 121,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 122,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 123,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 124,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 2,
+      "maximum": 2,
+      "median": 2.0,
+      "values": [
+        2
+      ],
+      "counts": {
+        "2": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 125,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 126,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 127,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "median": 1.0,
+      "values": [
+        1
+      ],
+      "counts": {
+        "1": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 128,
+      "knownMeaning": "floor(Date.now()/1000)",
+      "stability": "deterministic_time",
+      "uniqueCount": 16,
+      "minimum": 1785172505,
+      "maximum": 1785172534,
+      "median": 1785172519.0,
+      "values": [
+        1785172505,
+        1785172507,
+        1785172509,
+        1785172511,
+        1785172512,
+        1785172515,
+        1785172516,
+        1785172518,
+        1785172520,
+        1785172522,
+        1785172524,
+        1785172526,
+        1785172528,
+        1785172530,
+        1785172532,
+        1785172534
+      ],
+      "counts": {
+        "1785172505": 1,
+        "1785172507": 1,
+        "1785172509": 1,
+        "1785172511": 1,
+        "1785172512": 1,
+        "1785172515": 1,
+        "1785172516": 1,
+        "1785172518": 1,
+        "1785172520": 1,
+        "1785172522": 1,
+        "1785172524": 1,
+        "1785172526": 1,
+        "1785172528": 1,
+        "1785172530": 1,
+        "1785172532": 1,
+        "1785172534": 1
+      },
+      "withinProfileChanges": {
+        "0": true,
+        "1": true,
+        "2": true,
+        "3": true,
+        "4": true,
+        "5": true,
+        "6": true,
+        "7": true
+      }
+    },
+    {
+      "index": 129,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 130,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 131,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 132,
+      "knownMeaning": "navigator.webdriver",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 133,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 134,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 135,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 136,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 137,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 138,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 0,
+      "maximum": 0,
+      "median": 0.0,
+      "values": [
+        0
+      ],
+      "counts": {
+        "0": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 139,
+      "knownMeaning": null,
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 3517267889,
+      "maximum": 3517267889,
+      "median": 3517267889.0,
+      "values": [
+        3517267889
+      ],
+      "counts": {
+        "3517267889": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    },
+    {
+      "index": 140,
+      "knownMeaning": "audio fingerprint/hash",
+      "stability": "constant_across_samples",
+      "uniqueCount": 1,
+      "minimum": 3369925510,
+      "maximum": 3369925510,
+      "median": 3369925510.0,
+      "values": [
+        3369925510
+      ],
+      "counts": {
+        "3369925510": 16
+      },
+      "withinProfileChanges": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false
+      }
+    }
+  ]
+}

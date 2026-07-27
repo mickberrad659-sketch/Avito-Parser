@@ -10,16 +10,23 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import re
 import secrets
+import sys
 import time
 import uuid
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
-from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
+from urllib.parse import parse_qsl, urlencode, urljoin, urlsplit, urlunsplit
 
 from curl_cffi import requests
+from curl_cffi.requests.exceptions import (
+    ConnectionError as CurlConnectionError,
+    IncompleteRead,
+    Timeout as CurlTimeout,
+)
 
 from firewallpow_payload_reference import build_get_payload, build_verify_payload
 from generate_qrator_variants import (
@@ -34,9 +41,11 @@ BASE_URL = "https://www.avito.ru"
 GET_URL = f"{BASE_URL}/web/3/firewallPow/get"
 VERIFY_URL = f"{BASE_URL}/web/3/firewallPow/verify"
 FIREWALL_CAPTCHA_GET_URL = f"{BASE_URL}/web/5/firewallCaptcha/get"
+FIREWALL_CAPTCHA_VERIFY_URL = f"{BASE_URL}/web/3/firewallCaptcha/verify"
 GEETEST_LOAD_URL = "https://gcaptcha4.geevisit.com/load"
 QRATOR_FT_URL = f"{BASE_URL}/web/2/ft"
 QRATOR_PIXEL_URL = f"{BASE_URL}/web/1/u"
+QRATOR_FAVICON_URL = f"{BASE_URL}/favicon.ico"
 REFERER = (
     f"{BASE_URL}/volgograd/bytovaya_elektronika?"
     "context=H4sIAAAAAAAA_wEmANn_YToxOntzOjE6InkiO3M6MTY6ImpKSFd2M2hLSlIzWWJFMHQiO30fldpuJgAAAA"
@@ -53,21 +62,44 @@ PAGES_URL = (
     f"{BASE_URL}/moskva_i_mo/tovary_dlya_kompyutera/komplektuyuschie/"
     "operativnaya_pamyat-ASgBAgICAkTGB~pm7gnYZw"
     "?cd=1&context=H4sIAAAAAAAA_wEmANn_YToxOntzOjE6InkiO3M6MTY6"
-    "Ind2TXcyM1NoT1F4Rm1pUkQiO31XsWX_JgAAAA&q=ddr5+32gb"
+    "IkplUDFEN1ZsbzFEaDRpVWwiO330fudwJgAAAA"
+    "&localPriority=0&q=ddr5+32gb"
 )
-PAGES_TO_REQUEST = 10
+PAGES_TO_REQUEST = 100
 MAX_PROTECTION_TRANSITIONS = 3
 MAX_QRATOR_RETRIES_PER_REQUEST = 2
+PAGE_REQUEST_DELAY_SECONDS = 2.0
+QRATOR_PRE_FT_DELAY_SECONDS = 1.0
+QRATOR_POST_PIXEL_DELAY_SECONDS = 2.0
+TRANSPORT_RETRY_DELAY_SECONDS = 1.0
+MAX_TRANSIENT_GET_RETRIES = 2
 REQUEST_TIMEOUT_SECONDS = 5
+DOCUMENT_REQUEST_TIMEOUT_SECONDS = 10
+HTTP_IMPERSONATE_PROFILE = "firefox147"
 LOGGER = logging.getLogger(__name__)
 LOG_BODY_PREVIEW_LENGTH = 4_000
 LOG_HEADERS_PREVIEW_LENGTH = 2_000
 DEBUG_RESPONSE_DIR = Path("firewall-debug-responses")
+GEEKED_TEST_ROOT = Path(__file__).resolve().parent / "GeekedTest"
+PROXY_ENVIRONMENT_VARIABLES = (
+    "http_proxy",
+    "https_proxy",
+    "all_proxy",
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "ALL_PROXY",
+)
 
 # Headers sent by the browser XHR in the source HAR.  Content-Type is supplied
 # by ``json=...`` and Cookie is managed by the session's cookie jar.
 REQUEST_HEADERS = {
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+    "Accept-Encoding": "gzip, deflate, br, zstd",
+    "Connection": "keep-alive",
     "Origin": BASE_URL,
+    "Pragma": "no-cache",
+    "Cache-Control": "no-cache",
     "Sec-Fetch-Dest": "empty",
     "Sec-Fetch-Mode": "cors",
     "Sec-Fetch-Site": "same-origin",
@@ -81,15 +113,22 @@ REQUEST_HEADERS = {
 # Headers of the ordinary document-navigation request from the HAR.  This
 # request context is distinct from the same-origin XHR context above.
 PAGE_REQUEST_HEADERS = {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+    "Accept-Encoding": "gzip, deflate, br, zstd",
+    "Connection": "keep-alive",
     "Referer": (
         "https://www.avito.ru/moskva_i_mo/tovary_dlya_kompyutera/"
         "komplektuyuschie/operativnaya_pamyat-ASgBAgICAkTGB~pm7gnYZw"
         "?cd=1&context=H4sIAAAAAAAA_wEmANn_YToxOntzOjE6InkiO3M6MTY6"
-        "Ind2TXcyM1NoT1F4Rm1pUkQiO31XsWX_JgAAAA&localPriority=0&q=ddr5+32gb"
+        "Ind2TXcyM1NoT1F4Rm1pUkQiO31XsWX_JgAAAA&q=ddr5+32gb"
     ),
+    "Pragma": "no-cache",
+    "Cache-Control": "no-cache",
+    "Priority": "u=0, i",
     "Sec-Fetch-Dest": "document",
     "Sec-Fetch-Mode": "navigate",
-    "Sec-Fetch-Site": "none",
+    "Sec-Fetch-Site": "same-origin",
     "Sec-Fetch-User": "?1",
     "Sec-GPC": "1",
     "Upgrade-Insecure-Requests": "1",
@@ -107,6 +146,8 @@ CHALLENGE_REQUEST_HEADERS = {
 QRATOR_FT_HEADERS = {
     "Accept": "*/*",
     "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+    "Accept-Encoding": "gzip, deflate, br, zstd",
+    "Connection": "keep-alive",
     "Origin": BASE_URL,
     "Referer": PAGE_REQUEST_HEADERS["Referer"],
     "Sec-Fetch-Dest": "empty",
@@ -125,12 +166,69 @@ QRATOR_PIXEL_HEADERS = {
         "image/*;q=0.8,*/*;q=0.5"
     ),
     "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+    "Accept-Encoding": "gzip, deflate, br, zstd",
+    "Connection": "keep-alive",
     "Referer": PAGE_REQUEST_HEADERS["Referer"],
     "Sec-Fetch-Dest": "image",
     "Sec-Fetch-Mode": "no-cors",
     "Sec-Fetch-Site": "same-origin",
     "Sec-GPC": "1",
     "Priority": "u=5, i",
+    "Pragma": "no-cache",
+    "Cache-Control": "no-cache",
+    "TE": "trailers",
+    "User-Agent": PAGE_REQUEST_HEADERS["User-Agent"],
+}
+
+QRATOR_SCRIPT_HEADERS = {
+    "Accept": "*/*",
+    "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+    "Accept-Encoding": "gzip, deflate, br, zstd",
+    "Connection": "keep-alive",
+    "Referer": PAGE_REQUEST_HEADERS["Referer"],
+    "Sec-Fetch-Dest": "script",
+    "Sec-Fetch-Mode": "no-cors",
+    "Sec-Fetch-Site": "same-origin",
+    "Sec-GPC": "1",
+    "Pragma": "no-cache",
+    "Cache-Control": "no-cache",
+    "TE": "trailers",
+    "User-Agent": PAGE_REQUEST_HEADERS["User-Agent"],
+}
+
+QRATOR_FAVICON_HEADERS = {
+    "Accept": (
+        "image/avif,image/webp,image/png,image/svg+xml,"
+        "image/*;q=0.8,*/*;q=0.5"
+    ),
+    "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+    "Accept-Encoding": "gzip, deflate, br, zstd",
+    "Connection": "keep-alive",
+    "Referer": PAGE_REQUEST_HEADERS["Referer"],
+    "Sec-Fetch-Dest": "image",
+    "Sec-Fetch-Mode": "no-cors",
+    "Sec-Fetch-Site": "same-origin",
+    "Sec-GPC": "1",
+    "Priority": "u=6",
+    "Pragma": "no-cache",
+    "Cache-Control": "no-cache",
+    "TE": "trailers",
+    "User-Agent": PAGE_REQUEST_HEADERS["User-Agent"],
+}
+
+CAPTCHA_VERIFY_HEADERS = {
+    "Accept": "*/*",
+    "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+    "Accept-Encoding": "gzip, deflate, br, zstd",
+    "Connection": "keep-alive",
+    "Content-Type": "application/json",
+    "Origin": BASE_URL,
+    "Referer": PAGE_REQUEST_HEADERS["Referer"],
+    "Sec-Fetch-Dest": "empty",
+    "Sec-Fetch-Mode": "cors",
+    "Sec-Fetch-Site": "same-origin",
+    "Sec-GPC": "1",
+    "Priority": "u=4",
     "Pragma": "no-cache",
     "Cache-Control": "no-cache",
     "TE": "trailers",
@@ -147,6 +245,14 @@ class GeeTestLoad:
     callback: str
     lot_number: str | None
     captcha_type: str | None
+    data: dict[str, Any]
+
+
+@dataclass(frozen=True)
+class GeeTestVerified:
+    """A GeeTest solution accepted by Avito's firewallCaptcha endpoint."""
+
+    lot_number: str
 
 
 @dataclass(frozen=True)
@@ -215,6 +321,19 @@ def pow_challenge_from_response(response: Any) -> str:
     return pow_challenge
 
 
+def response_has_pow_challenge(response: Any) -> bool:
+    """Return whether a protection response selects the firewallPow branch."""
+    try:
+        payload = response.json()
+    except (json.JSONDecodeError, ValueError):
+        return False
+    return (
+        isinstance(payload, dict)
+        and isinstance(payload.get("pow_challenge"), str)
+        and bool(payload["pow_challenge"])
+    )
+
+
 def geetest_captcha_id_from_html(html: str) -> str:
     """Extract the GeeTest id embedded in the HTTP 429 firewall HTML."""
     match = re.search(r"const\s+captchaId\s*=\s*['\"]([^'\"]+)['\"]", html)
@@ -258,7 +377,12 @@ def parse_jsonp(body: str, *, callback: str) -> dict[str, Any]:
     return result
 
 
-def start_geetest(session: requests.Session, firewall_html: str) -> GeeTestLoad:
+def start_geetest(
+    session: requests.Session,
+    firewall_html: str,
+    *,
+    referer: str,
+) -> GeeTestLoad:
     """Perform the 429 branch through the GeeTest initial ``/load`` request.
 
     The page gives the captcha id.  The captured ``gt4.js`` generates the UUID
@@ -266,7 +390,7 @@ def start_geetest(session: requests.Session, firewall_html: str) -> GeeTestLoad:
     """
     if not is_geetest_firewall_html(firewall_html):
         raise RuntimeError("HTTP 429 firewall page does not select the GeeTest branch")
-    set_session_headers(session, {**REQUEST_HEADERS, "Referer": REFERER})
+    set_session_headers(session, {**REQUEST_HEADERS, "Referer": referer})
     captcha_id = geetest_captcha_id_from_html(firewall_html)
     captcha_response = response_json(
         session.post(
@@ -317,18 +441,206 @@ def start_geetest(session: requests.Session, firewall_html: str) -> GeeTestLoad:
         captcha_type=data.get("captcha_type")
         if isinstance(data.get("captcha_type"), str)
         else None,
+        data=data,
     )
 
 
+def solve_geetest_load(
+    load: GeeTestLoad,
+    *,
+    source_session: requests.Session,
+) -> dict[str, str]:
+    """Pass the existing ``/load`` data to GeekedTest's verify function."""
+    root = str(GEEKED_TEST_ROOT)
+    if root not in sys.path:
+        sys.path.insert(0, root)
+    try:
+        from geeked import Geeked
+    except ImportError as exc:
+        raise RuntimeError(
+            "GeekedTest dependencies are missing; run `uv sync`"
+        ) from exc
+
+    solver = Geeked(load.captcha_id, lang="rus")
+    solver.lot_number = load.lot_number
+    solver.session.base_url = "https://gcaptcha4.geevisit.com"
+    for cookie in source_session.cookies.jar:
+        domain = cookie.domain or ""
+        if "geetest" not in domain and "geevisit" not in domain:
+            continue
+        solver.session.cookies.set(
+            cookie.name,
+            cookie.value,
+            domain=domain,
+            path=cookie.path or "/",
+        )
+    try:
+        seccode = solver.submit_captcha(load.data)
+    finally:
+        solver.session.close()
+
+    required = (
+        "captcha_id",
+        "lot_number",
+        "pass_token",
+        "gen_time",
+        "captcha_output",
+    )
+    if not isinstance(seccode, dict) or not set(required).issubset(seccode):
+        raise RuntimeError("GeekedTest verify returned an incomplete seccode")
+    result = {key: seccode[key] for key in required}
+    if not all(isinstance(value, str) and value for value in result.values()):
+        raise RuntimeError("GeekedTest seccode fields must be non-empty strings")
+    return result
+
+
+def verify_geetest_with_avito(
+    session: requests.Session,
+    load: GeeTestLoad,
+    seccode: dict[str, str],
+    *,
+    referer: str,
+) -> GeeTestVerified:
+    """Submit the GeeTest seccode using the exact Avito bundle payload."""
+    payload: dict[str, str] = {
+        "captcha": "",
+        "hCaptchaResponse": "",
+        **seccode,
+    }
+    cube_result = str(10 + secrets.randbelow(90))
+    set_session_headers(
+        session,
+        {
+            **CAPTCHA_VERIFY_HEADERS,
+            "Referer": referer,
+            "X-Cube": cube_result,
+        },
+    )
+    response = session.post(
+        FIREWALL_CAPTCHA_VERIFY_URL,
+        json=payload,
+        timeout=REQUEST_TIMEOUT_SECONDS,
+        allow_redirects=False,
+    )
+    body = response_json(response, endpoint="firewallCaptcha/verify")
+    try:
+        verified = body["success"]["result"]["verified"]
+    except (KeyError, TypeError) as exc:
+        raise RuntimeError(
+            "firewallCaptcha/verify: no success.result.verified"
+        ) from exc
+    if verified is not True:
+        raise RuntimeError("firewallCaptcha/verify: server returned verified=false")
+    lot_number = seccode["lot_number"]
+    LOGGER.info(
+        "GeeTest verification succeeded; lot_number=%s; X-Cube=%s",
+        lot_number,
+        cube_result,
+    )
+    return GeeTestVerified(lot_number=lot_number)
+
+
+def run_geetest_verification(
+    session: requests.Session,
+    firewall_html: str,
+    *,
+    referer: str,
+) -> GeeTestVerified:
+    """Load, solve, and submit the complete GeeTest firewall branch."""
+    load = start_geetest(session, firewall_html, referer=referer)
+    LOGGER.info(
+        "GeeTest task loaded; captcha_id=%s; lot_number=%s; type=%s",
+        load.captcha_id,
+        load.lot_number,
+        load.captcha_type,
+    )
+    LOGGER.info("GeeTest: generating and submitting local solver payload")
+    seccode = solve_geetest_load(load, source_session=session)
+    LOGGER.info("GeeTest /verify accepted the solver payload; verifying with Avito")
+    return verify_geetest_with_avito(
+        session,
+        load,
+        seccode,
+        referer=referer,
+    )
+
+
+def forbidden_response_reason(response: Any) -> str:
+    """Return a concise human-readable reason from a Qrator 403 response."""
+    content_type = response.headers.get("content-type", "").lower()
+    if "json" in content_type:
+        try:
+            payload = response.json()
+        except (json.JSONDecodeError, ValueError):
+            payload = None
+        if isinstance(payload, dict):
+            details = payload.get("too-many-requests")
+            if isinstance(details, dict) and isinstance(details.get("message"), str):
+                return details["message"]
+    title = re.search(
+        r"<title\b[^>]*>(.*?)</title>",
+        response.text,
+        re.IGNORECASE | re.DOTALL,
+    )
+    if title:
+        return re.sub(r"\s+", " ", title.group(1)).strip()
+    return "unclassified HTTP 403"
+
+
 def log_forbidden_response(response: Any, *, context: str) -> None:
-    """Log enough of a 403 body to identify the server-side protection page."""
+    """Log and preserve a 403 body so its protection branch can be identified."""
+    reason = forbidden_response_reason(response)
     body = preview(response.text, limit=LOG_BODY_PREVIEW_LENGTH)
-    LOGGER.warning("%s: HTTP 403; details are in firewall-debug.log", context)
+    content_type = response.headers.get("content-type", "").lower()
+    html_path = (
+        save_html_response(response, context=context)
+        if "html" in content_type
+        else None
+    )
+    if html_path:
+        LOGGER.warning(
+            "%s: HTTP 403 (%s); HTML saved to %s",
+            context,
+            reason,
+            html_path,
+        )
+    else:
+        LOGGER.warning(
+            "%s: HTTP 403 (%s); details are in firewall-debug.log",
+            context,
+            reason,
+        )
     LOGGER.debug(
-        "%s: HTTP 403; headers=%s; response body preview:\n%s",
+        "%s: HTTP 403 (%s); headers=%s; response body preview:\n%s",
         context,
+        reason,
         preview(repr(dict(response.headers)), limit=LOG_HEADERS_PREVIEW_LENGTH),
         body,
+    )
+
+
+def log_unrecognized_protection_response(response: Any, *, context: str) -> None:
+    """Preserve an unrecognized protection response before stopping."""
+    reason = forbidden_response_reason(response)
+    content_type = response.headers.get("content-type", "").lower()
+    saved_path = (
+        save_html_response(response, context=context)
+        if "html" in content_type
+        else None
+    )
+    LOGGER.warning(
+        "%s: HTTP %s is not a recognized PoW or GeeTest branch (%s)%s",
+        context,
+        response.status_code,
+        reason,
+        f"; HTML saved to {saved_path}" if saved_path else "",
+    )
+    LOGGER.debug(
+        "%s: unrecognized HTTP %s; headers=%s; response body preview:\n%s",
+        context,
+        response.status_code,
+        preview(repr(dict(response.headers)), limit=LOG_HEADERS_PREVIEW_LENGTH),
+        preview(response.text, limit=LOG_BODY_PREVIEW_LENGTH),
     )
 
 
@@ -343,12 +655,34 @@ def set_session_headers(session: requests.Session, headers: dict[str, str]) -> N
     session.headers.update(headers)
 
 
-def is_qrator_redirect(response: Any) -> bool:
-    """Return whether a 302 response belongs to the Qrator cookie flow."""
-    return (
-        response.status_code == 302
-        and response.headers.get("server", "").strip().upper() == "QRATOR"
+def session_cookie_names(session: requests.Session) -> tuple[str, ...]:
+    """Return cookie names only, without leaking their values into diagnostics."""
+    return tuple(sorted(set(session.cookies.keys())))
+
+
+def is_qrator_challenge_response(response: Any) -> bool:
+    """Recognize the Qrator HTML flow independently of 302 versus 429."""
+    has_meta_refresh = re.search(
+        r"<meta\b[^>]*\bhttp-equiv\s*=\s*[\"']refresh[\"']",
+        response.text,
+        re.IGNORECASE,
     )
+    has_fingerprint_script = re.search(
+        r"<script\b[^>]*\bsrc\s*=\s*[\"']/[0-9a-f]{20}\.js[\"']",
+        response.text,
+        re.IGNORECASE,
+    )
+    return (
+        response.status_code in (302, 429)
+        and response.headers.get("server", "").strip().upper() == "QRATOR"
+        and has_meta_refresh is not None
+        and has_fingerprint_script is not None
+    )
+
+
+def is_qrator_redirect(response: Any) -> bool:
+    """Backward-compatible alias for the Qrator HTML classifier."""
+    return is_qrator_challenge_response(response)
 
 
 def build_qrator_multipart(
@@ -388,8 +722,85 @@ def qrator_pixel_id() -> int:
     return secrets.randbelow(0xFFFFFFFF)
 
 
-def run_qrator_cookie_flow(session: requests.Session, *, context: str) -> None:
-    """Perform ``/web/2/ft -> /web/1/u`` and retain every resulting cookie."""
+def qrator_script_url(qrator_html: str, *, page_url: str) -> str:
+    """Extract the same-origin fingerprint bundle referenced by the 302 HTML."""
+    script_sources = re.findall(
+        r"<script\b[^>]*\bsrc\s*=\s*[\"']([^\"']+)[\"']",
+        qrator_html,
+        re.IGNORECASE,
+    )
+    for source in script_sources:
+        absolute_url = urljoin(page_url, source)
+        parsed = urlsplit(absolute_url)
+        if (
+            parsed.netloc == urlsplit(BASE_URL).netloc
+            and re.fullmatch(r"/[0-9a-f]{20}\.js", parsed.path)
+        ):
+            return absolute_url
+    raise RuntimeError("Qrator HTTP 302 page: fingerprint script URL not found")
+
+
+def load_qrator_page_resources(
+    session: requests.Session,
+    *,
+    qrator_html: str,
+    page_url: str,
+    context: str,
+) -> None:
+    """Load the script and favicon requested by Firefox before ``/web/2/ft``."""
+    script_url = qrator_script_url(qrator_html, page_url=page_url)
+    set_session_headers(
+        session,
+        {**QRATOR_SCRIPT_HEADERS, "Referer": page_url},
+    )
+    script_response = session.get(
+        script_url,
+        timeout=REQUEST_TIMEOUT_SECONDS,
+        allow_redirects=False,
+    )
+    if script_response.status_code != 200:
+        raise RuntimeError(
+            f"{context}: Qrator fingerprint script returned HTTP "
+            f"{script_response.status_code}"
+        )
+
+    set_session_headers(
+        session,
+        {**QRATOR_FAVICON_HEADERS, "Referer": page_url},
+    )
+    favicon_response = session.get(
+        QRATOR_FAVICON_URL,
+        timeout=REQUEST_TIMEOUT_SECONDS,
+        allow_redirects=False,
+    )
+    if favicon_response.status_code != 200:
+        raise RuntimeError(
+            f"{context}: Qrator favicon returned HTTP "
+            f"{favicon_response.status_code}"
+        )
+
+
+def run_qrator_cookie_flow(
+    session: requests.Session,
+    *,
+    qrator_html: str,
+    page_url: str,
+    context: str,
+) -> None:
+    """Reproduce the complete 302 HAR sequence and retain resulting cookies."""
+    sequence_started = time.monotonic()
+    load_qrator_page_resources(
+        session,
+        qrator_html=qrator_html,
+        page_url=page_url,
+        context=context,
+    )
+    remaining_delay = QRATOR_PRE_FT_DELAY_SECONDS - (
+        time.monotonic() - sequence_started
+    )
+    if remaining_delay > 0:
+        time.sleep(remaining_delay)
+
     variant = generate_variants(
         load_f_base(DEFAULT_BASE_F),
         load_s_base(DEFAULT_BASE_S),
@@ -407,7 +818,11 @@ def run_qrator_cookie_flow(session: requests.Session, *, context: str) -> None:
     content_type, multipart_body = build_qrator_multipart(f_value, s_value)
     set_session_headers(
         session,
-        {**QRATOR_FT_HEADERS, "Content-Type": content_type},
+        {
+            **QRATOR_FT_HEADERS,
+            "Referer": page_url,
+            "Content-Type": content_type,
+        },
     )
     ft_response = session.post(
         QRATOR_FT_URL,
@@ -443,7 +858,10 @@ def run_qrator_cookie_flow(session: requests.Session, *, context: str) -> None:
     )
 
     pixel_id = qrator_pixel_id()
-    set_session_headers(session, QRATOR_PIXEL_HEADERS)
+    set_session_headers(
+        session,
+        {**QRATOR_PIXEL_HEADERS, "Referer": page_url},
+    )
     pixel_response = session.get(
         f"{QRATOR_PIXEL_URL}?{pixel_id}",
         timeout=REQUEST_TIMEOUT_SECONDS,
@@ -471,6 +889,7 @@ def run_qrator_cookie_flow(session: requests.Session, *, context: str) -> None:
         pixel_id,
         len(token),
     )
+    time.sleep(QRATOR_POST_PIXEL_DELAY_SECONDS)
 
 
 def get_with_qrator_recovery(
@@ -479,30 +898,106 @@ def get_with_qrator_recovery(
     *,
     session_headers: dict[str, str],
     request_headers: dict[str, str] | None = None,
+    timeout_seconds: int = REQUEST_TIMEOUT_SECONDS,
     context: str,
+    stream_response_body: bool = False,
 ) -> Any:
     """GET a URL and retry the exact request after a Qrator 302 flow."""
     for attempt in range(MAX_QRATOR_RETRIES_PER_REQUEST + 1):
         set_session_headers(session, session_headers)
-        response = session.get(
-            url,
-            headers=request_headers,
-            timeout=REQUEST_TIMEOUT_SECONDS,
-            allow_redirects=False,
-        )
-        if not is_qrator_redirect(response):
+        for transport_attempt in range(MAX_TRANSIENT_GET_RETRIES + 1):
+            try:
+                response = session.get(
+                    url,
+                    headers=request_headers,
+                    timeout=timeout_seconds,
+                    allow_redirects=False,
+                    stream=stream_response_body,
+                )
+                if stream_response_body:
+                    chunks: list[bytes] = []
+                    try:
+                        chunks.extend(response.iter_content())
+                    except (
+                        IncompleteRead,
+                        CurlConnectionError,
+                        CurlTimeout,
+                    ) as stream_exc:
+                        response.content = b"".join(chunks)
+                        # curl occasionally reports a connection/trailer error
+                        # after Avito's complete multi-megabyte HTML has already
+                        # arrived. Keep that valid body instead of downloading
+                        # it again; genuinely truncated HTML is retried below.
+                        if (
+                            response.status_code == 200
+                            and re.search(
+                                rb"</html>\s*$",
+                                response.content,
+                                re.IGNORECASE,
+                            )
+                        ):
+                            LOGGER.warning(
+                                "%s: curl ended with %s after a complete "
+                                "HTTP 200 HTML body (%s bytes); accepting body",
+                                context,
+                                type(stream_exc).__name__,
+                                len(response.content),
+                            )
+                        else:
+                            if stream_exc.response is None:
+                                stream_exc.response = response
+                            raise
+                    else:
+                        response.content = b"".join(chunks)
+                break
+            except (IncompleteRead, CurlConnectionError, CurlTimeout) as exc:
+                partial_response = exc.response
+                LOGGER.debug(
+                    "%s: transient transport error %s (curl code %s); "
+                    "status=%s; headers=%r; received_body_bytes=%s",
+                    context,
+                    type(exc).__name__,
+                    exc.code,
+                    getattr(partial_response, "status_code", None),
+                    dict(getattr(partial_response, "headers", {}) or {}),
+                    len(getattr(partial_response, "content", b"") or b""),
+                )
+                if (
+                    partial_response is not None
+                    and partial_response.status_code in (403, 429, 439)
+                ):
+                    response = partial_response
+                    break
+                if transport_attempt == MAX_TRANSIENT_GET_RETRIES:
+                    raise
+                LOGGER.warning(
+                    "%s: transient transport error %s; retrying GET "
+                    "(attempt %s/%s)",
+                    context,
+                    type(exc).__name__,
+                    transport_attempt + 2,
+                    MAX_TRANSIENT_GET_RETRIES + 1,
+                )
+                time.sleep(TRANSPORT_RETRY_DELAY_SECONDS)
+        if not is_qrator_challenge_response(response):
             return response
         log_redirect_response(response, context=context)
         if attempt == MAX_QRATOR_RETRIES_PER_REQUEST:
             raise RuntimeError(
-                f"{context}: Qrator HTTP 302 remained after "
+                f"{context}: Qrator challenge remained after "
                 f"{MAX_QRATOR_RETRIES_PER_REQUEST} cookie flows"
             )
         LOGGER.info(
-            "%s: HTTP 302 from QRATOR, starting /web/2/ft -> /web/1/u",
+            "%s: HTTP %s from QRATOR, starting /web/2/ft -> /web/1/u",
             context,
+            response.status_code,
         )
-        run_qrator_cookie_flow(session, context=context)
+        run_qrator_cookie_flow(
+            session,
+            qrator_html=response.text,
+            page_url=response.url or url,
+            context=context,
+        )
 
     raise AssertionError("unreachable")
 
@@ -527,7 +1022,7 @@ def save_html_response(response: Any, *, context: str) -> Path:
 
 
 def log_redirect_response(response: Any, *, context: str) -> None:
-    """Log malformed or opaque 3xx responses whose destination is unavailable."""
+    """Preserve an HTML Qrator challenge or opaque redirect without Location."""
     if redirect_target(response):
         return
     body = preview(response.text, limit=LOG_BODY_PREVIEW_LENGTH)
@@ -566,7 +1061,9 @@ def run_pow_verification(session: requests.Session, response: Any) -> int | None
     challenge_jwt = challenge_jwt_from_get(
         response_json(get_response, endpoint="firewallPow/get")
     )
+    LOGGER.info("firewallPow/get succeeded; computing verify payload")
     verify_payload = build_verify_payload(challenge_jwt)
+    LOGGER.info("firewallPow payload computed; submitting verify")
     verify_response = session.post(
         VERIFY_URL,
         json=verify_payload,
@@ -577,12 +1074,20 @@ def run_pow_verification(session: requests.Session, response: Any) -> int | None
     )
     if not verified:
         raise RuntimeError("firewallPow/verify: server returned verified=false")
+    LOGGER.debug(
+        "firewallPow/verify cookie names: %s",
+        session_cookie_names(session),
+    )
+    LOGGER.info(
+        "firewallPow verification succeeded; unblock_ttl=%s",
+        unblock_ttl,
+    )
     return unblock_ttl
 
 
 def handle_firewall_response(
     session: requests.Session, response: Any, *, context: str
-) -> int | GeeTestLoad | None:
+) -> int | GeeTestVerified | None:
     """Classify and handle the protection response from any request.
 
     HTTP 439 is the JSON PoW branch; HTTP 429 is considered GeeTest only after
@@ -592,20 +1097,43 @@ def handle_firewall_response(
         return None
     if response.status_code == 403:
         log_forbidden_response(response, context=context)
-        raise RuntimeError(f"{context}: HTTP 403; inspect firewall-debug.log")
+        raise RuntimeError(
+            f"{context}: HTTP 403 ({forbidden_response_reason(response)})"
+        )
     if response.status_code == 439:
         LOGGER.info("%s: HTTP 439, starting firewallPow", context)
         return run_pow_verification(session, response)
     if response.status_code == 429:
-        if not is_geetest_firewall_html(response.text):
-            LOGGER.warning(
-                "%s: HTTP 429 is not a recognized GeeTest HTML branch", context
+        content_type = response.headers.get("content-type", "").lower()
+        html_path = (
+            save_html_response(response, context=context)
+            if "html" in content_type
+            else None
+        )
+        if html_path:
+            LOGGER.info(
+                "%s: full HTTP 429 HTML saved to %s",
+                context,
+                html_path,
             )
+        if response_has_pow_challenge(response):
+            LOGGER.info(
+                "%s: HTTP 429 contains pow_challenge, starting firewallPow",
+                context,
+            )
+            return run_pow_verification(session, response)
+        if not is_geetest_firewall_html(response.text):
+            log_unrecognized_protection_response(response, context=context)
             raise RuntimeError(
-                "HTTP 429 firewall page does not select the GeeTest branch"
+                f"{context}: HTTP 429 does not select PoW or GeeTest "
+                f"({forbidden_response_reason(response)})"
             )
         LOGGER.info("%s: HTTP 429, starting GeeTest", context)
-        return start_geetest(session, response.text)
+        return run_geetest_verification(
+            session,
+            response.text,
+            referer=str(response.url) if response.url else REFERER,
+        )
     raise RuntimeError(
         f"{context}: expected HTTP 200, 403, 429, or 439; "
         f"received HTTP {response.status_code}"
@@ -623,17 +1151,32 @@ def page_url(page: int) -> str:
 def request_pages(
     session: requests.Session,
 ) -> tuple[tuple[PageRequestResult, ...], Any | None]:
-    """Request pages 1 through 10 after the firewall path is clear."""
+    """Request pages 1 through ``PAGES_TO_REQUEST`` after protection clears."""
     set_session_headers(session, PAGE_REQUEST_HEADERS)
     results = []
     for index in range(PAGES_TO_REQUEST):
+        if index:
+            time.sleep(PAGE_REQUEST_DELAY_SECONDS)
         page = index + 1
-        response = get_with_qrator_recovery(
-            session,
-            page_url(page),
-            session_headers=PAGE_REQUEST_HEADERS,
-            context=f"page p={page}",
-        )
+        try:
+            response = get_with_qrator_recovery(
+                session,
+                page_url(page),
+                session_headers=PAGE_REQUEST_HEADERS,
+                timeout_seconds=DOCUMENT_REQUEST_TIMEOUT_SECONDS,
+                context=f"page p={page}",
+                stream_response_body=True,
+            )
+        except (IncompleteRead, CurlConnectionError, CurlTimeout) as exc:
+            LOGGER.warning(
+                "page p=%s: transport failed after %s attempts (%s); "
+                "continuing with the next page",
+                page,
+                MAX_TRANSIENT_GET_RETRIES + 1,
+                type(exc).__name__,
+            )
+            results.append(PageRequestResult(page=page, status_code=0))
+            continue
         results.append(
             PageRequestResult(
                 page=page,
@@ -641,33 +1184,64 @@ def request_pages(
                 redirect_location=redirect_target(response),
             )
         )
+        LOGGER.info("page p=%s: HTTP %s", page, response.status_code)
+        LOGGER.debug(
+            "page p=%s: session cookie names=%s",
+            page,
+            session_cookie_names(session),
+        )
         if 300 <= response.status_code < 400:
             log_redirect_response(response, context=f"page p={page}")
-        if response.status_code == 403:
-            log_forbidden_response(response, context=f"page p={page}")
-        if response.status_code in (429, 439):
+        if response.status_code in (403, 429, 439):
             return tuple(results), response
     return tuple(results), None
 
 
-def run() -> CompletedFlow | GeeTestLoad:
+def run() -> CompletedFlow:
     """Obtain a challenge, then execute the recorded ``get -> verify`` flow."""
-    session = requests.Session()
+    # This flow must use the machine's public connection. In particular, do
+    # not silently inherit a desktop/VPN proxy such as 127.0.0.1:2080. Removing
+    # these variables also covers the image downloads made inside GeekedTest.
+    for variable in PROXY_ENVIRONMENT_VARIABLES:
+        os.environ.pop(variable, None)
+
+    # curl_cffi's Firefox profile supplies an HTTP/2/TLS fingerprint close to
+    # the Firefox 152 browser recorded in the HAR. The explicit headers below
+    # retain the exact Firefox 152 request values.
+    session = requests.Session(
+        impersonate=HTTP_IMPERSONATE_PROFILE,
+        trust_env=False,
+    )
     set_session_headers(session, {**REQUEST_HEADERS, "Referer": REFERER})
 
-    challenge_response = get_with_qrator_recovery(
-        session,
-        CHALLENGE_SOURCE_URL,
-        session_headers={**REQUEST_HEADERS, "Referer": REFERER},
-        request_headers=CHALLENGE_REQUEST_HEADERS,
-        context="challenge source",
-    )
-    stage_result = handle_firewall_response(
-        session, challenge_response, context="challenge source"
-    )
-    if isinstance(stage_result, GeeTestLoad):
-        return stage_result
-    pow_unblock_ttl = stage_result
+    pow_unblock_ttl = None
+    for initial_transition in range(MAX_PROTECTION_TRANSITIONS + 1):
+        challenge_response = get_with_qrator_recovery(
+            session,
+            CHALLENGE_SOURCE_URL,
+            session_headers={**REQUEST_HEADERS, "Referer": REFERER},
+            request_headers=CHALLENGE_REQUEST_HEADERS,
+            context="challenge source",
+        )
+        stage_result = handle_firewall_response(
+            session,
+            challenge_response,
+            context="challenge source",
+        )
+        if isinstance(stage_result, GeeTestVerified):
+            LOGGER.info(
+                "challenge source: GeeTest cleared; repeating initial GET"
+            )
+            continue
+        if stage_result is not None:
+            pow_unblock_ttl = stage_result
+        elif challenge_response.status_code == 200:
+            LOGGER.info(
+                "challenge source: HTTP 200; no firewall verification required"
+            )
+        break
+    else:
+        raise RuntimeError("too many firewall transitions at challenge source")
 
     for transition in range(MAX_PROTECTION_TRANSITIONS + 1):
         page_requests, protection_response = request_pages(session)
@@ -682,8 +1256,12 @@ def run() -> CompletedFlow | GeeTestLoad:
         stage_result = handle_firewall_response(
             session, protection_response, context=f"page p={page}"
         )
-        if isinstance(stage_result, GeeTestLoad):
-            return stage_result
+        if isinstance(stage_result, GeeTestVerified):
+            LOGGER.info(
+                "page p=%s: GeeTest cleared; restarting page pass",
+                page,
+            )
+            continue
         if stage_result is not None:
             pow_unblock_ttl = stage_result
 
@@ -700,24 +1278,24 @@ if __name__ == "__main__":
         format="%(asctime)s %(levelname)s %(message)s",
         handlers=[console_handler, file_handler],
     )
-    result = run()
-    if isinstance(result, GeeTestLoad):
-        print(
-            "GeeTest task loaded; "
-            f"captcha_id={result.captcha_id}; "
-            f"lot_number={result.lot_number}; type={result.captcha_type}"
-        )
-    else:
-        if result.pow_unblock_ttl is None:
-            message = "challenge source returned HTTP 200; no firewall verification is required"
-        else:
-            message = "firewallPow verification succeeded"
-            message += f"; unblock_ttl={result.pow_unblock_ttl}"
-        print(message)
-        for page_result in result.page_requests:
-            message = f"page p={page_result.page}: HTTP {page_result.status_code}"
-            if page_result.redirect_location:
-                message += f" -> {page_result.redirect_location}"
-            elif 300 <= page_result.status_code < 400:
-                message += " -> Location is absent; inspect firewall-debug.log"
-            print(message)
+    try:
+        result = run()
+    except (
+        RuntimeError,
+        IncompleteRead,
+        CurlConnectionError,
+        CurlTimeout,
+    ) as exc:
+        LOGGER.error("%s", exc)
+        raise SystemExit(1) from None
+    successful_pages = sum(
+        page.status_code == 200 for page in result.page_requests
+    )
+    transport_failures = sum(
+        page.status_code == 0 for page in result.page_requests
+    )
+    print(
+        "run completed; "
+        f"HTTP 200 pages={successful_pages}/{len(result.page_requests)}; "
+        f"transport failures={transport_failures}"
+    )

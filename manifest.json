@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-07-27",
+  "source_har": "/home/al/Загрузки/MY SITE Archive [26-07-27 16-30-23].har",
+  "javascript_files": [
+    {
+      "har_entry": 19,
+      "url": "https://www.avito.st/dstatic/build/client/ru-RU/bootstrap.05ecc62c6d849fae.js",
+      "file": "bootstrap.05ecc62c6d849fae.js",
+      "bytes": 2295504,
+      "sha256": "32cfe2d47c60f50481d61eeed2daa3251a71145629b042d84be7e388064db355",
+      "get_occurrences": 1,
+      "verify_occurrences": 1
+    }
+  ]
+}

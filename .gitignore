@@ -1,6 +1,7 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.venv/
 
 firewall-debug.log
 firewall-debug-responses/

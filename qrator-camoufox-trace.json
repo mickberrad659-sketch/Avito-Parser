@@ -1,0 +1,95 @@
+{
+  "note": "Plaintext captured before XTEA inside Camoufox.",
+  "bundle": "f1b0f8f3fb96fe30a8e6.js",
+  "url": "https://www.avito.ru/qrator-runtime-trace",
+  "browser": {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "platform": "MacIntel",
+    "languages": [
+      "en-US",
+      "en"
+    ],
+    "hardwareConcurrency": 10,
+    "deviceMemory": null,
+    "screen": {
+      "width": 960,
+      "height": 540,
+      "availWidth": 960,
+      "availHeight": 525,
+      "colorDepth": 30,
+      "pixelDepth": 30
+    }
+  },
+  "cipherCalls": [],
+  "ftRequests": [
+    {
+      "method": "POST",
+      "url": "https://www.avito.ru/web/2/ft",
+      "headers": {
+        "host": "www.avito.ru",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:135.0) Gecko/20100101 Firefox/135.0",
+        "accept": "*/*",
+        "accept-language": "en-US,en;q=0.5",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "content-type": "multipart/form-data;boundary=\"03830777789074136\"",
+        "content-length": "1217",
+        "referer": "https://www.avito.ru/qrator-runtime-trace",
+        "origin": "https://www.avito.ru",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "connection": "keep-alive",
+        "cookie": "f=5.ba574e2650ef0c80e8330b497b1ba79c16d443061c57ac4216d443061c57ac4216d443061c57ac4216d443061c57ac42cec4d980e289734fcec4d980e289734fcec4d980e289734f96a296658223dafb96a296658223dafb381ebd593ffbb4c30df103df0c26013a20f3d16ad0b1c5460df103df0c26013aba0ac8037e2b74f98b1472fe2f9ba6b9d2b98b10eab7caeaa09db4af14a5e9ad2de6947c9626acff1b79bc6b7defe3bbdc0d86d9e44006d8143114829cf33ca746b8ae4e81acb9fa3de19da9ed218fe2fb0fb526bb39450a87829363e2d856a2b5b87f59517a23f23de19da9ed218fe23de19da9ed218fe2c772035eab81f5e187829363e2d856a2143114829cf33ca7172c80659da4d447f1cc8f457244b1a81ac794a8d120d7dc706fda17b87c76813aa4dd63d61b8d9eeeb15f31cdadbb2a6d4ae73d3f3216c7e0d3014a7285840153bc326cd5f74c8bd11b647f84385527cb93c589dc4593c246b8ae4e81acb9fa46b8ae4e81acb9fa02c68186b443a7acdac5171c1d1c39f6bde20a658c918ca12da10fb74cac1eab2da10fb74cac1eab00b11584c9fb93e039d8465dc93ed7302f4a9c22eedccd9675dded44b42a0d02"
+      },
+      "postData": "\r\n--03830777789074136\r\nContent-Disposition: form-data; name=\"f\"\r\n\r\n5.ba574e2650ef0c80e8330b497b1ba79c16d443061c57ac4216d443061c57ac4216d443061c57ac4216d443061c57ac42cec4d980e289734fcec4d980e289734fcec4d980e289734f96a296658223dafb96a296658223dafb381ebd593ffbb4c30df103df0c26013a20f3d16ad0b1c5460df103df0c26013aba0ac8037e2b74f98b1472fe2f9ba6b9d2b98b10eab7caeaa09db4af14a5e9ad2de6947c9626acff1b79bc6b7defe3bbdc0d86d9e44006d8143114829cf33ca746b8ae4e81acb9fa3de19da9ed218fe2fb0fb526bb39450a87829363e2d856a2b5b87f59517a23f23de19da9ed218fe23de19da9ed218fe2c772035eab81f5e187829363e2d856a2143114829cf33ca7172c80659da4d447f1cc8f457244b1a81ac794a8d120d7dc706fda17b87c76813aa4dd63d61b8d9eeeb15f31cdadbb2a6d4ae73d3f3216c7e0d3014a7285840153bc326cd5f74c8bd11b647f84385527cb93c589dc4593c246b8ae4e81acb9fa46b8ae4e81acb9fa02c68186b443a7acdac5171c1d1c39f6bde20a658c918ca12da10fb74cac1eab2da10fb74cac1eab00b11584c9fb93e039d8465dc93ed7302f4a9c22eedccd9675dded44b42a0d02\r\n--03830777789074136\r\nContent-Disposition: form-data; name=\"s\"\r\n\r\nb0b332a8882daa947b6739437e12b3af112e3e382234da34fa6dbf8d423193fde1b74bd568bcc8bf6e9ed9c6dffce8df30ce365ce6b3700ee683c54d9c6ea740c68449b18c9680424261fc4d4b0f6fe386b9ae08e4a5fad9\r\n--03830777789074136--\r\n",
+      "fields": {
+        "f": "5.ba574e2650ef0c80e8330b497b1ba79c16d443061c57ac4216d443061c57ac4216d443061c57ac4216d443061c57ac42cec4d980e289734fcec4d980e289734fcec4d980e289734f96a296658223dafb96a296658223dafb381ebd593ffbb4c30df103df0c26013a20f3d16ad0b1c5460df103df0c26013aba0ac8037e2b74f98b1472fe2f9ba6b9d2b98b10eab7caeaa09db4af14a5e9ad2de6947c9626acff1b79bc6b7defe3bbdc0d86d9e44006d8143114829cf33ca746b8ae4e81acb9fa3de19da9ed218fe2fb0fb526bb39450a87829363e2d856a2b5b87f59517a23f23de19da9ed218fe23de19da9ed218fe2c772035eab81f5e187829363e2d856a2143114829cf33ca7172c80659da4d447f1cc8f457244b1a81ac794a8d120d7dc706fda17b87c76813aa4dd63d61b8d9eeeb15f31cdadbb2a6d4ae73d3f3216c7e0d3014a7285840153bc326cd5f74c8bd11b647f84385527cb93c589dc4593c246b8ae4e81acb9fa46b8ae4e81acb9fa02c68186b443a7acdac5171c1d1c39f6bde20a658c918ca12da10fb74cac1eab2da10fb74cac1eab00b11584c9fb93e039d8465dc93ed7302f4a9c22eedccd9675dded44b42a0d02",
+        "s": "b0b332a8882daa947b6739437e12b3af112e3e382234da34fa6dbf8d423193fde1b74bd568bcc8bf6e9ed9c6dffce8df30ce365ce6b3700ee683c54d9c6ea740c68449b18c9680424261fc4d4b0f6fe386b9ae08e4a5fad9"
+      }
+    }
+  ],
+  "decoded": {
+    "f": "960;540;30;30;240;180;240;180;240;180;240;180;240;240;240;240;240;240;240;180;180;180;180;180;1;1;1;1;1;1;0;1;0;1;1;1;1;1;0;1;1;1;1;1;0;10;3955448693;41002199;1;2;2;2;0;2;1;1;1;1;1;1;0;1;1;1;1;0;0;0;0;0;0;1;1;1;0;0;1;0;1;1;0;0;0;0;0;0;0;0;0;0;0;0;1;1;0;0;1;1;1;1;0;1;0;5;3641819743;3577560136;663899755;3469306551;1582120644;1320192270;4189790824;0;0;0;1;1;1;1;1;1;1;1;1;1;2;1;1;1;1785171954;0;0;0;0;0;0;0;0;0;0;3517267889;3369925510",
+    "s": "{\"monospace\":true,\"readOnly\":false,\"noLengthPlugins\":false,\"installedExtensions\":[]}"
+  },
+  "directPreEncodeCapture": {
+    "f": [],
+    "s": []
+  },
+  "dynamicSources": [],
+  "roundTripMatches": {
+    "f": true,
+    "s": true
+  },
+  "directCaptureMatchesDecode": {
+    "f": false,
+    "s": false
+  },
+  "cookies": [
+    {
+      "name": "f",
+      "value": "5.ba574e2650ef0c80e8330b497b1ba79c16d443061c57ac4216d443061c57ac4216d443061c57ac4216d443061c57ac42cec4d980e289734fcec4d980e289734fcec4d980e289734f96a296658223dafb96a296658223dafb381ebd593ffbb4c30df103df0c26013a20f3d16ad0b1c5460df103df0c26013aba0ac8037e2b74f98b1472fe2f9ba6b9d2b98b10eab7caeaa09db4af14a5e9ad2de6947c9626acff1b79bc6b7defe3bbdc0d86d9e44006d8143114829cf33ca746b8ae4e81acb9fa3de19da9ed218fe2fb0fb526bb39450a87829363e2d856a2b5b87f59517a23f23de19da9ed218fe23de19da9ed218fe2c772035eab81f5e187829363e2d856a2143114829cf33ca7172c80659da4d447f1cc8f457244b1a81ac794a8d120d7dc706fda17b87c76813aa4dd63d61b8d9eeeb15f31cdadbb2a6d4ae73d3f3216c7e0d3014a7285840153bc326cd5f74c8bd11b647f84385527cb93c589dc4593c246b8ae4e81acb9fa46b8ae4e81acb9fa02c68186b443a7acdac5171c1d1c39f6bde20a658c918ca12da10fb74cac1eab2da10fb74cac1eab00b11584c9fb93e039d8465dc93ed7302f4a9c22eedccd9675dded44b42a0d02",
+      "domain": ".avito.ru",
+      "path": "/",
+      "expires": 1785258354,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    },
+    {
+      "name": "ft",
+      "value": "\"TRACE_FT_VALUE\"",
+      "domain": ".avito.ru",
+      "path": "/",
+      "expires": 1785258355,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "None"
+    }
+  ],
+  "console": [
+    "[JavaScript Warning: \"WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.\" {file: \"https://www.avito.ru/qrator-runtime-trace\" line: 56}]",
+    "[JavaScript Error: \"Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at chrome-extension://bcoiihabmfakmgppaccdhijkfgbbdjlj/js/update-content.js. (Reason: CORS request not http).\"]"
+  ],
+  "pageErrors": []
+}

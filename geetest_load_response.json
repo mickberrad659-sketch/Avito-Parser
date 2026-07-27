@@ -1,0 +1,24 @@
+{
+  "har_entry": 12,
+  "url": "https://gcaptcha4.geevisit.com/load?callback=geetest_1785159864813&captcha_id=2d9c743cf7d63dbc9db578a608196bcd&challenge=e7e13b94-b53a-499b-b562-b09c7eea853b&client_type=web&lang=rus",
+  "request_parameters": {
+    "callback": "geetest_1785159864813",
+    "captcha_id": "2d9c743cf7d63dbc9db578a608196bcd",
+    "challenge": "e7e13b94-b53a-499b-b562-b09c7eea853b",
+    "client_type": "web",
+    "lang": "rus"
+  },
+  "load_response": {
+    "lot_number": "d469504010bc4776b7b96eb740c6142a",
+    "captcha_type": "slide",
+    "payload": "AgFD8gWUUuHFx-XvpP7J2fn2iRwqB7xN3rcHXI_gQWYCDf2VyrDZ8g0Cv9Cw0O9XRtsrXmYIe8Rq43t7DFiXQGyVeN4gZ1cX1GpX8humUavL0pJi0WAY1HtDRlST41JbPCYrmPcpp67bc1zBMV0dmZnSodMiEq5eoJzrmlmGHT7qr9l9xP9anGulKnFfJz6r_lDkh_J2Kw_pJR8AhX1SA2ksLHab0qzrlZQCal38BRjf7gQ91FvIvCk1a4iFfx66b5N6LT6UqjVj_Dk_vlNIox8J3rn2KS0u5aRuhN-g-1nzPIy6J07nUOteFLq3anxo0ruhsQ2zLWTSQjxkxJLxpsU54059KaRbpP1dvjcSYYevkM4eQD84Q4CUAB4ODVnU_XBtmLl5vBbwGCUpO3m2bhMUkKBWoBxsAXSB0GEVLIO0iDERtUULfgp16zARA_aBTnfIq35DmbXF3jcNbON6JQZH5TiTO_2tFx7GB1BjwX7UwuHyvDi80XeCrdqSaazUqNHdvpO572mMt_Wn6Syma-b2W-nQwwGQM_Dw27sm8eY4q3KYWyp4tZyLqRnA7xJFbp_NnyXt7tPT4M79pXL3lL5NWJxdnDmhd8LRhPDKzUwZd6qZwVsSMZIqZh64yswSzdn6N10LjYFPiXfHI2dF4RnoC4TCAKuTv0ayVlMj76qAEWo8Cg9H3Kb35M7tX2cVwIowFrmtzVmn9F_XDxc_IcZl04_taCv1PLoK1K4kZj0eiYTjzSqyusXDB_Tm-Qla6YeiNV5-XH9T_9GpuhkTWmJpWaItoKRFc8SKsfdWpE-S_ZFxwlIHwEgSeYW06yMFxn3f1yKH8ZRKiAfnitMdFA8lt67QkPNG0QbovdHvZL7fY9Qbd5ZeaGHDqvzwSPKtzauqoAhMj2SfkvRqOg4eXr4QO23Xjh2kHekX8ocV0Cw=",
+    "payload_protocol": 1,
+    "process_token": "44bc30df4cf62ca045ceeb6f04690a73e1d06715f207bdff1ad769920abc0925",
+    "pow_detail": {
+      "version": "1",
+      "bits": 0,
+      "datetime": "2026-07-27T21:44:22.249814+08:00",
+      "hashfunc": "md5"
+    }
+  }
+}
