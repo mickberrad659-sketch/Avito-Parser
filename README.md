@@ -95,19 +95,25 @@ GET не повторяется, а причина записывается в �
 соответствуют Firefox 152 из HAR.
 
 Если источник возвращает HTTP 200, проверка не требуется. При HTTP 429 скрипт
-сначала проверяет JSON на `pow_challenge`, затем HTML на маркеры именно GeeTest
-(`#geetest_captcha`, `gt4.js`, `initGeetest4` и `captchaId`). Неизвестная ветка
-не угадывается: её body и полный HTML сохраняются для диагностики. Для GeeTest
-выполняется ветка из дополнительного HAR: `/web/5/firewallCaptcha/get`, затем
-GeeTest `/load`. Полный объект `data` из `/load` передаётся уже реализованному
-solver-у из `GeekedTest`; тот формирует `w`, отправляет GeeTest `/verify`, а
-полученный `seccode` передаётся в Avito
+сначала проверяет JSON на `pow_challenge`, затем распознаёт captcha dispatcher
+по `X-Firewall-Show-Captcha: true` и ссылке
+`ru.avito://1/firewall/captcha/show`. Dispatcher вызывает
+`/web/5/firewallCaptcha/get` и классифицирует фактически выбранный тип.
+`geeTest` запускается с captcha ID, извлечённым из Avito bundle; для
+HTML-ветки остаётся проверка маркеров `#geetest_captcha`, `gt4.js`,
+`initGeetest4` и `captchaId`.
+
+Для GeeTest затем выполняется `/load`. Полный объект `data` передаётся уже
+реализованному solver-у из `GeekedTest`; тот формирует `w`, отправляет GeeTest
+`/verify`, а полученный `seccode` передаётся в Avito
 `POST /web/3/firewallCaptcha/verify`. После `verified=true` исходный GET
 повторяется в той же Avito-сессии.
 
-Живой E2E этой ветки подтверждён 27 июля 2026 года: свежие
-`firewallCaptcha/get` и GeeTest `/load` были решены локальным solver-ом, после
-чего Avito принял `firewallCaptcha/verify` и вернул успешную верификацию.
+Живой E2E HTML- и JSON-dispatcher веток подтверждён 27–28 июля 2026 года:
+свежие `firewallCaptcha/get` и GeeTest `/load` были решены локальным solver-ом,
+после чего Avito принял `firewallCaptcha/verify` и вернул успешную
+верификацию. Неизвестные или пока неподдерживаемые варианты сохраняются
+целиком для диагностики.
 
 ## Что обрабатывает код
 

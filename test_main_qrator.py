@@ -250,6 +250,143 @@ def test_unknown_json_protection_body_is_saved_with_json_extension(
     assert saved.read_text(encoding="utf-8") == body
 
 
+def test_json_captcha_dispatcher_is_recognized() -> None:
+    response = FakeResponse(
+        429,
+        headers={
+            "content-type": "application/json",
+            "x-firewall-show-captcha": "true",
+        },
+        json_value={
+            "too-many-requests": {
+                "message": "Доступ временно ограничен",
+                "link": "ru.avito://1/firewall/captcha/show",
+            }
+        },
+    )
+
+    assert main.is_firewall_captcha_dispatcher_response(response) is True
+
+
+def test_http_429_dispatcher_is_routed_to_captcha_flow(tmp_path) -> None:
+    body = (
+        '{"too-many-requests":{"message":"Доступ временно ограничен",'
+        '"link":"ru.avito://1/firewall/captcha/show"}}'
+    )
+    response = FakeResponse(
+        429,
+        headers={
+            "content-type": "application/json",
+            "x-firewall-show-captcha": "true",
+        },
+        json_value={
+            "too-many-requests": {
+                "message": "Доступ временно ограничен",
+                "link": "ru.avito://1/firewall/captcha/show",
+            }
+        },
+        text=body,
+        url="https://www.avito.ru/web/1/js/items?p=13",
+    )
+    verified = main.GeeTestVerified(lot_number="lot")
+    session = FakeSession()
+
+    with (
+        patch.object(main, "DEBUG_RESPONSE_DIR", tmp_path),
+        patch.object(
+            main,
+            "run_firewall_captcha_dispatcher",
+            return_value=verified,
+        ) as dispatcher,
+    ):
+        result = main.handle_firewall_response(
+            session,
+            response,
+            context="page p=13",
+        )
+
+    assert result is verified
+    dispatcher.assert_called_once_with(
+        session,
+        referer=response.url,
+    )
+    assert (tmp_path / "page-p-13-http-429.json").read_text() == body
+
+
+def test_firewall_captcha_get_selects_geetest_with_exact_request() -> None:
+    class CaptchaSession(FakeSession):
+        def post(self, url, **kwargs):
+            self.posts.append((url, kwargs, dict(self.headers)))
+            return FakeResponse(
+                200,
+                headers={"content-type": "application/json"},
+                json_value={
+                    "success": {
+                        "result": {
+                            "captcha": {
+                                "geeTest": {"type": "geeTest"},
+                            }
+                        }
+                    }
+                },
+                url=url,
+            )
+
+    session = CaptchaSession()
+    selected = main.fetch_firewall_captcha(
+        session,
+        referer="https://www.avito.ru/web/1/js/items?p=13",
+    )
+
+    assert selected == {"type": "geeTest"}
+    url, kwargs, headers = session.posts[0]
+    assert url == main.FIREWALL_CAPTCHA_GET_URL
+    assert kwargs["json"] == {"refreshInternalCaptcha": False}
+    assert kwargs["allow_redirects"] is False
+    assert headers["Accept"] == "*/*"
+    assert headers["Priority"] == "u=4"
+    assert headers["Referer"].endswith("/web/1/js/items?p=13")
+
+
+def test_captcha_dispatcher_uses_bundle_geetest_id() -> None:
+    load, _ = geetest_fixture()
+    verified = main.GeeTestVerified(lot_number=load.lot_number)
+    session = FakeSession()
+
+    with (
+        patch.object(
+            main,
+            "fetch_firewall_captcha",
+            return_value={"type": "geeTest"},
+        ),
+        patch.object(
+            main,
+            "load_geetest_task",
+            return_value=load,
+        ) as load_task,
+        patch.object(
+            main,
+            "complete_geetest_verification",
+            return_value=verified,
+        ) as complete,
+    ):
+        result = main.run_firewall_captcha_dispatcher(
+            session,
+            referer="https://www.avito.ru/items?p=13",
+        )
+
+    assert result is verified
+    load_task.assert_called_once_with(
+        session,
+        captcha_id=main.GEETEST_CAPTCHA_ID,
+    )
+    complete.assert_called_once_with(
+        session,
+        load,
+        referer="https://www.avito.ru/items?p=13",
+    )
+
+
 def test_qrator_html_is_recognized_when_status_is_429() -> None:
     response = FakeResponse(
         429,

@@ -38,6 +38,7 @@ VERIFY_URL = f"{BASE_URL}/web/3/firewallPow/verify"
 FIREWALL_CAPTCHA_GET_URL = f"{BASE_URL}/web/5/firewallCaptcha/get"
 FIREWALL_CAPTCHA_VERIFY_URL = f"{BASE_URL}/web/3/firewallCaptcha/verify"
 GEETEST_LOAD_URL = "https://gcaptcha4.geevisit.com/load"
+GEETEST_CAPTCHA_ID = "2d9c743cf7d63dbc9db578a608196bcd"
 QRATOR_FT_URL = f"{BASE_URL}/web/2/ft"
 QRATOR_PIXEL_URL = f"{BASE_URL}/web/1/u"
 QRATOR_FAVICON_URL = f"{BASE_URL}/favicon.ico"
@@ -356,6 +357,30 @@ def response_has_pow_challenge(response: Any) -> bool:
     )
 
 
+def is_firewall_captcha_dispatcher_response(response: Any) -> bool:
+    """Recognize the JSON instruction to open Avito's generic captcha flow."""
+    if response.status_code != 429:
+        return False
+    try:
+        payload = response.json()
+    except (json.JSONDecodeError, ValueError):
+        return False
+    if not isinstance(payload, dict):
+        return False
+    details = payload.get("too-many-requests")
+    if not isinstance(details, dict):
+        return False
+    link = details.get("link")
+    show_captcha = response.headers.get(
+        "x-firewall-show-captcha", ""
+    ).strip().lower()
+    return (
+        show_captcha == "true"
+        and isinstance(link, str)
+        and link.endswith("/firewall/captcha/show")
+    )
+
+
 def geetest_captcha_id_from_html(html: str) -> str:
     """Extract the GeeTest id embedded in the HTTP 429 firewall HTML."""
     match = re.search(r"const\s+captchaId\s*=\s*['\"]([^'\"]+)['\"]", html)
@@ -399,40 +424,72 @@ def parse_jsonp(body: str, *, callback: str) -> dict[str, Any]:
     return result
 
 
-def start_geetest(
+def fetch_firewall_captcha(
     session: requests.Session,
-    firewall_html: str,
     *,
     referer: str,
-) -> GeeTestLoad:
-    """Perform the 429 branch through the GeeTest initial ``/load`` request.
-
-    The page gives the captcha id.  The captured ``gt4.js`` generates the UUID
-    challenge and JSONP callback client-side, which is reproduced here.
-    """
-    if not is_geetest_firewall_html(firewall_html):
-        raise RuntimeError("HTTP 429 firewall page does not select the GeeTest branch")
-    set_session_headers(session, {**REQUEST_HEADERS, "Referer": referer})
-    captcha_id = geetest_captcha_id_from_html(firewall_html)
-    captcha_response = response_json(
-        session.post(
-            FIREWALL_CAPTCHA_GET_URL,
-            json={"refreshInternalCaptcha": False},
-            timeout=REQUEST_TIMEOUT_SECONDS,
-        ),
-        endpoint="firewallCaptcha/get",
+) -> dict[str, Any]:
+    """Ask Avito which concrete captcha variant the dispatcher selected."""
+    set_session_headers(
+        session,
+        {
+            **CAPTCHA_VERIFY_HEADERS,
+            "Referer": referer,
+        },
     )
-    try:
-        captcha_type = captcha_response["success"]["result"]["captcha"]["geeTest"][
-            "type"
-        ]
-    except (KeyError, TypeError) as exc:
-        raise RuntimeError("firewallCaptcha/get: GeeTest was not selected") from exc
-    if captcha_type != "geeTest":
-        raise RuntimeError(
-            f"firewallCaptcha/get: unsupported captcha type {captcha_type!r}"
+    response = session.post(
+        FIREWALL_CAPTCHA_GET_URL,
+        json={"refreshInternalCaptcha": False},
+        timeout=REQUEST_TIMEOUT_SECONDS,
+        allow_redirects=False,
+    )
+    if response.status_code != 200:
+        saved_path = save_response_body(
+            response,
+            context="firewallCaptcha-get",
         )
+        raise RuntimeError(
+            "firewallCaptcha/get: expected HTTP 200, received "
+            f"HTTP {response.status_code}; body saved to {saved_path}"
+        )
+    body = response_json(response, endpoint="firewallCaptcha/get")
+    try:
+        captcha = body["success"]["result"]["captcha"]
+    except (KeyError, TypeError) as exc:
+        raise RuntimeError(
+            "firewallCaptcha/get: no success.result.captcha"
+        ) from exc
+    if not isinstance(captcha, dict):
+        raise RuntimeError("firewallCaptcha/get: captcha must be an object")
+    if isinstance(captcha.get("type"), str):
+        selected = captcha
+    else:
+        selected = next(
+            (
+                value
+                for key in ("internalCaptcha", "hCaptcha", "geeTest")
+                if isinstance((value := captcha.get(key)), dict)
+                and isinstance(value.get("type"), str)
+            ),
+            None,
+        )
+    if selected is None:
+        raise RuntimeError(
+            "firewallCaptcha/get: no supported captcha variant in response"
+        )
+    LOGGER.info(
+        "firewallCaptcha/get selected type=%s",
+        selected["type"],
+    )
+    return selected
 
+
+def load_geetest_task(
+    session: requests.Session,
+    *,
+    captcha_id: str,
+) -> GeeTestLoad:
+    """Load a fresh GeeTest task for Avito's bundle-level captcha id."""
     challenge = str(uuid.uuid4())
     callback = f"geetest_{int(time.time() * 1000) + secrets.randbelow(10_000)}"
     load_response = session.get(
@@ -465,6 +522,29 @@ def start_geetest(
         else None,
         data=data,
     )
+
+
+def start_geetest(
+    session: requests.Session,
+    firewall_html: str,
+    *,
+    referer: str,
+) -> GeeTestLoad:
+    """Perform the 429 branch through the GeeTest initial ``/load`` request.
+
+    The page gives the captcha id.  The captured ``gt4.js`` generates the UUID
+    challenge and JSONP callback client-side, which is reproduced here.
+    """
+    if not is_geetest_firewall_html(firewall_html):
+        raise RuntimeError("HTTP 429 firewall page does not select the GeeTest branch")
+    captcha_id = geetest_captcha_id_from_html(firewall_html)
+    captcha = fetch_firewall_captcha(session, referer=referer)
+    captcha_type = captcha["type"]
+    if captcha_type != "geeTest":
+        raise RuntimeError(
+            f"firewallCaptcha/get: unsupported captcha type {captcha_type!r}"
+        )
+    return load_geetest_task(session, captcha_id=captcha_id)
 
 
 def solve_geetest_load(
@@ -562,14 +642,13 @@ def verify_geetest_with_avito(
     return GeeTestVerified(lot_number=lot_number)
 
 
-def run_geetest_verification(
+def complete_geetest_verification(
     session: requests.Session,
-    firewall_html: str,
+    load: GeeTestLoad,
     *,
     referer: str,
 ) -> GeeTestVerified:
-    """Load, solve, and submit the complete GeeTest firewall branch."""
-    load = start_geetest(session, firewall_html, referer=referer)
+    """Solve an already loaded task and submit it to Avito."""
     LOGGER.info(
         "GeeTest task loaded; captcha_id=%s; lot_number=%s; type=%s",
         load.captcha_id,
@@ -583,6 +662,49 @@ def run_geetest_verification(
         session,
         load,
         seccode,
+        referer=referer,
+    )
+
+
+def run_geetest_verification(
+    session: requests.Session,
+    firewall_html: str,
+    *,
+    referer: str,
+) -> GeeTestVerified:
+    """Load, solve, and submit a GeeTest branch selected by firewall HTML."""
+    load = start_geetest(session, firewall_html, referer=referer)
+    return complete_geetest_verification(
+        session,
+        load,
+        referer=referer,
+    )
+
+
+def run_firewall_captcha_dispatcher(
+    session: requests.Session,
+    *,
+    referer: str,
+) -> GeeTestVerified:
+    """Resolve JSON captcha dispatcher and complete its selected provider."""
+    captcha = fetch_firewall_captcha(session, referer=referer)
+    captcha_type = captcha["type"]
+    if captcha_type != "geeTest":
+        raise RuntimeError(
+            "firewallCaptcha/get selected unsupported captcha type "
+            f"{captcha_type!r}"
+        )
+    LOGGER.info(
+        "captcha dispatcher: starting GeeTest with bundle captcha_id=%s",
+        GEETEST_CAPTCHA_ID,
+    )
+    load = load_geetest_task(
+        session,
+        captcha_id=GEETEST_CAPTCHA_ID,
+    )
+    return complete_geetest_verification(
+        session,
+        load,
         referer=referer,
     )
 
@@ -1142,6 +1264,17 @@ def handle_firewall_response(
                 context,
             )
             return run_pow_verification(session, response)
+        if is_firewall_captcha_dispatcher_response(response):
+            saved_path = save_response_body(response, context=context)
+            LOGGER.info(
+                "%s: HTTP 429 requests captcha dispatcher; body saved to %s",
+                context,
+                saved_path,
+            )
+            return run_firewall_captcha_dispatcher(
+                session,
+                referer=str(response.url) if response.url else REFERER,
+            )
         if not is_geetest_firewall_html(response.text):
             log_unrecognized_protection_response(response, context=context)
             raise RuntimeError(

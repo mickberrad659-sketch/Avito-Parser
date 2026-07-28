@@ -9,13 +9,18 @@
 
 | Параметр | Значение в HAR | Откуда берётся |
 |---|---|---|
-| `captcha_id` | `2d9c743cf7d63dbc9db578a608196bcd` | Явно задан в inline-скрипте HTML: `const captchaId = '…'`; передаётся в `initGeetest4({ captchaId, product: 'bind', language: 'rus' }, ...)`. |
+| `captcha_id` | `2d9c743cf7d63dbc9db578a608196bcd` | Задан в Avito bootstrap bundle константой компонента captcha и дублируется в inline-скрипте отдельной HTML-плашки; передаётся в `initGeetest4({ captchaId, product: 'bind', language: 'rus' }, ...)`. |
 | `challenge` | UUID v4 вида `e7e13b94-…` | Генерирует `gt4.js`. В библиотеке используется `config.challenge || uuid()`. В конфигурации страницы `challenge` не передан, поэтому вызывается локальная `uuid()` на основе `Math.random()`. |
 | `callback` | `geetest_1785159864813` | Генерирует `gt4.js` для JSONP. Формула: `geetest_` + `(parseInt(Math.random() * 10000) + Date.now())`. Каждая попытка и fallback-домен имеют своё значение. |
 | `client_type` | `web` | В `gt4.js`: явный `config.clientType`, иначе `h5` для mobile User-Agent и `web` для desktop. В этой записи определён desktop-вариант. |
 | `lang` | `rus` | Inline-страница передаёт `language: 'rus'` в `initGeetest4`. |
 
-Таким образом, `captcha_id` приходит из HTML первого запроса. `challenge` **не** приходит из HTML или Avito API: в данном сценарии его создаёт сам загруженный GeeTest-клиент. `callback` тоже локально генерируется клиентом; он нужен только для обёртки JSONP-ответа.
+В HTML-ветке `captcha_id` можно извлечь прямо из первого ответа. В
+items-XHR ветке JSON 429 содержит только dispatcher-ссылку; браузер вызывает
+`/web/5/firewallCaptcha/get`, получает `type=geeTest` и использует ту же
+константу из bootstrap bundle. `challenge` **не** приходит из HTML или Avito
+API: его создаёт сам GeeTest-клиент. `callback` также локально генерируется
+клиентом и нужен только для JSONP-обёртки.
 
 ## Запрос и ответ
 
@@ -45,7 +50,7 @@ response.data.payload_protocol
 `captcha_output`) отправляется в Avito
 `POST /web/3/firewallCaptcha/verify`.
 
-27 июля 2026 года этот путь проверен live: свежие Avito
+27–28 июля 2026 года HTML- и JSON-dispatcher пути проверены live: свежие Avito
 `firewallCaptcha/get` и GeeTest `/load` завершились успешно, локальный solver
 получил seccode от GeeTest `/verify`, а Avito подтвердил
 `success.result.verified=true`.
