@@ -5,6 +5,7 @@ import types
 from unittest.mock import patch
 from urllib.parse import parse_qsl, urlsplit
 
+import pytest
 from curl_cffi.requests.cookies import Cookies
 
 import main
@@ -699,6 +700,11 @@ def test_existing_geetest_load_data_is_passed_to_geeked_submit() -> None:
             return seccode
 
     fake_module = types.ModuleType("geeked")
+    fake_module.CaptchaSolveRejected = type(
+        "CaptchaSolveRejected",
+        (Exception,),
+        {},
+    )
     fake_module.Geeked = FakeGeeked
     source_session = FakeSession()
     source_session.cookies.set(
@@ -760,6 +766,54 @@ def test_avito_geetest_verify_payload_matches_bundle() -> None:
     assert headers["Referer"] == "https://www.avito.ru/catalog?p=1"
 
 
+def test_geetest_rejection_preserves_task_diagnostics() -> None:
+    load, _ = geetest_fixture()
+
+    class CaptchaSolveRejected(Exception):
+        def __init__(self, response):
+            self.response = response
+
+    class SolverSession:
+        base_url = ""
+
+        def __init__(self):
+            self.cookies = Cookies()
+
+        def close(self):
+            pass
+
+    class RejectingGeeked:
+        def __init__(self, captcha_id, lang):
+            self.lot_number = None
+            self.session = SolverSession()
+
+        def submit_captcha(self, data):
+            raise CaptchaSolveRejected(
+                {
+                    "lot_number": load.lot_number,
+                    "result": "fail",
+                    "fail_count": 1,
+                    "payload": "large-opaque-value",
+                }
+            )
+
+    fake_module = types.ModuleType("geeked")
+    fake_module.CaptchaSolveRejected = CaptchaSolveRejected
+    fake_module.Geeked = RejectingGeeked
+
+    with (
+        patch.dict(sys.modules, {"geeked": fake_module}),
+        pytest.raises(main.GeeTestSolveFailed) as error,
+    ):
+        main.solve_geetest_load(load, source_session=FakeSession())
+
+    assert error.value.captcha_type == "slide"
+    assert error.value.lot_number == load.lot_number
+    assert error.value.result == "fail"
+    assert error.value.fail_count == 1
+    assert "large-opaque-value" not in str(error.value)
+
+
 def test_run_retries_the_same_page_after_geetest_and_pow() -> None:
     session = FakeSession()
     geetest_response = FakeResponse(429, url=main.page_url(13))
@@ -807,3 +861,76 @@ def test_run_retries_the_same_page_after_geetest_and_pow() -> None:
         (13, 200),
         (14, 200),
     ]
+
+
+def test_run_restarts_original_get_after_geetest_solver_failure() -> None:
+    session = FakeSession()
+    protection_response = FakeResponse(403, url=main.page_url(13))
+    failed_page = (main.PageRequestResult(page=13, status_code=403),)
+    completed_page = (main.PageRequestResult(page=13, status_code=200),)
+    rejection = main.GeeTestSolveFailed(
+        captcha_type="slide",
+        lot_number="failed-lot",
+        result="fail",
+        fail_count=1,
+    )
+
+    with (
+        patch.object(main.requests, "Session", return_value=session),
+        patch.object(
+            main,
+            "request_pages",
+            side_effect=[
+                (failed_page, protection_response),
+                (failed_page, protection_response),
+                (completed_page, None),
+            ],
+        ) as request_pages,
+        patch.object(
+            main,
+            "handle_firewall_response",
+            side_effect=[
+                rejection,
+                main.GeeTestVerified(lot_number="fresh-lot"),
+            ],
+        ),
+    ):
+        result = main.run()
+
+    assert [
+        call.kwargs["start_page"] for call in request_pages.call_args_list
+    ] == [1, 13, 13]
+    assert result.verification_chain == ("GeeTest",)
+
+
+def test_run_stops_after_five_consecutive_geetest_failures() -> None:
+    session = FakeSession()
+    protection_response = FakeResponse(403, url=main.page_url(13))
+    failed_page = (main.PageRequestResult(page=13, status_code=403),)
+    rejection = main.GeeTestSolveFailed(
+        captcha_type="slide",
+        lot_number="fifth-lot",
+        result="fail",
+        fail_count=1,
+    )
+
+    with (
+        patch.object(main.requests, "Session", return_value=session),
+        patch.object(
+            main,
+            "request_pages",
+            side_effect=[(failed_page, protection_response)] * 5,
+        ) as request_pages,
+        patch.object(
+            main,
+            "handle_firewall_response",
+            side_effect=[rejection] * 5,
+        ),
+        pytest.raises(RuntimeError) as error,
+    ):
+        main.run()
+
+    assert "failed 5 consecutive times" in str(error.value)
+    assert "type=slide" in str(error.value)
+    assert "lot_number=fifth-lot" in str(error.value)
+    assert len(request_pages.call_args_list) == 5

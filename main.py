@@ -107,6 +107,7 @@ ITEMS_QUERY_PARAMETERS = (
 )
 PAGES_TO_REQUEST = 100
 MAX_PROTECTION_TRANSITIONS_PER_PAGE = 5
+MAX_CONSECUTIVE_GEETEST_FAILURES = 5
 MAX_QRATOR_RETRIES_PER_REQUEST = 2
 PAGE_REQUEST_DELAY_SECONDS = 2.0
 QRATOR_PRE_FT_DELAY_SECONDS = 1.0
@@ -277,6 +278,30 @@ class GeeTestVerified:
     """A GeeTest solution accepted by Avito's firewallCaptcha endpoint."""
 
     lot_number: str
+
+
+class GeeTestSolveFailed(RuntimeError):
+    """A generated solution was explicitly rejected by GeeTest."""
+
+    def __init__(
+        self,
+        *,
+        captcha_type: str | None,
+        lot_number: str | None,
+        result: str | None,
+        fail_count: int | None,
+    ):
+        self.captcha_type = captcha_type
+        self.lot_number = lot_number
+        self.result = result
+        self.fail_count = fail_count
+        super().__init__(
+            "GeeTest rejected solver payload; "
+            f"type={captcha_type or 'unknown'}; "
+            f"lot_number={lot_number or 'unknown'}; "
+            f"result={result or 'unknown'}; "
+            f"fail_count={fail_count if fail_count is not None else 'unknown'}"
+        )
 
 
 @dataclass(frozen=True)
@@ -632,7 +657,7 @@ def solve_geetest_load(
     if root not in sys.path:
         sys.path.insert(0, root)
     try:
-        from geeked import Geeked
+        from geeked import CaptchaSolveRejected, Geeked
     except ImportError as exc:
         raise RuntimeError(
             "GeekedTest dependencies are missing; run `uv sync`"
@@ -652,7 +677,20 @@ def solve_geetest_load(
             path=cookie.path or "/",
         )
     try:
-        seccode = solver.submit_captcha(load.data)
+        try:
+            seccode = solver.submit_captcha(load.data)
+        except CaptchaSolveRejected as exc:
+            rejection = exc.response
+            raise GeeTestSolveFailed(
+                captcha_type=load.captcha_type,
+                lot_number=load.lot_number,
+                result=rejection.get("result")
+                if isinstance(rejection.get("result"), str)
+                else None,
+                fail_count=rejection.get("fail_count")
+                if type(rejection.get("fail_count")) is int
+                else None,
+            ) from exc
     finally:
         solver.session.close()
 
@@ -1507,6 +1545,7 @@ def run() -> CompletedFlow:
     all_page_requests: list[PageRequestResult] = []
     last_protected_page: int | None = None
     protection_transitions_on_page = 0
+    consecutive_geetest_failures = 0
     while True:
         page_requests, protection_response = request_pages(
             session,
@@ -1540,10 +1579,46 @@ def run() -> CompletedFlow:
                 "protection transitions"
             )
         LOGGER.info("page p=%s returned a protection response; classifying it", page)
-        stage_result = handle_firewall_response(
-            session, protection_response, context=f"page p={page}"
-        )
+        try:
+            stage_result = handle_firewall_response(
+                session, protection_response, context=f"page p={page}"
+            )
+        except GeeTestSolveFailed as exc:
+            consecutive_geetest_failures += 1
+            LOGGER.warning(
+                "page p=%s: GeeTest solver failure %s/%s; type=%s; "
+                "lot_number=%s; result=%s; fail_count=%s",
+                page,
+                consecutive_geetest_failures,
+                MAX_CONSECUTIVE_GEETEST_FAILURES,
+                exc.captcha_type or "unknown",
+                exc.lot_number or "unknown",
+                exc.result or "unknown",
+                exc.fail_count
+                if exc.fail_count is not None
+                else "unknown",
+            )
+            if (
+                consecutive_geetest_failures
+                >= MAX_CONSECUTIVE_GEETEST_FAILURES
+            ):
+                raise RuntimeError(
+                    "GeeTest failed "
+                    f"{MAX_CONSECUTIVE_GEETEST_FAILURES} consecutive times; "
+                    f"last task type={exc.captcha_type or 'unknown'}; "
+                    f"lot_number={exc.lot_number or 'unknown'}; "
+                    f"result={exc.result or 'unknown'}; "
+                    "server fail_count="
+                    f"{exc.fail_count if exc.fail_count is not None else 'unknown'}"
+                ) from exc
+            LOGGER.info(
+                "page p=%s: restarting GeeTest from the original GET",
+                page,
+            )
+            next_page = page
+            continue
         if isinstance(stage_result, GeeTestVerified):
+            consecutive_geetest_failures = 0
             verification_chain.append("GeeTest")
             LOGGER.info(
                 "verification chain: %s",
@@ -1557,6 +1632,7 @@ def run() -> CompletedFlow:
             next_page = page
             continue
         if stage_result is not None:
+            consecutive_geetest_failures = 0
             pow_unblock_ttl = stage_result
             verification_chain.append("firewallPow")
             LOGGER.info(

@@ -4,6 +4,14 @@ import random, time, json
 from geeked.sign import Signer
 
 
+class CaptchaSolveRejected(Exception):
+    """GeeTest accepted the verify request but rejected its solution."""
+
+    def __init__(self, response: dict):
+        self.response = response
+        super().__init__(f"Failed to submit captcha: {response}")
+
+
 class Geeked:
     def __init__(self, captcha_id: str, lang: str = "rus", **kwargs):
         self.pass_token = None
@@ -64,7 +72,7 @@ class Geeked:
         res = self.format_response(res)
 
         if res.get("seccode") is None:
-            raise Exception(f"Failed to submit captcha: {res}")
+            raise CaptchaSolveRejected(res)
 
         return res["seccode"]
 

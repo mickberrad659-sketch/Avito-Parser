@@ -115,6 +115,13 @@ HTML-ветки остаётся проверка маркеров `#geetest_cap
 `POST /web/3/firewallCaptcha/verify`. После `verified=true` исходный GET
 повторяется в той же Avito-сессии.
 
+Если GeeTest `/verify` отвечает `result=fail`, отклонённый `lot_number`
+повторно не используется. Скрипт заново выполняет исходный items GET с тем же
+`p=N`, получает свежую captcha-ветку и новый `/load`, затем запускает solver
+с нуля. После пяти последовательных отказов работа прекращается; ошибка
+содержит тип последней задачи, `lot_number`, `result` и серверный
+`fail_count`.
+
 Живой E2E HTML- и JSON-dispatcher веток подтверждён 27–28 июля 2026 года:
 свежие `firewallCaptcha/get` и GeeTest `/load` были решены локальным solver-ом,
 после чего Avito принял `firewallCaptcha/verify` и вернул успешную
