@@ -1050,3 +1050,54 @@ def test_run_stops_after_five_consecutive_geetest_failures() -> None:
     assert "type=slide" in str(error.value)
     assert "lot_number=fifth-lot" in str(error.value)
     assert len(request_pages.call_args_list) == 5
+
+
+def test_intervening_pow_does_not_exhaust_geetest_retry_budget() -> None:
+    session = FakeSession()
+    rejection = main.GeeTestSolveFailed(
+        captcha_type="slide",
+        lot_number="rejected-lot",
+        result="avito_verified_false",
+        fail_count=None,
+    )
+    protection_statuses = [429, 403, 439, 403, 403, 429]
+    page_segments = [
+        (
+            (main.PageRequestResult(page=1, status_code=status),),
+            FakeResponse(status, url=main.page_url(1)),
+        )
+        for status in protection_statuses
+    ]
+    page_segments.append(
+        ((main.PageRequestResult(page=1, status_code=200),), None)
+    )
+
+    with (
+        patch.object(main.requests, "Session", return_value=session),
+        patch.object(
+            main,
+            "request_pages",
+            side_effect=page_segments,
+        ) as request_pages,
+        patch.object(
+            main,
+            "handle_firewall_response",
+            side_effect=[
+                rejection,
+                rejection,
+                420,
+                rejection,
+                rejection,
+                main.GeeTestVerified(lot_number="accepted-lot"),
+            ],
+        ),
+    ):
+        result = main.run()
+
+    assert len(request_pages.call_args_list) == 7
+    assert all(
+        call.kwargs["start_page"] == 1
+        for call in request_pages.call_args_list
+    )
+    assert result.verification_chain == ("firewallPow", "GeeTest")
+    assert result.pow_unblock_ttl == 420

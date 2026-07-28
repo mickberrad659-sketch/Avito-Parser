@@ -107,7 +107,10 @@ ITEMS_QUERY_PARAMETERS = (
     ),
 )
 PAGES_TO_REQUEST = 100
-MAX_PROTECTION_TRANSITIONS_PER_PAGE = 5
+# This is only a final loop-safety cap. GeeTest has its own stricter limit
+# below; the larger value allows intervening PoW/QRATOR branches without
+# preventing all five consecutive GeeTest attempts from running.
+MAX_PROTECTION_TRANSITIONS_PER_PAGE = 25
 MAX_CONSECUTIVE_GEETEST_FAILURES = 5
 MAX_QRATOR_RETRIES_PER_REQUEST = 2
 PAGE_REQUEST_DELAY_SECONDS = 0.05
