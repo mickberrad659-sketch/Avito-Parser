@@ -613,25 +613,13 @@ def log_forbidden_response(response: Any, *, context: str) -> None:
     """Log and preserve a 403 body so its protection branch can be identified."""
     reason = forbidden_response_reason(response)
     body = preview(response.text, limit=LOG_BODY_PREVIEW_LENGTH)
-    content_type = response.headers.get("content-type", "").lower()
-    html_path = (
-        save_html_response(response, context=context)
-        if "html" in content_type
-        else None
+    saved_path = save_response_body(response, context=context)
+    LOGGER.warning(
+        "%s: HTTP 403 (%s); response body saved to %s",
+        context,
+        reason,
+        saved_path,
     )
-    if html_path:
-        LOGGER.warning(
-            "%s: HTTP 403 (%s); HTML saved to %s",
-            context,
-            reason,
-            html_path,
-        )
-    else:
-        LOGGER.warning(
-            "%s: HTTP 403 (%s); details are in firewall-debug.log",
-            context,
-            reason,
-        )
     LOGGER.debug(
         "%s: HTTP 403 (%s); headers=%s; response body preview:\n%s",
         context,
@@ -644,18 +632,14 @@ def log_forbidden_response(response: Any, *, context: str) -> None:
 def log_unrecognized_protection_response(response: Any, *, context: str) -> None:
     """Preserve an unrecognized protection response before stopping."""
     reason = forbidden_response_reason(response)
-    content_type = response.headers.get("content-type", "").lower()
-    saved_path = (
-        save_html_response(response, context=context)
-        if "html" in content_type
-        else None
-    )
+    saved_path = save_response_body(response, context=context)
     LOGGER.warning(
-        "%s: HTTP %s is not a recognized PoW or GeeTest branch (%s)%s",
+        "%s: HTTP %s is not a recognized PoW or GeeTest branch (%s); "
+        "response body saved to %s",
         context,
         response.status_code,
         reason,
-        f"; HTML saved to {saved_path}" if saved_path else "",
+        saved_path,
     )
     LOGGER.debug(
         "%s: unrecognized HTTP %s; headers=%s; response body preview:\n%s",
@@ -1033,14 +1017,40 @@ def redirect_target(response: Any) -> str | None:
     )
 
 
-def save_html_response(response: Any, *, context: str) -> Path:
-    """Save the complete decoded HTML response under a filesystem-safe name."""
+def save_response_body(
+    response: Any,
+    *,
+    context: str,
+    suffix: str | None = None,
+) -> Path:
+    """Save a complete response body using a content-type-aware extension."""
     DEBUG_RESPONSE_DIR.mkdir(parents=True, exist_ok=True)
     safe_context = re.sub(r"[^a-zA-Z0-9._-]+", "-", context).strip("-")
-    filename = f"{safe_context or 'response'}-http-{response.status_code}.html"
+    if suffix is None:
+        content_type = response.headers.get("content-type", "").lower()
+        if "json" in content_type:
+            suffix = "json"
+        elif "html" in content_type:
+            suffix = "html"
+        elif "xml" in content_type:
+            suffix = "xml"
+        else:
+            suffix = "txt"
+    filename = (
+        f"{safe_context or 'response'}-http-{response.status_code}.{suffix}"
+    )
     path = DEBUG_RESPONSE_DIR / filename
-    path.write_text(response.text, encoding=getattr(response, "encoding", None) or "utf-8")
+    content = getattr(response, "content", None)
+    if not isinstance(content, bytes):
+        encoding = getattr(response, "encoding", None) or "utf-8"
+        content = response.text.encode(encoding, errors="replace")
+    path.write_bytes(content)
     return path.resolve()
+
+
+def save_html_response(response: Any, *, context: str) -> Path:
+    """Save the complete HTML response under a filesystem-safe name."""
+    return save_response_body(response, context=context, suffix="html")
 
 
 def log_redirect_response(response: Any, *, context: str) -> None:
@@ -1126,18 +1136,6 @@ def handle_firewall_response(
         LOGGER.info("%s: HTTP 439, starting firewallPow", context)
         return run_pow_verification(session, response)
     if response.status_code == 429:
-        content_type = response.headers.get("content-type", "").lower()
-        html_path = (
-            save_html_response(response, context=context)
-            if "html" in content_type
-            else None
-        )
-        if html_path:
-            LOGGER.info(
-                "%s: full HTTP 429 HTML saved to %s",
-                context,
-                html_path,
-            )
         if response_has_pow_challenge(response):
             LOGGER.info(
                 "%s: HTTP 429 contains pow_challenge, starting firewallPow",
@@ -1150,6 +1148,12 @@ def handle_firewall_response(
                 f"{context}: HTTP 429 does not select PoW or GeeTest "
                 f"({forbidden_response_reason(response)})"
             )
+        html_path = save_html_response(response, context=context)
+        LOGGER.info(
+            "%s: full HTTP 429 HTML saved to %s",
+            context,
+            html_path,
+        )
         LOGGER.info("%s: HTTP 429, starting GeeTest", context)
         return run_geetest_verification(
             session,

@@ -226,6 +226,30 @@ def test_forbidden_response_is_classified_as_ip_problem() -> None:
     )
 
 
+def test_unknown_json_protection_body_is_saved_with_json_extension(
+    tmp_path,
+) -> None:
+    body = (
+        '{"too-many-requests":{"message":'
+        '"Доступ с вашего IP-адреса временно ограничен",'
+        '"link":"ru.avito:\\/\\/1\\/firewall\\/captcha\\/show"}}'
+    )
+    response = FakeResponse(
+        429,
+        headers={"content-type": "application/json; charset=utf-8"},
+        text=body,
+    )
+
+    with patch.object(main, "DEBUG_RESPONSE_DIR", tmp_path):
+        main.log_unrecognized_protection_response(
+            response,
+            context="page p=13",
+        )
+
+    saved = tmp_path / "page-p-13-http-429.json"
+    assert saved.read_text(encoding="utf-8") == body
+
+
 def test_qrator_html_is_recognized_when_status_is_429() -> None:
     response = FakeResponse(
         429,

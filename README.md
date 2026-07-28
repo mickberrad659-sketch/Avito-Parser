@@ -17,8 +17,9 @@ uv run python main.py
 
 `main.py` не использует `HTTP_PROXY`, `HTTPS_PROXY` и `ALL_PROXY` из
 окружения: запросы выполняются через прямое соединение. Диагностический лог
-пишется в `firewall-debug.log`, а полный HTML защитных страниц — в
-`firewall-debug-responses/`; оба пути исключены из Git.
+пишется в `firewall-debug.log`, а полные тела защитных ответов сохраняются в
+`firewall-debug-responses/` как `.json`, `.html` или `.txt` по фактическому
+Content-Type; оба пути исключены из Git.
 
 Проверка:
 
