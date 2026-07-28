@@ -293,6 +293,12 @@ class CompletedFlow:
 
     pow_unblock_ttl: int | None
     page_requests: tuple[PageRequestResult, ...]
+    verification_chain: tuple[str, ...] = ()
+
+
+def format_verification_chain(chain: list[str] | tuple[str, ...]) -> str:
+    """Format the ordered protection path for human-readable logs."""
+    return " -> ".join(chain) if chain else "none"
 
 
 def response_json(response: Any, *, endpoint: str) -> dict[str, Any]:
@@ -1029,6 +1035,7 @@ def get_with_qrator_recovery(
     timeout_seconds: int = REQUEST_TIMEOUT_SECONDS,
     context: str,
     stream_response_body: bool = False,
+    verification_chain: list[str] | None = None,
 ) -> Any:
     """GET a URL and retry the exact request after a Qrator 302 flow."""
     for attempt in range(MAX_QRATOR_RETRIES_PER_REQUEST + 1):
@@ -1125,6 +1132,16 @@ def get_with_qrator_recovery(
             qrator_html=response.text,
             page_url=response.url or url,
             context=context,
+        )
+        if verification_chain is not None:
+            verification_chain.append("QRATOR")
+            LOGGER.info(
+                "verification chain: %s",
+                format_verification_chain(verification_chain),
+            )
+        LOGGER.info(
+            "%s: QRATOR cleared; repeating the same GET",
+            context,
         )
 
     raise AssertionError("unreachable")
@@ -1310,14 +1327,20 @@ def page_url(page: int) -> str:
 
 def request_pages(
     session: requests.Session,
+    *,
+    start_page: int = 1,
+    verification_chain: list[str] | None = None,
 ) -> tuple[tuple[PageRequestResult, ...], Any | None]:
-    """Request pages 1 through ``PAGES_TO_REQUEST`` after protection clears."""
+    """Request items pages from ``start_page`` through the configured limit."""
+    if not 1 <= start_page <= PAGES_TO_REQUEST:
+        raise ValueError(
+            f"start_page must be between 1 and {PAGES_TO_REQUEST}"
+        )
     set_session_headers(session, PAGE_REQUEST_HEADERS)
     results = []
-    for index in range(PAGES_TO_REQUEST):
-        if index:
+    for page in range(start_page, PAGES_TO_REQUEST + 1):
+        if page != start_page:
             time.sleep(PAGE_REQUEST_DELAY_SECONDS)
-        page = index + 1
         try:
             response = get_with_qrator_recovery(
                 session,
@@ -1327,6 +1350,7 @@ def request_pages(
                 timeout_seconds=DOCUMENT_REQUEST_TIMEOUT_SECONDS,
                 context=f"page p={page}",
                 stream_response_body=True,
+                verification_chain=verification_chain,
             )
         except (IncompleteRead, CurlConnectionError, CurlTimeout) as exc:
             LOGGER.warning(
@@ -1376,11 +1400,25 @@ def run() -> CompletedFlow:
     set_session_headers(session, {**REQUEST_HEADERS, "Referer": REFERER})
 
     pow_unblock_ttl = None
+    verification_chain: list[str] = []
+    next_page = 1
+    all_page_requests: list[PageRequestResult] = []
     for transition in range(MAX_PROTECTION_TRANSITIONS + 1):
-        page_requests, protection_response = request_pages(session)
+        page_requests, protection_response = request_pages(
+            session,
+            start_page=next_page,
+            verification_chain=verification_chain,
+        )
+        all_page_requests.extend(page_requests)
         if protection_response is None:
+            LOGGER.info(
+                "items loop completed; verification chain: %s",
+                format_verification_chain(verification_chain),
+            )
             return CompletedFlow(
-                pow_unblock_ttl=pow_unblock_ttl, page_requests=page_requests
+                pow_unblock_ttl=pow_unblock_ttl,
+                page_requests=tuple(all_page_requests),
+                verification_chain=tuple(verification_chain),
             )
         if transition == MAX_PROTECTION_TRANSITIONS:
             raise RuntimeError("too many firewall transitions while requesting pages")
@@ -1390,13 +1428,32 @@ def run() -> CompletedFlow:
             session, protection_response, context=f"page p={page}"
         )
         if isinstance(stage_result, GeeTestVerified):
+            verification_chain.append("GeeTest")
             LOGGER.info(
-                "page p=%s: GeeTest cleared; restarting page pass",
+                "verification chain: %s",
+                format_verification_chain(verification_chain),
+            )
+            LOGGER.info(
+                "page p=%s: GeeTest cleared; retrying items loop from p=%s",
+                page,
                 page,
             )
+            next_page = page
             continue
         if stage_result is not None:
             pow_unblock_ttl = stage_result
+            verification_chain.append("firewallPow")
+            LOGGER.info(
+                "verification chain: %s",
+                format_verification_chain(verification_chain),
+            )
+            LOGGER.info(
+                "page p=%s: firewallPow cleared; retrying items loop from p=%s",
+                page,
+                page,
+            )
+            next_page = page
+            continue
 
     raise AssertionError("unreachable")
 
@@ -1430,5 +1487,7 @@ if __name__ == "__main__":
     print(
         "run completed; "
         f"HTTP 200 pages={successful_pages}/{len(result.page_requests)}; "
-        f"transport failures={transport_failures}"
+        f"transport failures={transport_failures}; "
+        "verification chain="
+        f"{format_verification_chain(result.verification_chain)}"
     )

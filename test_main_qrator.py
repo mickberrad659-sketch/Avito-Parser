@@ -176,6 +176,7 @@ def test_qrator_cookie_flow_matches_har_shape() -> None:
 
 def test_original_get_is_retried_after_qrator_flow() -> None:
     target_url = "https://www.avito.ru/catalog?p=1"
+    verification_chain = []
     session = FakeSession(
         [
             FakeResponse(
@@ -204,6 +205,7 @@ def test_original_get_is_retried_after_qrator_flow() -> None:
             target_url,
             session_headers=main.PAGE_REQUEST_HEADERS,
             context="page p=1",
+            verification_chain=verification_chain,
         )
 
     assert result.status_code == 200
@@ -212,6 +214,7 @@ def test_original_get_is_retried_after_qrator_flow() -> None:
     assert len(session.posts) == 1
     assert any("/web/1/u?" in call[0] for call in session.gets)
     assert target_gets[1][2]["Referer"] == main.PAGE_REQUEST_HEADERS["Referer"]
+    assert verification_chain == ["QRATOR"]
 
 
 def test_forbidden_response_is_classified_as_ip_problem() -> None:
@@ -621,3 +624,52 @@ def test_avito_geetest_verify_payload_matches_bundle() -> None:
     assert re.fullmatch(r"\d{2}", headers["X-Cube"])
     assert headers["Priority"] == "u=4"
     assert headers["Referer"] == "https://www.avito.ru/catalog?p=1"
+
+
+def test_run_retries_the_same_page_after_geetest_and_pow() -> None:
+    session = FakeSession()
+    geetest_response = FakeResponse(429, url=main.page_url(13))
+    pow_response = FakeResponse(439, url=main.page_url(13))
+    completed_segment = (
+        main.PageRequestResult(page=13, status_code=200),
+        main.PageRequestResult(page=14, status_code=200),
+    )
+
+    with (
+        patch.object(main.requests, "Session", return_value=session),
+        patch.object(
+            main,
+            "request_pages",
+            side_effect=[
+                (
+                    (main.PageRequestResult(page=13, status_code=429),),
+                    geetest_response,
+                ),
+                (
+                    (main.PageRequestResult(page=13, status_code=439),),
+                    pow_response,
+                ),
+                (completed_segment, None),
+            ],
+        ) as request_pages,
+        patch.object(
+            main,
+            "handle_firewall_response",
+            side_effect=[
+                main.GeeTestVerified(lot_number="lot"),
+                420,
+            ],
+        ),
+    ):
+        result = main.run()
+
+    assert [
+        call.kwargs["start_page"] for call in request_pages.call_args_list
+    ] == [1, 13, 13]
+    assert result.verification_chain == ("GeeTest", "firewallPow")
+    assert [(item.page, item.status_code) for item in result.page_requests] == [
+        (13, 429),
+        (13, 439),
+        (13, 200),
+        (14, 200),
+    ]
