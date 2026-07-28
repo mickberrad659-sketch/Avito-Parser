@@ -3,6 +3,7 @@ import re
 import sys
 import types
 from unittest.mock import patch
+from urllib.parse import parse_qsl, urlsplit
 
 from curl_cffi.requests.cookies import Cookies
 
@@ -103,6 +104,24 @@ class FakeSession:
         if not self.target_responses:
             raise AssertionError(f"unexpected GET {url}")
         return self.target_responses.pop(0)
+
+
+def test_items_url_has_exact_query_and_only_replaces_page() -> None:
+    expected = [
+        (key, "17" if key == "p" else value)
+        for key, value in main.ITEMS_QUERY_PARAMETERS
+    ]
+    parsed = urlsplit(main.page_url(17))
+
+    assert parsed.scheme == "https"
+    assert parsed.netloc == "www.avito.ru"
+    assert parsed.path == "/web/1/js/items"
+    assert parse_qsl(parsed.query) == expected
+    assert dict(expected)["categoryId"] == "98"
+    assert dict(expected)["rootCategoryId"] == "6"
+    assert dict(expected)["features[suggestParams][categoryID]"] == "98"
+    assert dict(expected)["features[ivaItemRedesign]"] == "true"
+    assert "name" not in dict(expected)
 
 
 def test_qrator_cookie_flow_matches_har_shape() -> None:
@@ -241,6 +260,11 @@ def test_page_loop_stops_immediately_on_first_403() -> None:
     assert [result.status_code for result in results] == [200, 403]
     assert protection_response is not None
     assert protection_response.status_code == 403
+    first_url, first_kwargs, first_session_headers = session.gets[0]
+    assert first_url == main.page_url(1)
+    assert first_kwargs["headers"]["X-Source"] == "client-browser"
+    assert first_kwargs["headers"]["X-Requested-With"] == "XMLHttpRequest"
+    assert first_session_headers["Sec-Fetch-Mode"] == "cors"
     sleep.assert_called_once_with(main.PAGE_REQUEST_DELAY_SECONDS)
 
 

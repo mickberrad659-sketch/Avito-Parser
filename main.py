@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Run the firewallPow ``get -> verify`` flow recorded in the HAR.
-
-The first request reproduces the blocked items XHR from the HAR and obtains a
-fresh ``pow_challenge``.  The PoW portion then performs ``firewallPow/get`` and
-``firewallPow/verify`` using the same HTTP session.
-"""
+"""Run the Avito items XHR with PoW, Qrator, and GeeTest recovery."""
 
 from __future__ import annotations
 
@@ -19,7 +14,7 @@ import uuid
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
-from urllib.parse import parse_qsl, urlencode, urljoin, urlsplit, urlunsplit
+from urllib.parse import urlencode, urljoin, urlsplit
 
 from curl_cffi import requests
 from curl_cffi.requests.exceptions import (
@@ -51,19 +46,62 @@ REFERER = (
     "context=H4sIAAAAAAAA_wEmANn_YToxOntzOjE6InkiO3M6MTY6ImpKSFd2M2hLSlIzWWJFMHQiO30fldpuJgAAAA"
     "&p=18&q=%D0%BD%D0%BE%D1%83%D1%82%D0%B1%D1%83%D0%BA"
 )
-CHALLENGE_SOURCE_URL = (
-    f"{BASE_URL}/web/1/js/items?categoryId=6&locationId=624840"
-    "&name=%D0%BD%D0%BE%D1%83%D1%82%D0%B1%D1%83%D0%BA"
-    "&geoCoords=48.707103%2C44.516939&cd=0&p=100&verticalCategoryId=4"
-    "&localPriority=0&updateListOnly=true"
-    "&context=H4sIAAAAAAAA_wEmANn_YToxOntzOjE6InkiO3M6MTY6ImpKSFd2M2hLSlIzWWJFMHQiO30fldpuJgAAAA"
-)
-PAGES_URL = (
-    f"{BASE_URL}/moskva_i_mo/tovary_dlya_kompyutera/komplektuyuschie/"
-    "operativnaya_pamyat-ASgBAgICAkTGB~pm7gnYZw"
-    "?cd=1&context=H4sIAAAAAAAA_wEmANn_YToxOntzOjE6InkiO3M6MTY6"
-    "IkplUDFEN1ZsbzFEaDRpVWwiO330fudwJgAAAA"
-    "&localPriority=0&q=ddr5+32gb"
+ITEMS_URL = f"{BASE_URL}/web/1/js/items"
+ITEMS_QUERY_PARAMETERS = (
+    ("categoryId", "98"),
+    ("locationId", "624840"),
+    ("geoCoords", "48.707103,44.516939"),
+    ("cd", "0"),
+    ("p", "7"),
+    ("verticalCategoryId", "4"),
+    ("rootCategoryId", "6"),
+    ("localPriority", "0"),
+    ("updateListOnly", "true"),
+    ("features[imageAspectRatio]", "1:1"),
+    ("features[noPlaceholders]", "true"),
+    ("features[justSpa]", "true"),
+    ("features[responsive]", "true"),
+    ("features[useReload]", "true"),
+    ("features[stickyCatalogFilters]", "false"),
+    ("features[adsInMapTest][step7_3]", "false"),
+    ("features[adsInMapTest][step5]", "false"),
+    ("features[adsInMapTest][step7]", "false"),
+    ("features[mapButtonSlimTest]", "false"),
+    ("features[listVip]", "false"),
+    ("features[newDoublesUxTest]", "false"),
+    ("features[newDoublesUxRealtyTest]", "false"),
+    ("features[newDoublesMapRealtyTest]", "false"),
+    ("features[simpleCounters]", "true"),
+    ("features[isRatingExperiment]", "true"),
+    ("features[isContactsButtonRedesigned]", "false"),
+    ("features[desktopPublishFromSerpTest]", "false"),
+    ("features[desktopPinPositionVrTop]", "false"),
+    ("features[desktopHideContextPositionOnReject]", "false"),
+    ("features[desktopShowBigContextPositions]", "false"),
+    ("features[desktopSpaInFilters]", "false"),
+    ("features[isReMapPreviewAb]", "false"),
+    ("features[isReItemNewViewAb]", "false"),
+    ("features[isReNewSortAb]", "false"),
+    ("features[isReItemXlAb]", "false"),
+    ("features[isSplitAdvertBlock]", "false"),
+    ("features[suggestParams][categoryID]", "98"),
+    ("features[suggestParams][locationID]", "624840"),
+    ("features[suggestParams][presentationType]", "serp"),
+    ("features[isShowWithPhotoFilter]", "false"),
+    ("features[reverseVisualRubricator]", "false"),
+    ("features[isReInterestingHouseAb]", "false"),
+    ("features[jobsConsentDisclaimer]", "false"),
+    ("features[altViewedBadgeDesktopAb]", "false"),
+    ("features[isHideRecommendationsInfinite]", "false"),
+    ("features[ivaItemRedesign]", "true"),
+    ("features[shouldSendRreLayoutEvents]", "false"),
+    ("features[isRedesignZhkSerp]", "false"),
+    ("features[isHotelsSnippetRedesign]", "false"),
+    (
+        "context",
+        "H4sIAAAAAAAA_wEmANn_YToxOntzOjE6InkiO3M6MTY6"
+        "ImpYUEV3Zlo2MkpTVE9GRWEiO33DzQ3bJgAAAA",
+    ),
 )
 PAGES_TO_REQUEST = 100
 MAX_PROTECTION_TRANSITIONS = 3
@@ -110,34 +148,18 @@ REQUEST_HEADERS = {
     ),
 }
 
-# Headers of the ordinary document-navigation request from the HAR.  This
-# request context is distinct from the same-origin XHR context above.
+# Headers of the main same-origin items XHR. Protection service requests
+# temporarily replace them and the exact set is restored before every retry.
 PAGE_REQUEST_HEADERS = {
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
-    "Accept-Encoding": "gzip, deflate, br, zstd",
-    "Connection": "keep-alive",
+    **REQUEST_HEADERS,
     "Referer": (
-        "https://www.avito.ru/moskva_i_mo/tovary_dlya_kompyutera/"
-        "komplektuyuschie/operativnaya_pamyat-ASgBAgICAkTGB~pm7gnYZw"
-        "?cd=1&context=H4sIAAAAAAAA_wEmANn_YToxOntzOjE6InkiO3M6MTY6"
-        "Ind2TXcyM1NoT1F4Rm1pUkQiO31XsWX_JgAAAA&q=ddr5+32gb"
-    ),
-    "Pragma": "no-cache",
-    "Cache-Control": "no-cache",
-    "Priority": "u=0, i",
-    "Sec-Fetch-Dest": "document",
-    "Sec-Fetch-Mode": "navigate",
-    "Sec-Fetch-Site": "same-origin",
-    "Sec-Fetch-User": "?1",
-    "Sec-GPC": "1",
-    "Upgrade-Insecure-Requests": "1",
-    "User-Agent": (
-        "Mozilla/5.0 (X11; Linux x86_64; rv:152.0) Gecko/20100101 Firefox/152.0"
+        f"{BASE_URL}/volgograd/bytovaya_elektronika?"
+        "context=H4sIAAAAAAAA_wEmANn_YToxOntzOjE6InkiO3M6MTY6"
+        "ImpKSFd2M2hLSlIzWWJFMHQiO30fldpuJgAAAA"
     ),
 }
 
-CHALLENGE_REQUEST_HEADERS = {
+ITEMS_REQUEST_HEADERS = {
     "Accept": "application/json",
     "X-Requested-With": "XMLHttpRequest",
     "X-Source": "client-browser",
@@ -1141,11 +1163,12 @@ def handle_firewall_response(
 
 
 def page_url(page: int) -> str:
-    """Replace only the ``p`` query parameter in the constant page URL."""
-    parsed = urlsplit(PAGES_URL)
-    query = [(key, value) for key, value in parse_qsl(parsed.query) if key != "p"]
-    query.append(("p", str(page)))
-    return urlunsplit(parsed._replace(query=urlencode(query)))
+    """Build the main items XHR while replacing only its ``p`` parameter."""
+    query = [
+        (key, str(page) if key == "p" else value)
+        for key, value in ITEMS_QUERY_PARAMETERS
+    ]
+    return f"{ITEMS_URL}?{urlencode(query)}"
 
 
 def request_pages(
@@ -1163,6 +1186,7 @@ def request_pages(
                 session,
                 page_url(page),
                 session_headers=PAGE_REQUEST_HEADERS,
+                request_headers=ITEMS_REQUEST_HEADERS,
                 timeout_seconds=DOCUMENT_REQUEST_TIMEOUT_SECONDS,
                 context=f"page p={page}",
                 stream_response_body=True,
@@ -1198,7 +1222,7 @@ def request_pages(
 
 
 def run() -> CompletedFlow:
-    """Obtain a challenge, then execute the recorded ``get -> verify`` flow."""
+    """Run the items XHR loop and clear each protection branch it selects."""
     # This flow must use the machine's public connection. In particular, do
     # not silently inherit a desktop/VPN proxy such as 127.0.0.1:2080. Removing
     # these variables also covers the image downloads made inside GeekedTest.
@@ -1215,34 +1239,6 @@ def run() -> CompletedFlow:
     set_session_headers(session, {**REQUEST_HEADERS, "Referer": REFERER})
 
     pow_unblock_ttl = None
-    for initial_transition in range(MAX_PROTECTION_TRANSITIONS + 1):
-        challenge_response = get_with_qrator_recovery(
-            session,
-            CHALLENGE_SOURCE_URL,
-            session_headers={**REQUEST_HEADERS, "Referer": REFERER},
-            request_headers=CHALLENGE_REQUEST_HEADERS,
-            context="challenge source",
-        )
-        stage_result = handle_firewall_response(
-            session,
-            challenge_response,
-            context="challenge source",
-        )
-        if isinstance(stage_result, GeeTestVerified):
-            LOGGER.info(
-                "challenge source: GeeTest cleared; repeating initial GET"
-            )
-            continue
-        if stage_result is not None:
-            pow_unblock_ttl = stage_result
-        elif challenge_response.status_code == 200:
-            LOGGER.info(
-                "challenge source: HTTP 200; no firewall verification required"
-            )
-        break
-    else:
-        raise RuntimeError("too many firewall transitions at challenge source")
-
     for transition in range(MAX_PROTECTION_TRANSITIONS + 1):
         page_requests, protection_response = request_pages(session)
         if protection_response is None:
