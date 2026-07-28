@@ -130,6 +130,15 @@ Avito и вся GeeTest-цепочка (`/load`, изображения и `/ver
 Ответ Avito `verified=false` также считается неудачной Gee-попыткой и
 перезапускает цепочку с исходного GET, максимум пять раз подряд.
 
+Каждый captcha-flow автоматически сохраняет полные структурированные HTTP-
+диагностики в `firewall-debug-responses/exchange-*.json`: method, URL,
+заголовки и cookie jar до запроса, params/JSON payload, HTTP status,
+заголовки, полное body и cookie jar после ответа. Артефакты создаются для защищённого page GET,
+`firewallCaptcha/get`, GeeTest `/load`, GeeTest `/verify`,
+`firewallCaptcha/verify` и первого повторного page GET. Файлы содержат
+действующие cookies и captcha-токены, поэтому их нельзя публиковать; каталог
+исключён из Git.
+
 Живой E2E HTML- и JSON-dispatcher веток подтверждён 27–28 июля 2026 года:
 свежие `firewallCaptcha/get` и GeeTest `/load` были решены локальным solver-ом,
 после чего Avito принял `firewallCaptcha/verify` и вернул успешную

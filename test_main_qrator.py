@@ -598,6 +598,45 @@ def test_page_loop_saves_http_400_body_and_continues(tmp_path) -> None:
     ).read_text(encoding="utf-8") == bad_request_body
 
 
+def test_full_http_exchange_diagnostic_contains_request_and_response(
+    tmp_path,
+) -> None:
+    session = FakeSession()
+    session.headers.update({"User-Agent": "Firefox", "X-Test": "session"})
+    session.cookies.set(
+        "captcha_v4_user",
+        "cookie-value",
+        domain="gcaptcha4.geevisit.com",
+        path="/",
+    )
+    response = FakeResponse(
+        200,
+        headers={"content-type": "application/json", "x-response": "yes"},
+        text='{"result":"success"}',
+        url="https://gcaptcha4.geevisit.com/verify?callback=test",
+    )
+
+    with patch.object(main, "DEBUG_RESPONSE_DIR", tmp_path):
+        path = main.save_http_exchange(
+            session,
+            response,
+            context="GeeTest-verify",
+            method="GET",
+            url="https://gcaptcha4.geevisit.com/verify",
+            request_headers={"X-Test": "request"},
+            params={"lot_number": "lot", "w": "payload"},
+        )
+
+    exchange = json.loads(path.read_text(encoding="utf-8"))
+    assert exchange["request"]["method"] == "GET"
+    assert exchange["request"]["headers"]["X-Test"] == "request"
+    assert exchange["request"]["params"]["w"] == "payload"
+    assert exchange["request"]["cookies"][0]["value"] == "cookie-value"
+    assert exchange["response"]["status"] == 200
+    assert exchange["response"]["headers"]["x-response"] == "yes"
+    assert exchange["response"]["body"] == '{"result":"success"}'
+
+
 def test_document_get_retries_one_incomplete_read() -> None:
     target_url = "https://www.avito.ru/catalog?p=3"
 
@@ -711,14 +750,16 @@ def test_existing_geetest_load_data_is_passed_to_geeked_submit() -> None:
             self,
             captcha_id,
             lang,
-            *,
-            session,
-            request_headers,
-        ):
+                *,
+                session,
+                request_headers,
+                exchange_logger,
+            ):
             observed["captcha_id"] = captcha_id
             observed["lang"] = lang
             observed["session"] = session
             observed["request_headers"] = request_headers
+            observed["exchange_logger"] = exchange_logger
             self.lot_number = None
             self.session = session
             self.base_url = ""
@@ -756,6 +797,7 @@ def test_existing_geetest_load_data_is_passed_to_geeked_submit() -> None:
     assert observed["lot_number"] == load.lot_number
     assert observed["session"] is source_session
     assert observed["request_headers"] is main.GEETEST_REQUEST_HEADERS
+    assert callable(observed["exchange_logger"])
     assert observed["solver_cookie"] == "GEETEST_COOKIE"
 
 
@@ -811,10 +853,11 @@ def test_geetest_rejection_preserves_task_diagnostics() -> None:
             self,
             captcha_id,
             lang,
-            *,
-            session,
-            request_headers,
-        ):
+                *,
+                session,
+                request_headers,
+                exchange_logger,
+            ):
             self.lot_number = None
             self.session = session
             self.base_url = ""

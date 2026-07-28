@@ -555,11 +555,22 @@ def fetch_firewall_captcha(
             "Referer": referer,
         },
     )
+    request_cookies = session_cookie_snapshot(session)
     response = session.post(
         FIREWALL_CAPTCHA_GET_URL,
         json={"refreshInternalCaptcha": False},
         timeout=REQUEST_TIMEOUT_SECONDS,
         allow_redirects=False,
+    )
+    save_http_exchange(
+        session,
+        response,
+        context="firewallCaptcha-get",
+        method="POST",
+        url=FIREWALL_CAPTCHA_GET_URL,
+        request_headers=dict(session.headers),
+        request_cookies=request_cookies,
+        json_body={"refreshInternalCaptcha": False},
     )
     if response.status_code != 200:
         saved_path = save_response_body(
@@ -611,6 +622,7 @@ def load_geetest_task(
     challenge = str(uuid.uuid4())
     callback = f"geetest_{int(time.time() * 1000) + secrets.randbelow(10_000)}"
     set_session_headers(session, GEETEST_REQUEST_HEADERS)
+    request_cookies = session_cookie_snapshot(session)
     load_response = session.get(
         GEETEST_LOAD_URL,
         params={
@@ -621,6 +633,22 @@ def load_geetest_task(
             "lang": "rus",
         },
         timeout=REQUEST_TIMEOUT_SECONDS,
+    )
+    save_http_exchange(
+        session,
+        load_response,
+        context="GeeTest-load",
+        method="GET",
+        url=GEETEST_LOAD_URL,
+        request_headers=dict(session.headers),
+        request_cookies=request_cookies,
+        params={
+            "callback": callback,
+            "captcha_id": captcha_id,
+            "challenge": challenge,
+            "client_type": "web",
+            "lang": "rus",
+        },
     )
     load_response.raise_for_status()
     load_body = parse_jsonp(load_response.text, callback=callback)
@@ -687,6 +715,10 @@ def solve_geetest_load(
         lang="rus",
         session=source_session,
         request_headers=GEETEST_REQUEST_HEADERS,
+        exchange_logger=lambda **exchange: save_http_exchange(
+            source_session,
+            **exchange,
+        ),
     )
     solver.lot_number = load.lot_number
     solver.base_url = GEETEST_BASE_URL
@@ -742,11 +774,22 @@ def verify_geetest_with_avito(
             "X-Cube": cube_result,
         },
     )
+    request_cookies = session_cookie_snapshot(session)
     response = session.post(
         FIREWALL_CAPTCHA_VERIFY_URL,
         json=payload,
         timeout=REQUEST_TIMEOUT_SECONDS,
         allow_redirects=False,
+    )
+    save_http_exchange(
+        session,
+        response,
+        context="firewallCaptcha-verify",
+        method="POST",
+        url=FIREWALL_CAPTCHA_VERIFY_URL,
+        request_headers=dict(session.headers),
+        request_cookies=request_cookies,
+        json_body=payload,
     )
     body = response_json(response, endpoint="firewallCaptcha/verify")
     try:
@@ -944,6 +987,22 @@ def set_session_headers(session: requests.Session, headers: dict[str, str]) -> N
 def session_cookie_names(session: requests.Session) -> tuple[str, ...]:
     """Return cookie names only, without leaking their values into diagnostics."""
     return tuple(sorted(set(session.cookies.keys())))
+
+
+def session_cookie_snapshot(
+    session: requests.Session,
+) -> list[dict[str, Any]]:
+    """Capture the complete cookie jar at one exact point in the flow."""
+    return [
+        {
+            "name": cookie.name,
+            "value": cookie.value,
+            "domain": cookie.domain,
+            "path": cookie.path,
+            "secure": bool(cookie.secure),
+        }
+        for cookie in session.cookies.jar
+    ]
 
 
 def is_qrator_challenge_response(response: Any) -> bool:
@@ -1339,6 +1398,70 @@ def save_response_body(
     return path.resolve()
 
 
+def save_http_exchange(
+    session: requests.Session,
+    response: Any,
+    *,
+    context: str,
+    method: str,
+    url: str,
+    request_headers: dict[str, Any] | None = None,
+    request_cookies: list[dict[str, Any]] | None = None,
+    params: dict[str, Any] | None = None,
+    json_body: Any = None,
+) -> Path:
+    """Save a complete request/response exchange for cross-machine diagnosis.
+
+    These diagnostics intentionally contain cookie and challenge values. They
+    are stored only in the gitignored debug directory and must be treated as
+    sensitive session data.
+    """
+    DEBUG_RESPONSE_DIR.mkdir(parents=True, exist_ok=True)
+    safe_context = re.sub(r"[^a-zA-Z0-9._-]+", "-", context).strip("-")
+    merged_headers = dict(session.headers)
+    if request_headers:
+        merged_headers.update(request_headers)
+    cookies_after = session_cookie_snapshot(session)
+    cookies_before = (
+        request_cookies
+        if request_cookies is not None
+        else cookies_after
+    )
+    response_body = getattr(response, "text", "")
+    if not isinstance(response_body, str):
+        response_body = str(response_body)
+    exchange = {
+        "context": context,
+        "request": {
+            "method": method.upper(),
+            "url": url,
+            "headers": merged_headers,
+            "cookies": cookies_before,
+            "params": params,
+            "json": json_body,
+        },
+        "response": {
+            "status": response.status_code,
+            "url": str(getattr(response, "url", "") or ""),
+            "headers": dict(response.headers),
+            "body": response_body,
+            "session_cookies_after": cookies_after,
+        },
+    }
+    filename = (
+        f"exchange-{time.time_ns()}-"
+        f"{safe_context or 'http'}.json"
+    )
+    path = DEBUG_RESPONSE_DIR / filename
+    path.write_text(
+        json.dumps(exchange, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    resolved = path.resolve()
+    LOGGER.info("%s: full HTTP diagnostic saved to %s", context, resolved)
+    return resolved
+
+
 def save_html_response(response: Any, *, context: str) -> Path:
     """Save the complete HTML response under a filesystem-safe name."""
     return save_response_body(response, context=context, suffix="html")
@@ -1483,6 +1606,7 @@ def request_pages(
     *,
     start_page: int = 1,
     verification_chain: list[str] | None = None,
+    first_page_diagnostic_context: str | None = None,
 ) -> tuple[tuple[PageRequestResult, ...], Any | None]:
     """Request items pages from ``start_page`` through the configured limit."""
     if not 1 <= start_page <= PAGES_TO_REQUEST:
@@ -1495,6 +1619,7 @@ def request_pages(
         if page != start_page:
             time.sleep(PAGE_REQUEST_DELAY_SECONDS)
         try:
+            request_cookies = session_cookie_snapshot(session)
             response = get_with_qrator_recovery(
                 session,
                 page_url(page),
@@ -1515,6 +1640,24 @@ def request_pages(
             )
             results.append(PageRequestResult(page=page, status_code=0))
             continue
+        diagnostic_context = None
+        if page == start_page and first_page_diagnostic_context:
+            diagnostic_context = first_page_diagnostic_context
+        elif response.status_code in (403, 429, 439):
+            diagnostic_context = f"page-p-{page}-protection"
+        if diagnostic_context:
+            save_http_exchange(
+                session,
+                response,
+                context=diagnostic_context,
+                method="GET",
+                url=page_url(page),
+                request_headers={
+                    **PAGE_REQUEST_HEADERS,
+                    **ITEMS_REQUEST_HEADERS,
+                },
+                request_cookies=request_cookies,
+            )
         stats = parse_items_page_stats(response)
         result = PageRequestResult(
             page=page,
@@ -1573,11 +1716,15 @@ def run() -> CompletedFlow:
     last_protected_page: int | None = None
     protection_transitions_on_page = 0
     consecutive_geetest_failures = 0
+    next_page_diagnostic_context: str | None = None
     while True:
+        diagnostic_context = next_page_diagnostic_context
+        next_page_diagnostic_context = None
         page_requests, protection_response = request_pages(
             session,
             start_page=next_page,
             verification_chain=verification_chain,
+            first_page_diagnostic_context=diagnostic_context,
         )
         all_page_requests.extend(page_requests)
         if protection_response is None:
@@ -1642,6 +1789,10 @@ def run() -> CompletedFlow:
                 "page p=%s: restarting GeeTest from the original GET",
                 page,
             )
+            next_page_diagnostic_context = (
+                f"page-p-{page}-after-geetest-failure-"
+                f"{consecutive_geetest_failures}"
+            )
             next_page = page
             continue
         if isinstance(stage_result, GeeTestVerified):
@@ -1655,6 +1806,9 @@ def run() -> CompletedFlow:
                 "page p=%s: GeeTest cleared; retrying items loop from p=%s",
                 page,
                 page,
+            )
+            next_page_diagnostic_context = (
+                f"page-p-{page}-after-geetest-verify"
             )
             next_page = page
             continue
@@ -1670,6 +1824,9 @@ def run() -> CompletedFlow:
                 "page p=%s: firewallPow cleared; retrying items loop from p=%s",
                 page,
                 page,
+            )
+            next_page_diagnostic_context = (
+                f"page-p-{page}-after-firewallPow-verify"
             )
             next_page = page
             continue

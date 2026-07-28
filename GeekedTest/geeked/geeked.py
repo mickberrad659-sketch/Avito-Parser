@@ -20,6 +20,7 @@ class Geeked:
         *,
         session=None,
         request_headers=None,
+        exchange_logger=None,
         **kwargs,
     ):
         self.pass_token = None
@@ -34,6 +35,7 @@ class Geeked:
         )
         self.owns_session = session is None
         self.base_url = "https://gcaptcha4.geetest.com"
+        self.exchange_logger = exchange_logger
         self.request_headers = request_headers or {
             "connection": "keep-alive",
             "sec-ch-ua-platform": "\"Windows\"",
@@ -91,12 +93,33 @@ class Geeked:
                 session=self.session,
             ),
         }
-        res = self.session.get(
-            f"{self.base_url}/verify",
+        verify_url = f"{self.base_url}/verify"
+        request_cookies = [
+            {
+                "name": cookie.name,
+                "value": cookie.value,
+                "domain": cookie.domain,
+                "path": cookie.path,
+                "secure": bool(cookie.secure),
+            }
+            for cookie in self.session.cookies.jar
+        ]
+        response = self.session.get(
+            verify_url,
             params=params,
             headers=self.request_headers,
-        ).text
-        res = self.format_response(res)
+        )
+        if self.exchange_logger is not None:
+            self.exchange_logger(
+                context="GeeTest-verify",
+                method="GET",
+                url=verify_url,
+                request_headers=self.request_headers,
+                request_cookies=request_cookies,
+                params=params,
+                response=response,
+            )
+        res = self.format_response(response.text)
 
         if res.get("seccode") is None:
             raise CaptchaSolveRejected(res)
