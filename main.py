@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import os
@@ -105,7 +106,7 @@ ITEMS_QUERY_PARAMETERS = (
     ),
 )
 PAGES_TO_REQUEST = 100
-MAX_PROTECTION_TRANSITIONS = 3
+MAX_PROTECTION_TRANSITIONS_PER_PAGE = 5
 MAX_QRATOR_RETRIES_PER_REQUEST = 2
 PAGE_REQUEST_DELAY_SECONDS = 2.0
 QRATOR_PRE_FT_DELAY_SECONDS = 1.0
@@ -279,12 +280,25 @@ class GeeTestVerified:
 
 
 @dataclass(frozen=True)
+class ItemsPageStats:
+    """Top-level counters returned by a successful items API response."""
+
+    count: int
+    total_count: int
+    total_elements: int
+    main_count: int
+    items_on_page: int
+    items_hash: str | None
+
+
+@dataclass(frozen=True)
 class PageRequestResult:
     """HTTP result from one page request made after a successful PoW/no-op."""
 
     page: int
     status_code: int
     redirect_location: str | None = None
+    stats: ItemsPageStats | None = None
 
 
 @dataclass(frozen=True)
@@ -299,6 +313,61 @@ class CompletedFlow:
 def format_verification_chain(chain: list[str] | tuple[str, ...]) -> str:
     """Format the ordered protection path for human-readable logs."""
     return " -> ".join(chain) if chain else "none"
+
+
+def parse_items_page_stats(response: Any) -> ItemsPageStats | None:
+    """Parse the five top-level counters from a successful items response."""
+    if response.status_code != 200:
+        return None
+    try:
+        payload = response.json()
+    except (json.JSONDecodeError, ValueError):
+        LOGGER.warning("items response HTTP 200 is not valid JSON")
+        return None
+    if not isinstance(payload, dict):
+        LOGGER.warning("items response HTTP 200 JSON is not an object")
+        return None
+    field_names = (
+        "count",
+        "totalCount",
+        "totalElements",
+        "mainCount",
+        "itemsOnPage",
+    )
+    values = {name: payload.get(name) for name in field_names}
+    invalid = [
+        name for name, value in values.items() if type(value) is not int
+    ]
+    if invalid:
+        LOGGER.warning(
+            "items response is missing integer counters: %s",
+            ", ".join(invalid),
+        )
+        return None
+    catalog = payload.get("catalog")
+    items = catalog.get("items") if isinstance(catalog, dict) else None
+    items_hash = hash_catalog_items(items) if isinstance(items, list) else None
+    if items_hash is None:
+        LOGGER.warning("items response has no catalog.items array")
+    return ItemsPageStats(
+        count=values["count"],
+        total_count=values["totalCount"],
+        total_elements=values["totalElements"],
+        main_count=values["mainCount"],
+        items_on_page=values["itemsOnPage"],
+        items_hash=items_hash,
+    )
+
+
+def hash_catalog_items(items: list[Any]) -> str:
+    """Return a fast deterministic BLAKE2b-128 hash of the complete array."""
+    canonical = json.dumps(
+        items,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.blake2b(canonical, digest_size=16).hexdigest()
 
 
 def response_json(response: Any, *, endpoint: str) -> dict[str, Any]:
@@ -365,7 +434,7 @@ def response_has_pow_challenge(response: Any) -> bool:
 
 def is_firewall_captcha_dispatcher_response(response: Any) -> bool:
     """Recognize the JSON instruction to open Avito's generic captcha flow."""
-    if response.status_code != 429:
+    if response.status_code not in (403, 429):
         return False
     try:
         payload = response.json()
@@ -776,6 +845,24 @@ def log_unrecognized_protection_response(response: Any, *, context: str) -> None
         preview(repr(dict(response.headers)), limit=LOG_HEADERS_PREVIEW_LENGTH),
         preview(response.text, limit=LOG_BODY_PREVIEW_LENGTH),
     )
+
+
+def log_bad_request_response(response: Any, *, context: str) -> Path:
+    """Preserve an HTTP 400 response for later diagnosis and keep the loop going."""
+    saved_path = save_response_body(response, context=context)
+    LOGGER.warning(
+        "%s: HTTP 400; response body saved to %s; continuing with the next page",
+        context,
+        saved_path,
+    )
+    LOGGER.debug(
+        "%s: HTTP 400; url=%s; headers=%s; response body preview:\n%s",
+        context,
+        response.url,
+        preview(repr(dict(response.headers)), limit=LOG_HEADERS_PREVIEW_LENGTH),
+        preview(response.text, limit=LOG_BODY_PREVIEW_LENGTH),
+    )
+    return saved_path
 
 
 def preview(value: str, *, limit: int) -> str:
@@ -1266,6 +1353,18 @@ def handle_firewall_response(
     """
     if response.status_code == 200:
         return None
+    if is_firewall_captcha_dispatcher_response(response):
+        saved_path = save_response_body(response, context=context)
+        LOGGER.info(
+            "%s: HTTP %s requests captcha dispatcher; body saved to %s",
+            context,
+            response.status_code,
+            saved_path,
+        )
+        return run_firewall_captcha_dispatcher(
+            session,
+            referer=str(response.url) if response.url else REFERER,
+        )
     if response.status_code == 403:
         log_forbidden_response(response, context=context)
         raise RuntimeError(
@@ -1281,17 +1380,6 @@ def handle_firewall_response(
                 context,
             )
             return run_pow_verification(session, response)
-        if is_firewall_captcha_dispatcher_response(response):
-            saved_path = save_response_body(response, context=context)
-            LOGGER.info(
-                "%s: HTTP 429 requests captcha dispatcher; body saved to %s",
-                context,
-                saved_path,
-            )
-            return run_firewall_captcha_dispatcher(
-                session,
-                referer=str(response.url) if response.url else REFERER,
-            )
         if not is_geetest_firewall_html(response.text):
             log_unrecognized_protection_response(response, context=context)
             raise RuntimeError(
@@ -1362,14 +1450,26 @@ def request_pages(
             )
             results.append(PageRequestResult(page=page, status_code=0))
             continue
-        results.append(
-            PageRequestResult(
-                page=page,
-                status_code=response.status_code,
-                redirect_location=redirect_target(response),
-            )
+        stats = parse_items_page_stats(response)
+        result = PageRequestResult(
+            page=page,
+            status_code=response.status_code,
+            redirect_location=redirect_target(response),
+            stats=stats,
         )
-        LOGGER.info("page p=%s: HTTP %s", page, response.status_code)
+        results.append(result)
+        if stats is not None:
+            LOGGER.info(
+                "page p=%s: HTTP %s; totalCount=%s; itemsOnPage=%s; "
+                "itemsHash=%s",
+                page,
+                response.status_code,
+                stats.total_count,
+                stats.items_on_page,
+                stats.items_hash or "unavailable",
+            )
+        else:
+            LOGGER.info("page p=%s: HTTP %s", page, response.status_code)
         LOGGER.debug(
             "page p=%s: session cookie names=%s",
             page,
@@ -1377,6 +1477,8 @@ def request_pages(
         )
         if 300 <= response.status_code < 400:
             log_redirect_response(response, context=f"page p={page}")
+        if response.status_code == 400:
+            log_bad_request_response(response, context=f"page p={page}")
         if response.status_code in (403, 429, 439):
             return tuple(results), response
     return tuple(results), None
@@ -1403,7 +1505,9 @@ def run() -> CompletedFlow:
     verification_chain: list[str] = []
     next_page = 1
     all_page_requests: list[PageRequestResult] = []
-    for transition in range(MAX_PROTECTION_TRANSITIONS + 1):
+    last_protected_page: int | None = None
+    protection_transitions_on_page = 0
+    while True:
         page_requests, protection_response = request_pages(
             session,
             start_page=next_page,
@@ -1420,9 +1524,21 @@ def run() -> CompletedFlow:
                 page_requests=tuple(all_page_requests),
                 verification_chain=tuple(verification_chain),
             )
-        if transition == MAX_PROTECTION_TRANSITIONS:
-            raise RuntimeError("too many firewall transitions while requesting pages")
         page = page_requests[-1].page
+        if page == last_protected_page:
+            protection_transitions_on_page += 1
+        else:
+            last_protected_page = page
+            protection_transitions_on_page = 1
+        if (
+            protection_transitions_on_page
+            > MAX_PROTECTION_TRANSITIONS_PER_PAGE
+        ):
+            raise RuntimeError(
+                f"page p={page}: more than "
+                f"{MAX_PROTECTION_TRANSITIONS_PER_PAGE} consecutive "
+                "protection transitions"
+            )
         LOGGER.info("page p=%s returned a protection response; classifying it", page)
         stage_result = handle_firewall_response(
             session, protection_response, context=f"page p={page}"
@@ -1454,8 +1570,6 @@ def run() -> CompletedFlow:
             )
             next_page = page
             continue
-
-    raise AssertionError("unreachable")
 
 
 if __name__ == "__main__":

@@ -106,6 +106,55 @@ class FakeSession:
         return self.target_responses.pop(0)
 
 
+def items_payload(items=None):
+    return {
+        "count": 4267,
+        "totalCount": 4267,
+        "totalElements": 4300,
+        "mainCount": 4267,
+        "itemsOnPage": 50,
+        "catalog": {
+            "items": items
+            if items is not None
+            else [{"id": 1, "title": "first"}, {"id": 2, "title": "second"}],
+        },
+    }
+
+
+def test_items_response_counters_and_catalog_hash_are_parsed() -> None:
+    first_items = [
+        {"id": 1, "nested": {"b": 2, "a": 1}},
+        {"id": 2, "title": "товар"},
+    ]
+    same_items_different_key_order = [
+        {"nested": {"a": 1, "b": 2}, "id": 1},
+        {"title": "товар", "id": 2},
+    ]
+    response = FakeResponse(
+        200,
+        headers={"content-type": "application/json"},
+        json_value=items_payload(first_items),
+    )
+
+    stats = main.parse_items_page_stats(response)
+
+    assert stats == main.ItemsPageStats(
+        count=4267,
+        total_count=4267,
+        total_elements=4300,
+        main_count=4267,
+        items_on_page=50,
+        items_hash=main.hash_catalog_items(first_items),
+    )
+    assert re.fullmatch(r"[0-9a-f]{32}", stats.items_hash)
+    assert main.hash_catalog_items(first_items) == main.hash_catalog_items(
+        same_items_different_key_order
+    )
+    assert main.hash_catalog_items(first_items) != main.hash_catalog_items(
+        list(reversed(first_items))
+    )
+
+
 def test_items_url_has_exact_query_and_only_replaces_page() -> None:
     expected = [
         (key, "17" if key == "p" else value)
@@ -271,7 +320,52 @@ def test_json_captcha_dispatcher_is_recognized() -> None:
     assert main.is_firewall_captcha_dispatcher_response(response) is True
 
 
-def test_http_429_dispatcher_is_routed_to_captcha_flow(tmp_path) -> None:
+def test_http_403_dispatcher_is_routed_to_captcha_flow(tmp_path) -> None:
+    body = (
+        '{"too-many-requests":{"message":"Доступ временно ограничен",'
+        '"link":"ru.avito://1/firewall/captcha/show"}}'
+    )
+    response = FakeResponse(
+        403,
+        headers={
+            "content-type": "application/json",
+            "x-firewall-show-captcha": "true",
+        },
+        json_value={
+            "too-many-requests": {
+                "message": "Доступ временно ограничен",
+                "link": "ru.avito://1/firewall/captcha/show",
+            }
+        },
+        text=body,
+        url="https://www.avito.ru/web/1/js/items?p=13",
+    )
+    verified = main.GeeTestVerified(lot_number="lot")
+    session = FakeSession()
+
+    with (
+        patch.object(main, "DEBUG_RESPONSE_DIR", tmp_path),
+        patch.object(
+            main,
+            "run_firewall_captcha_dispatcher",
+            return_value=verified,
+        ) as dispatcher,
+    ):
+        result = main.handle_firewall_response(
+            session,
+            response,
+            context="page p=13",
+        )
+
+    assert result is verified
+    dispatcher.assert_called_once_with(
+        session,
+        referer=response.url,
+    )
+    assert (tmp_path / "page-p-13-http-403.json").read_text() == body
+
+
+def test_http_429_dispatcher_still_routes_to_captcha_flow(tmp_path) -> None:
     body = (
         '{"too-many-requests":{"message":"Доступ временно ограничен",'
         '"link":"ru.avito://1/firewall/captcha/show"}}'
@@ -309,10 +403,7 @@ def test_http_429_dispatcher_is_routed_to_captcha_flow(tmp_path) -> None:
         )
 
     assert result is verified
-    dispatcher.assert_called_once_with(
-        session,
-        referer=response.url,
-    )
+    dispatcher.assert_called_once_with(session, referer=response.url)
     assert (tmp_path / "page-p-13-http-429.json").read_text() == body
 
 
@@ -407,7 +498,11 @@ def test_page_loop_stops_immediately_on_first_403() -> None:
         [
             FakeResponse(
                 200,
-                headers={"server": "QRATOR", "content-type": "text/html"},
+                headers={
+                    "server": "QRATOR",
+                    "content-type": "application/json",
+                },
+                json_value=items_payload(),
                 url=main.page_url(1),
             ),
             FakeResponse(
@@ -424,12 +519,51 @@ def test_page_loop_stops_immediately_on_first_403() -> None:
     assert [result.status_code for result in results] == [200, 403]
     assert protection_response is not None
     assert protection_response.status_code == 403
+    assert results[0].stats.total_count == 4267
+    assert results[0].stats.items_on_page == 50
+    assert re.fullmatch(r"[0-9a-f]{32}", results[0].stats.items_hash)
     first_url, first_kwargs, first_session_headers = session.gets[0]
     assert first_url == main.page_url(1)
     assert first_kwargs["headers"]["X-Source"] == "client-browser"
     assert first_kwargs["headers"]["X-Requested-With"] == "XMLHttpRequest"
     assert first_session_headers["Sec-Fetch-Mode"] == "cors"
     sleep.assert_called_once_with(main.PAGE_REQUEST_DELAY_SECONDS)
+
+
+def test_page_loop_saves_http_400_body_and_continues(tmp_path) -> None:
+    bad_request_body = '{"error":{"message":"invalid request"}}'
+    session = FakeSession(
+        [
+            FakeResponse(
+                400,
+                headers={"content-type": "application/json"},
+                text=bad_request_body,
+                url=main.page_url(31),
+            ),
+            FakeResponse(
+                200,
+                headers={"content-type": "application/json"},
+                json_value=items_payload(),
+                url=main.page_url(32),
+            ),
+        ]
+    )
+
+    with (
+        patch.object(main, "DEBUG_RESPONSE_DIR", tmp_path),
+        patch.object(main, "PAGES_TO_REQUEST", 32),
+        patch.object(main.time, "sleep"),
+    ):
+        results, protection_response = main.request_pages(
+            session,
+            start_page=31,
+        )
+
+    assert [result.status_code for result in results] == [400, 200]
+    assert protection_response is None
+    assert (
+        tmp_path / "page-p-31-http-400.json"
+    ).read_text(encoding="utf-8") == bad_request_body
 
 
 def test_document_get_retries_one_incomplete_read() -> None:
