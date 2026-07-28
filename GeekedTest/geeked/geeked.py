@@ -13,15 +13,28 @@ class CaptchaSolveRejected(Exception):
 
 
 class Geeked:
-    def __init__(self, captcha_id: str, lang: str = "rus", **kwargs):
+    def __init__(
+        self,
+        captcha_id: str,
+        lang: str = "rus",
+        *,
+        session=None,
+        request_headers=None,
+        **kwargs,
+    ):
         self.pass_token = None
         self.lot_number = None
         self.captcha_id = captcha_id
         self.challenge = str(uuid4())
         self.lang = lang
         self.callback = Geeked.random()
-        self.session = requests.Session(impersonate="chrome124", **kwargs)
-        self.session.headers = {
+        self.session = session or requests.Session(
+            impersonate="chrome124",
+            **kwargs,
+        )
+        self.owns_session = session is None
+        self.base_url = "https://gcaptcha4.geetest.com"
+        self.request_headers = request_headers or {
             "connection": "keep-alive",
             "sec-ch-ua-platform": "\"Windows\"",
             "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
@@ -33,7 +46,8 @@ class Geeked:
             "accept-encoding": "gzip, deflate, br, zstd",
             "accept-language": "en-US,en;q=0.9"
         }
-        self.session.base_url = "https://gcaptcha4.geetest.com"
+        if self.owns_session:
+            self.session.headers = dict(self.request_headers)
 
     @staticmethod
     def random() -> str:
@@ -51,7 +65,11 @@ class Geeked:
             "lang": self.lang,
             "callback": self.callback,
         }
-        res = self.session.get("/load", params=params)
+        res = self.session.get(
+            f"{self.base_url}/load",
+            params=params,
+            headers=self.request_headers,
+        )
         return self.format_response(res.text)
 
     def submit_captcha(self, data: dict) -> dict:
@@ -66,9 +84,18 @@ class Geeked:
             "process_token": data["process_token"],
             "payload_protocol": "1",
             "pt": "1",
-            "w": Signer.generate_w(data, self.captcha_id, data["captcha_type"]),
+            "w": Signer.generate_w(
+                data,
+                self.captcha_id,
+                data["captcha_type"],
+                session=self.session,
+            ),
         }
-        res = self.session.get("/verify", params=params).text
+        res = self.session.get(
+            f"{self.base_url}/verify",
+            params=params,
+            headers=self.request_headers,
+        ).text
         res = self.format_response(res)
 
         if res.get("seccode") is None:

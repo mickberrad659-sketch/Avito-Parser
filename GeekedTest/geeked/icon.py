@@ -19,8 +19,11 @@ class IconSolver:
         '23ef93e6b0e0df0e15b66667c99a5fb4.png': 'rd'
     }
 
-    def __init__(self, imgs: str, ques: List[str]):
-        self.imgs = self.load_image(f'https://static.geetest.com/{imgs}')
+    def __init__(self, imgs: str, ques: List[str], *, session=None):
+        self.imgs = self.load_image(
+            f'https://static.geetest.com/{imgs}',
+            session=session,
+        )
         self.ques = ques
 
     @staticmethod
@@ -38,9 +41,10 @@ class IconSolver:
         print(f"Result: {result}")
 
     @staticmethod
-    def load_image(url: str) -> bytes:
+    def load_image(url: str, *, session=None) -> bytes:
         """Load image from URL and return as bytes."""
-        response = requests.get(url, timeout=10)
+        http_get = session.get if session is not None else requests.get
+        response = http_get(url, timeout=10)
         response.raise_for_status()  # Raise exception for bad status codes
         return response.content
 

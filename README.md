@@ -122,6 +122,14 @@ HTML-ветки остаётся проверка маркеров `#geetest_cap
 содержит тип последней задачи, `lot_number`, `result` и серверный
 `fail_count`.
 
+Avito и вся GeeTest-цепочка (`/load`, изображения и `/verify`) используют одну
+`curl_cffi.Session`, один cookie jar и один сетевой маршрут. GeeTest-запросы
+повторяют Firefox-заголовки из HAR (`Referer: https://www.avito.ru/`,
+`Sec-Fetch-Site: cross-site`), а `firewallCaptcha/get` и
+`firewallCaptcha/verify` используют постоянный Referer страницы каталога.
+Ответ Avito `verified=false` также считается неудачной Gee-попыткой и
+перезапускает цепочку с исходного GET, максимум пять раз подряд.
+
 Живой E2E HTML- и JSON-dispatcher веток подтверждён 27–28 июля 2026 года:
 свежие `firewallCaptcha/get` и GeeTest `/load` были решены локальным solver-ом,
 после чего Avito принял `firewallCaptcha/verify` и вернул успешную

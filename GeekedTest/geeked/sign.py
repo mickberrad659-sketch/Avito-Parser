@@ -178,7 +178,13 @@ function encrypt_asymmetric_2(input, key) {
                         return {'pow_msg': pow_string + h, 'pow_sign': hashed_value}
 
     @staticmethod
-    def generate_w(data: dict, captcha_id: str, captcha_type: str):
+    def generate_w(
+        data: dict,
+        captcha_id: str,
+        captcha_type: str,
+        *,
+        session=None,
+    ):
         lot_number = data['lot_number']
         pow_detail = data['pow_detail']
         abo = {"YYhg":"BjI0"}
@@ -218,9 +224,16 @@ function encrypt_asymmetric_2(input, key) {
         if captcha_type in ("ai", "invisible"):
             pass
         elif captcha_type == "slide":
+            http_get = session.get if session is not None else requests.get
             left = SlideSolver(
-                requests.get(f"https://static.geetest.com/{data['slice']}", timeout=10).content,
-                requests.get(f"https://static.geetest.com/{data['bg']}", timeout=10).content
+                http_get(
+                    f"https://static.geetest.com/{data['slice']}",
+                    timeout=10,
+                ).content,
+                http_get(
+                    f"https://static.geetest.com/{data['bg']}",
+                    timeout=10,
+                ).content,
             ).find_puzzle_piece_position() + random.uniform(0, .5)
             base |= {
                 "passtime": random.randint(600, 1200),  # time in ms it took to solve
@@ -234,7 +247,11 @@ function encrypt_asymmetric_2(input, key) {
         elif captcha_type == "icon":
             base |= {
                 "passtime": random.randint(600, 1200),  # time in ms it took to solve
-                "userresponse": IconSolver(data["imgs"], data["ques"]).find_icon_position()
+                "userresponse": IconSolver(
+                    data["imgs"],
+                    data["ques"],
+                    session=session,
+                ).find_icon_position()
             }
         else:
             raise NotImplementedError(f"This captcha_type ({captcha_type}) is not implemented yet.")

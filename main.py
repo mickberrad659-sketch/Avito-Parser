@@ -39,6 +39,7 @@ VERIFY_URL = f"{BASE_URL}/web/3/firewallPow/verify"
 FIREWALL_CAPTCHA_GET_URL = f"{BASE_URL}/web/5/firewallCaptcha/get"
 FIREWALL_CAPTCHA_VERIFY_URL = f"{BASE_URL}/web/3/firewallCaptcha/verify"
 GEETEST_LOAD_URL = "https://gcaptcha4.geevisit.com/load"
+GEETEST_BASE_URL = "https://gcaptcha4.geevisit.com"
 GEETEST_CAPTCHA_ID = "2d9c743cf7d63dbc9db578a608196bcd"
 QRATOR_FT_URL = f"{BASE_URL}/web/2/ft"
 QRATOR_PIXEL_URL = f"{BASE_URL}/web/1/u"
@@ -254,6 +255,23 @@ CAPTCHA_VERIFY_HEADERS = {
     "Sec-Fetch-Site": "same-origin",
     "Sec-GPC": "1",
     "Priority": "u=4",
+    "Pragma": "no-cache",
+    "Cache-Control": "no-cache",
+    "TE": "trailers",
+    "User-Agent": PAGE_REQUEST_HEADERS["User-Agent"],
+}
+
+GEETEST_REQUEST_HEADERS = {
+    "Accept": "*/*",
+    "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+    "Accept-Encoding": "gzip, deflate, br, zstd",
+    "Connection": "keep-alive",
+    "Referer": f"{BASE_URL}/",
+    "Sec-Fetch-Storage-Access": "none",
+    "Sec-Fetch-Dest": "script",
+    "Sec-Fetch-Mode": "no-cors",
+    "Sec-Fetch-Site": "cross-site",
+    "Sec-GPC": "1",
     "Pragma": "no-cache",
     "Cache-Control": "no-cache",
     "TE": "trailers",
@@ -592,6 +610,7 @@ def load_geetest_task(
     """Load a fresh GeeTest task for Avito's bundle-level captcha id."""
     challenge = str(uuid.uuid4())
     callback = f"geetest_{int(time.time() * 1000) + secrets.randbelow(10_000)}"
+    set_session_headers(session, GEETEST_REQUEST_HEADERS)
     load_response = session.get(
         GEETEST_LOAD_URL,
         params={
@@ -663,36 +682,28 @@ def solve_geetest_load(
             "GeekedTest dependencies are missing; run `uv sync`"
         ) from exc
 
-    solver = Geeked(load.captcha_id, lang="rus")
+    solver = Geeked(
+        load.captcha_id,
+        lang="rus",
+        session=source_session,
+        request_headers=GEETEST_REQUEST_HEADERS,
+    )
     solver.lot_number = load.lot_number
-    solver.session.base_url = "https://gcaptcha4.geevisit.com"
-    for cookie in source_session.cookies.jar:
-        domain = cookie.domain or ""
-        if "geetest" not in domain and "geevisit" not in domain:
-            continue
-        solver.session.cookies.set(
-            cookie.name,
-            cookie.value,
-            domain=domain,
-            path=cookie.path or "/",
-        )
+    solver.base_url = GEETEST_BASE_URL
     try:
-        try:
-            seccode = solver.submit_captcha(load.data)
-        except CaptchaSolveRejected as exc:
-            rejection = exc.response
-            raise GeeTestSolveFailed(
-                captcha_type=load.captcha_type,
-                lot_number=load.lot_number,
-                result=rejection.get("result")
-                if isinstance(rejection.get("result"), str)
-                else None,
-                fail_count=rejection.get("fail_count")
-                if type(rejection.get("fail_count")) is int
-                else None,
-            ) from exc
-    finally:
-        solver.session.close()
+        seccode = solver.submit_captcha(load.data)
+    except CaptchaSolveRejected as exc:
+        rejection = exc.response
+        raise GeeTestSolveFailed(
+            captcha_type=load.captcha_type,
+            lot_number=load.lot_number,
+            result=rejection.get("result")
+            if isinstance(rejection.get("result"), str)
+            else None,
+            fail_count=rejection.get("fail_count")
+            if type(rejection.get("fail_count")) is int
+            else None,
+        ) from exc
 
     required = (
         "captcha_id",
@@ -745,7 +756,23 @@ def verify_geetest_with_avito(
             "firewallCaptcha/verify: no success.result.verified"
         ) from exc
     if verified is not True:
-        raise RuntimeError("firewallCaptcha/verify: server returned verified=false")
+        saved_path = save_response_body(
+            response,
+            context="GeeTest-firewallCaptcha-verify",
+        )
+        LOGGER.warning(
+            "GeeTest seccode was accepted by GeeTest but rejected by Avito; "
+            "type=%s; lot_number=%s; body saved to %s",
+            load.captcha_type or "unknown",
+            load.lot_number or "unknown",
+            saved_path,
+        )
+        raise GeeTestSolveFailed(
+            captcha_type=load.captcha_type,
+            lot_number=load.lot_number,
+            result="avito_verified_false",
+            fail_count=None,
+        )
     lot_number = seccode["lot_number"]
     LOGGER.info(
         "GeeTest verification succeeded; lot_number=%s; X-Cube=%s",
@@ -1401,7 +1428,7 @@ def handle_firewall_response(
         )
         return run_firewall_captcha_dispatcher(
             session,
-            referer=str(response.url) if response.url else REFERER,
+            referer=PAGE_REQUEST_HEADERS["Referer"],
         )
     if response.status_code == 403:
         log_forbidden_response(response, context=context)
@@ -1434,7 +1461,7 @@ def handle_firewall_response(
         return run_geetest_verification(
             session,
             response.text,
-            referer=str(response.url) if response.url else REFERER,
+            referer=PAGE_REQUEST_HEADERS["Referer"],
         )
     raise RuntimeError(
         f"{context}: expected HTTP 200, 403, 429, or 439; "

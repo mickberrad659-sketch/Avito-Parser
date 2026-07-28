@@ -361,7 +361,7 @@ def test_http_403_dispatcher_is_routed_to_captcha_flow(tmp_path) -> None:
     assert result is verified
     dispatcher.assert_called_once_with(
         session,
-        referer=response.url,
+        referer=main.PAGE_REQUEST_HEADERS["Referer"],
     )
     assert (tmp_path / "page-p-13-http-403.json").read_text() == body
 
@@ -404,7 +404,10 @@ def test_http_429_dispatcher_still_routes_to_captcha_flow(tmp_path) -> None:
         )
 
     assert result is verified
-    dispatcher.assert_called_once_with(session, referer=response.url)
+    dispatcher.assert_called_once_with(
+        session,
+        referer=main.PAGE_REQUEST_HEADERS["Referer"],
+    )
     assert (tmp_path / "page-p-13-http-429.json").read_text() == body
 
 
@@ -480,6 +483,34 @@ def test_captcha_dispatcher_uses_bundle_geetest_id() -> None:
         load,
         referer="https://www.avito.ru/items?p=13",
     )
+
+
+def test_geetest_load_uses_shared_session_and_har_headers() -> None:
+    class LoadSession(FakeSession):
+        def get(self, url, **kwargs):
+            self.gets.append((url, kwargs, dict(self.headers)))
+            callback = kwargs["params"]["callback"]
+            return FakeResponse(
+                200,
+                headers={"content-type": "text/javascript"},
+                text=(
+                    f'{callback}({{"status":"success","data":'
+                    '{"lot_number":"lot","captcha_type":"slide"}})'
+                ),
+                url=url,
+            )
+
+    session = LoadSession()
+    load = main.load_geetest_task(session, captcha_id="captcha-id")
+
+    assert load.lot_number == "lot"
+    assert len(session.gets) == 1
+    url, _, headers = session.gets[0]
+    assert url == main.GEETEST_LOAD_URL
+    assert headers["Referer"] == "https://www.avito.ru/"
+    assert headers["Sec-Fetch-Site"] == "cross-site"
+    assert headers["User-Agent"] == main.PAGE_REQUEST_HEADERS["User-Agent"]
+    assert "Origin" not in headers
 
 
 def test_qrator_html_is_recognized_when_status_is_429() -> None:
@@ -675,21 +706,22 @@ def test_existing_geetest_load_data_is_passed_to_geeked_submit() -> None:
     load, seccode = geetest_fixture()
     observed = {}
 
-    class SolverSession:
-        base_url = ""
-
-        def __init__(self):
-            self.cookies = Cookies()
-
-        def close(self):
-            observed["closed"] = True
-
     class FakeGeeked:
-        def __init__(self, captcha_id, lang):
+        def __init__(
+            self,
+            captcha_id,
+            lang,
+            *,
+            session,
+            request_headers,
+        ):
             observed["captcha_id"] = captcha_id
             observed["lang"] = lang
+            observed["session"] = session
+            observed["request_headers"] = request_headers
             self.lot_number = None
-            self.session = SolverSession()
+            self.session = session
+            self.base_url = ""
 
         def submit_captcha(self, data):
             observed["data"] = data
@@ -722,7 +754,8 @@ def test_existing_geetest_load_data_is_passed_to_geeked_submit() -> None:
     assert result == seccode
     assert observed["data"] is load.data
     assert observed["lot_number"] == load.lot_number
-    assert observed["closed"] is True
+    assert observed["session"] is source_session
+    assert observed["request_headers"] is main.GEETEST_REQUEST_HEADERS
     assert observed["solver_cookie"] == "GEETEST_COOKIE"
 
 
@@ -773,19 +806,18 @@ def test_geetest_rejection_preserves_task_diagnostics() -> None:
         def __init__(self, response):
             self.response = response
 
-    class SolverSession:
-        base_url = ""
-
-        def __init__(self):
-            self.cookies = Cookies()
-
-        def close(self):
-            pass
-
     class RejectingGeeked:
-        def __init__(self, captcha_id, lang):
+        def __init__(
+            self,
+            captcha_id,
+            lang,
+            *,
+            session,
+            request_headers,
+        ):
             self.lot_number = None
-            self.session = SolverSession()
+            self.session = session
+            self.base_url = ""
 
         def submit_captcha(self, data):
             raise CaptchaSolveRejected(
@@ -812,6 +844,47 @@ def test_geetest_rejection_preserves_task_diagnostics() -> None:
     assert error.value.result == "fail"
     assert error.value.fail_count == 1
     assert "large-opaque-value" not in str(error.value)
+
+
+def test_avito_verified_false_becomes_retryable_geetest_failure(
+    tmp_path,
+) -> None:
+    load, seccode = geetest_fixture()
+
+    class RejectingVerifySession(FakeSession):
+        def post(self, url, **kwargs):
+            return FakeResponse(
+                200,
+                headers={"content-type": "application/json"},
+                json_value={
+                    "success": {
+                        "result": {
+                            "captcha": {"type": "geeTest"},
+                            "verified": False,
+                        }
+                    }
+                },
+                text='{"success":{"result":{"verified":false}}}',
+                url=url,
+            )
+
+    with (
+        patch.object(main, "DEBUG_RESPONSE_DIR", tmp_path),
+        pytest.raises(main.GeeTestSolveFailed) as error,
+    ):
+        main.verify_geetest_with_avito(
+            RejectingVerifySession(),
+            load,
+            seccode,
+            referer=main.PAGE_REQUEST_HEADERS["Referer"],
+        )
+
+    assert error.value.captcha_type == "slide"
+    assert error.value.lot_number == load.lot_number
+    assert error.value.result == "avito_verified_false"
+    assert (
+        tmp_path / "GeeTest-firewallCaptcha-verify-http-200.json"
+    ).exists()
 
 
 def test_run_retries_the_same_page_after_geetest_and_pow() -> None:
