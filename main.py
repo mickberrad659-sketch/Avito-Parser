@@ -44,6 +44,11 @@ GEETEST_CAPTCHA_ID = "2d9c743cf7d63dbc9db578a608196bcd"
 QRATOR_FT_URL = f"{BASE_URL}/web/2/ft"
 QRATOR_PIXEL_URL = f"{BASE_URL}/web/1/u"
 QRATOR_FAVICON_URL = f"{BASE_URL}/favicon.ico"
+CATALOG_PAGE_URL = (
+    f"{BASE_URL}/volgograd/bytovaya_elektronika?"
+    "context=H4sIAAAAAAAA_wEmANn_YToxOntzOjE6InkiO3M6MTY6"
+    "ImpKSFd2M2hLSlIzWWJFMHQiO30fldpuJgAAAA"
+)
 REFERER = (
     f"{BASE_URL}/volgograd/bytovaya_elektronika?"
     "context=H4sIAAAAAAAA_wEmANn_YToxOntzOjE6InkiO3M6MTY6ImpKSFd2M2hLSlIzWWJFMHQiO30fldpuJgAAAA"
@@ -135,6 +140,24 @@ PROXY_ENVIRONMENT_VARIABLES = (
     "ALL_PROXY",
 )
 
+
+def firefox_user_agent(platform_name: str | None = None) -> str:
+    """Return a Firefox 152 UA whose OS agrees with the current TCP stack."""
+    platform_name = platform_name or sys.platform
+    if platform_name.startswith("win"):
+        platform_token = "Windows NT 10.0; Win64; x64"
+    elif platform_name == "darwin":
+        platform_token = "Macintosh; Intel Mac OS X 10.15"
+    else:
+        platform_token = "X11; Linux x86_64"
+    return (
+        f"Mozilla/5.0 ({platform_token}; rv:152.0) "
+        "Gecko/20100101 Firefox/152.0"
+    )
+
+
+BROWSER_USER_AGENT = firefox_user_agent()
+
 # Headers sent by the browser XHR in the source HAR.  Content-Type is supplied
 # by ``json=...`` and Cookie is managed by the session's cookie jar.
 REQUEST_HEADERS = {
@@ -150,20 +173,35 @@ REQUEST_HEADERS = {
     "Sec-Fetch-Site": "same-origin",
     "Sec-GPC": "1",
     "TE": "trailers",
-    "User-Agent": (
-        "Mozilla/5.0 (X11; Linux x86_64; rv:152.0) Gecko/20100101 Firefox/152.0"
-    ),
+    "User-Agent": BROWSER_USER_AGENT,
 }
 
 # Headers of the main same-origin items XHR. Protection service requests
 # temporarily replace them and the exact set is restored before every retry.
 PAGE_REQUEST_HEADERS = {
     **REQUEST_HEADERS,
-    "Referer": (
-        f"{BASE_URL}/volgograd/bytovaya_elektronika?"
-        "context=H4sIAAAAAAAA_wEmANn_YToxOntzOjE6InkiO3M6MTY6"
-        "ImpKSFd2M2hLSlIzWWJFMHQiO30fldpuJgAAAA"
+    "Referer": CATALOG_PAGE_URL,
+}
+
+DOCUMENT_REQUEST_HEADERS = {
+    "Accept": (
+        "text/html,application/xhtml+xml,application/xml;q=0.9,"
+        "image/avif,image/webp,*/*;q=0.8"
     ),
+    "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+    "Accept-Encoding": "gzip, deflate, br, zstd",
+    "Connection": "keep-alive",
+    "Pragma": "no-cache",
+    "Cache-Control": "no-cache",
+    "Priority": "u=0, i",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "none",
+    "Sec-Fetch-User": "?1",
+    "Sec-GPC": "1",
+    "Upgrade-Insecure-Requests": "1",
+    "TE": "trailers",
+    "User-Agent": BROWSER_USER_AGENT,
 }
 
 ITEMS_REQUEST_HEADERS = {
@@ -1604,6 +1642,119 @@ def page_url(page: int) -> str:
     return f"{ITEMS_URL}?{urlencode(query)}"
 
 
+def bootstrap_catalog_session(
+    session: requests.Session,
+    *,
+    verification_chain: list[str],
+) -> int | None:
+    """Visit the browser document before items XHR and clear its protections."""
+    pow_unblock_ttl = None
+    transitions = 0
+    consecutive_geetest_failures = 0
+    attempt = 0
+    while True:
+        attempt += 1
+        set_session_headers(session, DOCUMENT_REQUEST_HEADERS)
+        request_cookies = session_cookie_snapshot(session)
+        response = get_with_qrator_recovery(
+            session,
+            CATALOG_PAGE_URL,
+            session_headers=DOCUMENT_REQUEST_HEADERS,
+            timeout_seconds=DOCUMENT_REQUEST_TIMEOUT_SECONDS,
+            context="catalog bootstrap",
+            stream_response_body=True,
+            verification_chain=verification_chain,
+        )
+        save_http_exchange(
+            session,
+            response,
+            context=f"catalog-bootstrap-attempt-{attempt}",
+            method="GET",
+            url=CATALOG_PAGE_URL,
+            request_headers=DOCUMENT_REQUEST_HEADERS,
+            request_cookies=request_cookies,
+        )
+        LOGGER.info(
+            "catalog bootstrap attempt %s: HTTP %s",
+            attempt,
+            response.status_code,
+        )
+        if response.status_code == 200:
+            expected_cookies = {"buyer_location_id", "luri", "sx"}
+            cookie_names = set(session_cookie_names(session))
+            missing = sorted(expected_cookies - cookie_names)
+            if missing:
+                LOGGER.warning(
+                    "catalog bootstrap HTTP 200 did not set expected cookies: %s",
+                    ", ".join(missing),
+                )
+            else:
+                LOGGER.info(
+                    "catalog bootstrap established location cookies: %s",
+                    ", ".join(sorted(expected_cookies)),
+                )
+            return pow_unblock_ttl
+
+        transitions += 1
+        if transitions > MAX_PROTECTION_TRANSITIONS_PER_PAGE:
+            raise RuntimeError(
+                "catalog bootstrap exceeded "
+                f"{MAX_PROTECTION_TRANSITIONS_PER_PAGE} protection transitions"
+            )
+        try:
+            stage_result = handle_firewall_response(
+                session,
+                response,
+                context="catalog bootstrap",
+            )
+        except GeeTestSolveFailed as exc:
+            consecutive_geetest_failures += 1
+            LOGGER.warning(
+                "catalog bootstrap: GeeTest failure %s/%s; type=%s; "
+                "lot_number=%s; result=%s",
+                consecutive_geetest_failures,
+                MAX_CONSECUTIVE_GEETEST_FAILURES,
+                exc.captcha_type or "unknown",
+                exc.lot_number or "unknown",
+                exc.result or "unknown",
+            )
+            if (
+                consecutive_geetest_failures
+                >= MAX_CONSECUTIVE_GEETEST_FAILURES
+            ):
+                raise RuntimeError(
+                    "catalog bootstrap: GeeTest failed "
+                    f"{MAX_CONSECUTIVE_GEETEST_FAILURES} consecutive times; "
+                    f"last task type={exc.captcha_type or 'unknown'}; "
+                    f"lot_number={exc.lot_number or 'unknown'}; "
+                    f"result={exc.result or 'unknown'}"
+                ) from exc
+            continue
+
+        if isinstance(stage_result, GeeTestVerified):
+            consecutive_geetest_failures = 0
+            verification_chain.append("GeeTest")
+            LOGGER.info(
+                "catalog bootstrap verification chain: %s",
+                format_verification_chain(verification_chain),
+            )
+            continue
+        if stage_result is not None:
+            consecutive_geetest_failures = 0
+            pow_unblock_ttl = stage_result
+            verification_chain.append("firewallPow")
+            LOGGER.info(
+                "catalog bootstrap verification chain: %s",
+                format_verification_chain(verification_chain),
+            )
+            continue
+
+        raise RuntimeError(
+            "catalog bootstrap protection handler returned no result for "
+            f"HTTP {response.status_code}"
+        )
+
+
 def request_pages(
     session: requests.Session,
     *,
@@ -1710,10 +1861,18 @@ def run() -> CompletedFlow:
         impersonate=HTTP_IMPERSONATE_PROFILE,
         trust_env=False,
     )
+    LOGGER.info(
+        "runtime platform=%s; browser user-agent=%s",
+        sys.platform,
+        BROWSER_USER_AGENT,
+    )
     set_session_headers(session, {**REQUEST_HEADERS, "Referer": REFERER})
 
-    pow_unblock_ttl = None
     verification_chain: list[str] = []
+    pow_unblock_ttl = bootstrap_catalog_session(
+        session,
+        verification_chain=verification_chain,
+    )
     next_page = 1
     all_page_requests: list[PageRequestResult] = []
     last_protected_page: int | None = None

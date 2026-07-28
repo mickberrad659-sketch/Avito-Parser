@@ -51,6 +51,13 @@ uv run --with pytest pytest -q
 Каждый запрос содержит `X-Source: client-browser`. Challenge всегда берётся
 из текущего ответа, а cookies ведёт одна внутренняя HTTP-сессия.
 
+Перед первым items-XHR та же сессия выполняет обычный document GET страницы
+каталога с browser navigation-заголовками. Bootstrap проходит выбранные
+PoW/QRATOR/Gee-ветки, пока не получит HTTP 200, и сохраняет серверное состояние
+и все установленные Avito cookies. Наличие `buyer_location_id`, `luri`, `sx`
+диагностируется отдельно: сервер может установить их только первым успешным
+items-ответом. После bootstrap начинается цикл `p=1` … `p=100`.
+
 ```bash
 uv run python main.py
 ```
@@ -98,6 +105,9 @@ GET не повторяется, а причина записывается в �
 `/web/1/u?<number>` передаётся без знака `=`, как в HAR и исходном bundle.
 Для HTTP/TLS используется Firefox-профиль `curl_cffi`, а явные заголовки
 соответствуют Firefox 152 из HAR.
+OS-токен User-Agent выбирается по платформе запуска: `Windows NT 10.0` на
+Windows, `X11; Linux x86_64` на Linux и macOS-токен на Darwin. Поэтому
+User-Agent не противоречит сетевому стеку реальной машины.
 
 Если источник возвращает HTTP 200, проверка не требуется. При HTTP 429 скрипт
 сначала проверяет JSON на `pow_challenge`. Captcha dispatcher может прийти как

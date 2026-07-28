@@ -156,6 +156,85 @@ def test_items_response_counters_and_catalog_hash_are_parsed() -> None:
     )
 
 
+def test_firefox_user_agent_matches_runtime_platform() -> None:
+    assert "Windows NT 10.0; Win64; x64" in main.firefox_user_agent(
+        "win32"
+    )
+    assert "X11; Linux x86_64" in main.firefox_user_agent("linux")
+    assert "Macintosh; Intel Mac OS X" in main.firefox_user_agent("darwin")
+    assert main.PAGE_REQUEST_HEADERS["User-Agent"] == main.BROWSER_USER_AGENT
+    assert main.GEETEST_REQUEST_HEADERS["User-Agent"] == main.BROWSER_USER_AGENT
+
+
+def test_catalog_bootstrap_repeats_after_pow_and_sets_location_state(
+    tmp_path,
+) -> None:
+    session = FakeSession()
+    responses = [
+        FakeResponse(
+            439,
+            headers={"content-type": "application/json"},
+            json_value={"pow_challenge": "challenge"},
+            text='{"pow_challenge":"challenge"}',
+            url=main.CATALOG_PAGE_URL,
+        ),
+        FakeResponse(
+            200,
+            headers={"content-type": "text/html"},
+            text="<html>catalog</html>",
+            url=main.CATALOG_PAGE_URL,
+        ),
+    ]
+
+    def document_get(*args, **kwargs):
+        response = responses.pop(0)
+        if response.status_code == 200:
+            for name, value in (
+                ("buyer_location_id", "624840"),
+                ("luri", "volgograd"),
+                ("sx", "state"),
+            ):
+                session.cookies.set(
+                    name,
+                    value,
+                    domain=".avito.ru",
+                    path="/",
+                )
+        return response
+
+    verification_chain = []
+    with (
+        patch.object(main, "DEBUG_RESPONSE_DIR", tmp_path),
+        patch.object(
+            main,
+            "get_with_qrator_recovery",
+            side_effect=document_get,
+        ) as get_document,
+        patch.object(
+            main,
+            "handle_firewall_response",
+            return_value=420,
+        ) as handle,
+    ):
+        ttl = main.bootstrap_catalog_session(
+            session,
+            verification_chain=verification_chain,
+        )
+
+    assert ttl == 420
+    assert verification_chain == ["firewallPow"]
+    assert get_document.call_count == 2
+    assert all(
+        call.kwargs["session_headers"] == main.DOCUMENT_REQUEST_HEADERS
+        for call in get_document.call_args_list
+    )
+    assert handle.call_args.kwargs["context"] == "catalog bootstrap"
+    assert {"buyer_location_id", "luri", "sx"}.issubset(
+        session.cookies.keys()
+    )
+    assert len(list(tmp_path.glob("exchange-*-catalog-bootstrap-*.json"))) == 2
+
+
 def test_items_url_has_exact_query_and_only_replaces_page() -> None:
     expected = [
         (key, "17" if key == "p" else value)
@@ -941,6 +1020,7 @@ def test_run_retries_the_same_page_after_geetest_and_pow() -> None:
 
     with (
         patch.object(main.requests, "Session", return_value=session),
+        patch.object(main, "bootstrap_catalog_session", return_value=None),
         patch.object(
             main,
             "request_pages",
@@ -993,6 +1073,7 @@ def test_run_restarts_original_get_after_geetest_solver_failure() -> None:
 
     with (
         patch.object(main.requests, "Session", return_value=session),
+        patch.object(main, "bootstrap_catalog_session", return_value=None),
         patch.object(
             main,
             "request_pages",
@@ -1032,6 +1113,7 @@ def test_run_stops_after_five_consecutive_geetest_failures() -> None:
 
     with (
         patch.object(main.requests, "Session", return_value=session),
+        patch.object(main, "bootstrap_catalog_session", return_value=None),
         patch.object(
             main,
             "request_pages",
@@ -1074,6 +1156,7 @@ def test_intervening_pow_does_not_exhaust_geetest_retry_budget() -> None:
 
     with (
         patch.object(main.requests, "Session", return_value=session),
+        patch.object(main, "bootstrap_catalog_session", return_value=None),
         patch.object(
             main,
             "request_pages",
